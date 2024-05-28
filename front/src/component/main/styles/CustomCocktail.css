@@ -5,7 +5,7 @@
     display: flex;
     justify-content: center; /* 중앙 정렬 */
     gap: 10px; /* 드롭다운 간의 간격 */
-    margin-top: 20px; /* 드롭다운 아래 여백 */
+    margin : 20px; /* 드롭다운 아래 여백 */
   }
   
   .filter-dropdowns select {
@@ -32,11 +32,6 @@
   .cocktail-link {
     text-decoration: none;
     color: inherit;
-  }
-  
-  .cocktail-item {
-    text-align: center;
-    margin: auto; /* 박스를 가운데 정렬 */
   }
   
   .image-box {

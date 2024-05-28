@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import options from '../../data/questionData.json';
-import "../contents/taste.css";
+import "../contents/Taste.css";
 
-const OptionSelector = ({ onSelectionComplete }) => {
+const Taste = ({ onSelectionComplete }) => {
   const [currentOptions, setCurrentOptions] = useState([]);
   const [selectedOptionIds, setSelectedOptionIds] = useState([]);
-  const [question, setQuestion] = useState("오늘은 불금! 술이 땡기는 당신, 어느곳에서 술을 즐길건가요 ?"); // 초기 질문 설정
+  const [question, setQuestion] = useState("오늘은 불금! 술이 땡기는 당신, 어느곳에서 불금을 즐길건가요 ?");
+  const [imageUrl, setImageUrl] = useState("https://skybory-bucket.s3.ap-northeast-2.amazonaws.com/monster/enquete/1.png");
 
   useEffect(() => {
     const initialOptions = options.slice(0, 2);
@@ -22,6 +23,11 @@ const OptionSelector = ({ onSelectionComplete }) => {
         const nextOptions = options.filter(option => nextOptionsIds.includes(option.id));
         setCurrentOptions(nextOptions);
         setQuestion(nextOptions[0].question); // 다음 질문으로 업데이트
+        if (nextOptions[0].image) {
+          setImageUrl(nextOptions[0].image); // 다음 질문에 해당하는 이미지로 업데이트
+        } else {
+          setImageUrl(""); // 이미지가 없으면 빈 문자열로 설정
+        }
       } else {
         setCurrentOptions([]);
         const tasteString = updatedIds.join('.');
@@ -35,6 +41,13 @@ const OptionSelector = ({ onSelectionComplete }) => {
   return (
     <div className="option-selector-wrapper">
       <div className="question-box">{question}</div>
+      {imageUrl && ( // 이미지 URL이 있을 때만 이미지 렌더링
+        <img 
+          src={imageUrl} 
+          alt="Survey related"
+          className="survey-image"
+        />
+      )}
       <div className="option-selector-container">
         {currentOptions.map(option => (
           <button 
@@ -47,13 +60,8 @@ const OptionSelector = ({ onSelectionComplete }) => {
           </button>
         ))}
       </div>
-      <img 
-        src="https://example.com/your-image.jpg" // 원하는 이미지 URL로 변경
-        alt="Survey related"
-        className="survey-image"
-      />
     </div>
   );
 };
 
-export default OptionSelector;
+export default Taste;

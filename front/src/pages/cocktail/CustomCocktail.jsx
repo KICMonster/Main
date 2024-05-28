@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import BasicLayout from "../../layouts/BasicLayout";
 import { Link } from "react-router-dom";
-import "../../component/main/styles/CustomCocktail.css"; // CSS 파일을 import
-
+import "../../pages/cocktail/ViewPage.css"; // CSS 파일을 import
+import "../../component/main/styles/CustomCocktail.css"
 function CustomCocktail() {
   const [cocktails, setCocktails] = useState([]);
   const [baseFilter, setBaseFilter] = useState('');

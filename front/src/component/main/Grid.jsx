@@ -25,7 +25,7 @@ function Grid({ cocktails }) {
         <div className="slider-track">
           {doubledCocktails.slice(0, 15).map((cocktail, index) => (
             <Link key={`${cocktail.id}-${index}`} to={`/cocktail/${cocktail.id}`} className="cocktail-link">
-              <div className="cocktail-item">
+              <div className="slider-items">
                 <div className="image-box">
                   <img src={cocktail.imageUrl || 'default-image-url.jpg'} alt={cocktail.name} className="cocktailImage" />
                 </div>

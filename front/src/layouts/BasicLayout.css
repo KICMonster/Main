@@ -11,12 +11,17 @@
   /* 스크롤 내릴 때 그림자 효과를 줍니다. */
 }
 
-/* 푸터 css */
 .footer {
   background-color: #ffffff00;
-  padding: 10px;
-
+  padding:  10px 0px;
   position: fixed;
   bottom: 0;
-  width: 100%;
+  width: 66%;
+  display: flex;
+  justify-content: space-between;
+  left: 18%; /* 부모 요소의 가운데를 기준으로 */
+
+  a{
+    margin: 0 3px;
+  }
 }

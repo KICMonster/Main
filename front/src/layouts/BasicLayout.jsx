@@ -44,17 +44,19 @@ function BasicLayout({ children }) {
         )}
       </div>
       <footer className="footer">
-        <div style={{display: 'flex'}}>
-        <a >김태연</a>
-        <a >손은영</a>
-        <a >임현민</a>
-        <a >유명준</a>
-        <a >정해랑</a>
-        <a >신동준</a>
-        <div></div>
-        <p>© 2024 Your Company. All rights reserved. Icons by <a href="https://dribbble.com/">Dribbble</a> and <a href="https://codepen.io/">CodePen</a>.</p>
+        <div >
+          <a>KYC Company</a>
+          <a >김태연</a>
+          <a >손은영</a>
+          <a >임현민</a>
+          <a >유명준</a>
+          <a >정해랑</a>
+          <a >신동준</a>
         </div>
-        
+        <div>
+          <p>© 2024 Monster Company. All rights reserved. Icons by <a href="https://dribbble.com/">Dribbble</a> and <a href="https://codepen.io/">CodePen</a>.</p>
+        </div>
+
       </footer>
     </>
   );

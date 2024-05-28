@@ -7,15 +7,6 @@
   font-style: normal;
 }
 
-.filter-dropdowns {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 20px;
-  margin-top: 200px;
-  /* 필터를 아래로 내리는 마진 추가 */
-}
-
 
 
 .cocktail-link {
@@ -23,23 +14,20 @@
   color: inherit;
 }
 
+
 .cocktail-item {
-  display: flex;
-  flex-direction: column;
-  /* 요소들을 세로로 배치 */
-  align-items: center;
-  /* 요소들을 수직으로 중앙 정렬 */
-  width: 250px;
-  border: 1px solid #ddd;
+  width: 230px;
+  height: 280px;
+  border: 1px solid #46464685;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
   border-radius: 10px;
   overflow: hidden;
   background-color: #fff;
   transition: transform 0.3s ease;
-  margin: 10px;
-  /* 좌우 간격을 조절하는 속성 */
+  text-align: center;
+  flex-shrink: 0;
   padding: 10px;
 }
-
 .cocktail-item:hover {
   transform: scale(1.05);
 }

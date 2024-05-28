@@ -122,6 +122,7 @@ const root = createBrowserRouter([
     path: '/mypage',
     element: withSuspense(MyPage),
   },
+ 
 ]);
 
 export default root;
