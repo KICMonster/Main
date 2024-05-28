@@ -1,0 +1,92 @@
+/* TasteStart.css */
+
+/* 보드 스타일 */
+.board {
+    background-color: rgba(255, 255, 255, 0.8); /* 흰색 반투명 배경 */
+    padding: 20px;
+    border-radius: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    margin-top: 125px; /* 보드를 아래로 내리는 위치 조정 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 보드에 그림자 추가 */
+}
+.survey-image-container {
+    display: inline-block; /* 이미지를 인라인 블록으로 표시 */
+    max-width: 100%; /* 이미지의 최대 너비 지정 */
+    margin-top: 20px; /* 위쪽 여백 추가 */
+    border-radius: 10px; /* 이미지 모서리를 둥글게 함 */
+    overflow: hidden; /* 내용이 넘치는 경우를 대비하여 오버플로우를 숨김 */
+}
+
+
+.survey-image {
+    width: 100%; /* 이미지를 부모 요소에 맞게 조정 */
+}
+
+/* 설문 컨테이너 스타일 */
+.survey-container {
+    text-align: center;
+    padding: 20px;
+    margin-top: 50px; /* 상단 여백 조정 */
+    color: black; /* 텍스트 색상을 검은색으로 변경 */
+}
+
+/* 대제목 스타일 */
+.survey-container h1 {
+    font-size: 2rem; /* 글꼴 크기 줄이기 */
+    margin-bottom: 20px;
+    color: black; /* 글꼴 색상을 검은색으로 변경 */
+}
+
+/* 소제목 스타일 */
+.survey-container h2 {
+    font-size: 1.3rem; /* 글꼴 크기 줄이기 */
+    margin-bottom: 10px;
+    color: black; /* 글꼴 색상을 검은색으로 변경 */
+}
+
+/* 설문 지시사항 스타일 */
+.survey-instructions {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.survey-instructions div {
+    flex: 1;
+    margin: 0 10px;
+}
+
+.survey-instructions span {
+    font-size: 1rem; /* 글꼴 크기 줄이기 */
+    display: block;
+    margin-bottom: 5px;
+    color: black; /* 글꼴 색상을 검은색으로 변경 */
+}
+
+.survey-instructions p {
+    font-size: 0.8rem; /* 글꼴 크기 줄이기 */
+    color: black; /* 글꼴 색상을 검은색으로 변경 */
+}
+
+/* 설문 시작 버튼 스타일 */
+.survey-start a {
+    display: inline-block;
+    background-color: #007bff;
+    color: white; /* 글꼴 색상을 흰색으로 변경 */
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+    margin-top: 20px; /* 버튼 위쪽 여백 추가 */
+}
+
+.survey-start a:hover {
+    background-color: #0056b3;
+}
+
+/* 설문 이미지 스타일 */
+.survey-image {
+    max-width: 100%;
+    margin-top: 20px;
+}

@@ -1,0 +1,85 @@
+/* Taste.css */
+
+@font-face {
+  font-family: 'buttonfont';
+  src: url('/assets/fonts/buttonfont.woff2') format('woff2'),
+       url('/assets/fonts/buttonfont.woff') format('woff'),
+       url('/assets/fonts/buttonfont.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.option-selector-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 10vh 0;  /* 위쪽 여백을 줄여서 상단에 배치 */
+}
+
+.question-box {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  margin-top: 0; /* 텍스트의 위치를 상단으로 */
+  color: #ffffff; /* 글자색 변경 */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* 그림자 효과 추가 */
+  animation: pulse 2s infinite alternate; /* 애니메이션 추가 */
+}
+
+.option-selector-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 20px; /* 선택지와 이미지 사이에 여백 추가 */
+}
+
+.option-button {
+  width: 250px;
+  height: 150px;
+  margin: 10px;
+  padding: 10px;
+  background-color: #f5f5f5;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.option-button:hover {
+  background-color: #e0e0e0;
+  border-color: #bbb;
+  transform: scale(1.1); /* 마우스 호버시 확대 효과 */
+}
+
+.option-button:active {
+  background-color: #d0d0d0;
+  border-color: #aaa;
+}
+
+.font {
+  font-family: 'buttonfont', sans-serif;
+}
+
+@keyframes pulse {
+  from {
+      transform: scale(1);
+  }
+  to {
+      transform: scale(1.05);
+  }
+}
+
+.survey-image {
+  max-width: 100%;
+  margin-top: 20px;
+  border-radius: 10px; /* 이미지 모서리를 둥글게 함 */
+}

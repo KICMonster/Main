@@ -1,0 +1,43 @@
+.SerchC {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.search-icon {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    z-index: 2;
+    cursor: pointer;
+
+}
+
+.search-form {
+    display: flex;
+    align-items: center;
+}
+
+.search-input {
+    padding: 5px 20px;
+    font-size: 16px;
+    border: none;
+    outline: none;
+    background-color: rgba(255, 255, 255); /* 반투명 흰색 배경 */
+    border-radius: 50px;
+}
+
+.search-input::placeholder {
+    color: #bbb; /* 플레이스홀더 텍스트 색상 */
+}
+
+.search-button {
+    padding: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: white;
+    font-size: 16px;
+}

@@ -1,0 +1,95 @@
+@font-face {
+  font-family: 'buttonfont';
+  src: url('/assets/fonts/buttonfont.woff2') format('woff2'),
+    url('/assets/fonts/buttonfont.woff') format('woff'),
+    url('/assets/fonts/buttonfont.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.filter-dropdowns {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  margin-top: 200px;
+  /* 필터를 아래로 내리는 마진 추가 */
+}
+
+
+
+.cocktail-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.cocktail-item {
+  display: flex;
+  flex-direction: column;
+  /* 요소들을 세로로 배치 */
+  align-items: center;
+  /* 요소들을 수직으로 중앙 정렬 */
+  width: 250px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: #fff;
+  transition: transform 0.3s ease;
+  margin: 10px;
+  /* 좌우 간격을 조절하는 속성 */
+  padding: 10px;
+}
+
+.cocktail-item:hover {
+  transform: scale(1.05);
+}
+
+
+.cocktail-image {
+  width: 100%;
+  height: auto;
+  /* 이미지의 높이를 자동으로 조정하여 가로 세로 비율 유지 */
+  object-fit: contain;
+  /* 이미지가 왜곡되지 않도록 설정 */
+}
+
+.cocktail-name {
+  padding: 10px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: auto;
+  /* 남은 공간을 아래로 밀착 */
+}
+
+.pagination {
+  position: absolute;
+  top: 85%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 20px auto;
+}
+
+.pagination button.active {
+  font-weight: bold;
+  border: solid 2px #464646;
+  background-color: rgb(181 181 181 / 20%);
+  box-shadow: 0 0 10px #d4d4d4;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+}
+
+.pagination button {
+  float: left;
+  margin: 8px;
+  padding: 8px;
+  border-radius: 4px;
+  border: solid 2px rgb(105 105 105 / 40%);
+  text-decoration: none;
+  text-align: center;
+  color: #000;
+  background-color: rgb(181 181 181 / 20%);
+  transition: all .1s;
+}

@@ -1,6 +1,5 @@
 import React from 'react';
 import { FaCar, FaBed } from 'react-icons/fa';
-import { TiWeatherDownpour,TiWeatherPartlySunny } from 'react-icons/ti';
 
 const IconRenderer = ({ iconName }) => {
     switch (iconName) {
@@ -8,8 +7,6 @@ const IconRenderer = ({ iconName }) => {
             return <FaCar />;
         case 'TbBedFilled':
             return <FaBed />;
-        case 'TiWeatherPartlySunny':
-            return <TiWeatherPartlySunny size={50}/>;
         default:
             return null;
     }

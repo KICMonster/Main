@@ -1,0 +1,117 @@
+/* 추가된 슬라이더 스타일 및 애니메이션 */
+.slider-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  overflow: hidden;
+  bottom: -200px;
+  width: 100%;
+  position: relative;
+  height: 500px;
+}
+
+@keyframes scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.slider-track {
+  display: flex;
+  width: calc(50%);
+  gap: 20px;
+  animation: scroll 30s linear infinite;
+
+}
+
+.slider-track:hover {
+  animation-play-state: paused;
+  /* 호버할 경우 애니메이션 일시 정지 */
+}
+
+.cocktail-item {
+  /* 여백 설정 */
+  width: 200px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: #fff;
+  position: relative;
+  /* 상대 위치 지정 */
+}
+
+.cocktail-item .cocktail-details {
+  position: absolute;
+  /* 절대 위치 지정 */
+  bottom: 0;
+  /* 아래에 위치하도록 설정 */
+  left: 0;
+  /* 왼쪽에 위치하도록 설정 */
+  width: 100%;
+  /* 부모 요소의 전체 너비를 사용 */
+  background-color: rgba(255, 255, 255, 0);
+  /* 투명한 하얀 배경색 */
+  padding: 5px;
+  /* 내부 여백 설정 */
+  box-sizing: border-box;
+  /* padding이 너비를 늘리지 않도록 설정 */
+  text-align: left;
+  /* 텍스트 왼쪽 정렬 */
+  font-size: 12px;
+  /* 폰트 크기 조정 */
+}
+
+.cocktail-item .cocktail-details p {
+  margin: 0;
+  /* 기본 마진 제거 */
+}
+
+.cocktail-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.cocktail-name {
+  padding: 10px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: auto;
+  /* 남은 공간을 아래로 밀착 */
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+
+.cocktail-item {
+  margin: 10px;
+  width: 200px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: #fff;
+  transition: transform 0.3s ease;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.cocktailImage {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 51.91%, rgba(0, 0, 0, 0.3) 75.88%);
+  width:  233px;
+  height: 308px;
+  /* 이미지의 높이를 자동으로 조정하여 가로 세로 비율 유지 */
+  object-fit: contain;
+  /* 이미지가 왜곡되지 않도록 설정 */
+  padding: 16px 20px;
+}

@@ -1,5 +1,6 @@
 import React from 'react';
-import Home from '../page/Home';
+import Home from '../pages/Home';
+import EmailForm from '../component/login/EmailVerification';
 
 
 
@@ -16,7 +17,11 @@ const LoginRouter = () => {
   {
     path : 'auth/naver/callback',
     element : <Home />,
-  }
+  },
+  {
+    path : 'emailVar',
+    element : <EmailForm/>
+  },
 ];
 };
 
