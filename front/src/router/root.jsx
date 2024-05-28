@@ -1,125 +1,127 @@
 import { createBrowserRouter } from 'react-router-dom';
-import Home from '../pages/Home';
-import LoginPage from '../pages/LoginPage';
+import { Suspense, lazy } from 'react';
 import LoginRouter from './LoginRouter';
+import Loading from '../pages/Loading';
 
-import AdditionalForm from '../component/login/AdditionalForm';
-import { Suspense } from 'react';
+// Lazy loading을 위한 컴포넌트들
+const Home = lazy(() => import('../pages/Home'));
+const LoginPage = lazy(() => import('../pages/LoginPage'));
+const AdditionalForm = lazy(() => import('../component/login/AdditionalForm'));
+const IngredientPage = lazy(() => import('../pages/cocktail/IngredientPage'));
+const CocktailDetail = lazy(() => import('../pages/cocktail/CocktailDetail'));
+const CraftPage = lazy(() => import('../pages/information/CraftPage'));
+const HistoryPage = lazy(() => import('../pages/information/HistoryPage'));
+const TrendNews = lazy(() => import('../pages/information/TrendNews'));
+const AnalysisComplete = lazy(() => import('../pages/AnalysisComplete'));
+const Weather = lazy(() => import('../component/main/Weather'));
+const TasteAnalysis = lazy(() => import('../component/detail/TasteAnalysis'));
+const GisPage = lazy(() => import('../pages/GisPage'));
+const ViewPage = lazy(() => import('../pages/cocktail/ViewPage'));
+const RecommendCocktail = lazy(() => import('../pages/cocktail/RecommendCocktail'));
+const MyCocktail = lazy(() => import('../pages/contents/MyCocktail'));
+const Snackpage = lazy(() => import('../pages/cocktail/Snackpage'));
+const CustomCocktail = lazy(() => import('../pages/cocktail/CustomCocktail'));
+const TasteStart = lazy(() => import('../pages/contents/TasteStart'));
+const CocktailSearchChart = lazy(() => import('../component/detail/CocktailSearchChart'));
+const MyPage = lazy(() => import('../pages/Mypage'));
 
-import IngredientPage from '../pages/cocktail/IngredientPage';
-
-import CocktailDetail from '../pages/cocktail/CocktailDetail';
-import CraftPage from '../pages/information/CraftPage';
-import HistoryPage from '../pages/information/HistoryPage';
-import TrendNews from '../pages/information/TrendNews';
-import AnalysisComplete from '../pages/AnalysisComplete';
-import Weather from '../component/main/Weather';
-import TasteAnalysis from '../component/detail/TasteAnalysis';
-import GisPage from '../pages/GisPage';
-import ViewPage from '../pages/cocktail/ViewPage';
-import RecommendCocktail from '../pages/cocktail/RecommendCocktail';
-import MyCocktail from '../pages/contents/MyCocktail';
-import Snackpage from '../pages/cocktail/Snackpage';
-import CustomCocktail from '../pages/contents/CustomCocktail';
-import CustomCocktailPage from '../pages/cocktail/CustomCocktailPage';
-import TasteStart from '../pages/contents/TasteStart';
-import CocktailSearchChart from '../component/detail/CocktailSearchChart';
-import MyPage from '../pages/Mypage';
-
-
+// Suspense를 적용하여 각 컴포넌트를 래핑하는 함수
+const withSuspense = (Component) => {
+  return (
+    <Suspense fallback={<Loading/>}>
+      <Component />
+    </Suspense>
+  );
+};
 
 const root = createBrowserRouter([
   {
-    path: '',
-    element: <Home />         //메인화면
+    path: '/',
+    element: withSuspense(Home),
   },
   {
     path: '/login',
-    element: <LoginPage />,
-    children: LoginRouter() // LoginRouter()가 객체를 반환하므로 이를 바로 사용     //로그인
+    element: withSuspense(LoginPage),
+    children: LoginRouter(),
   },
   {
     path: '/additional',
-    element: <AdditionalForm />           //회원가입   
+    element: withSuspense(AdditionalForm),
   },
   {
-    path: '/ViewPage',
-    element: <ViewPage />                  // 칵테일 리스트
+    path: '/viewpage',
+    element: withSuspense(ViewPage),
   },
   {
-    path: '/ViewPage/:id',
-    element: <ViewPage />                  // 칵테일 리스트
+    path: '/viewpage/:id',
+    element: withSuspense(ViewPage),
   },
   {
     path: '/cocktail/:cocktailId',
-    element: <CocktailDetail /> // 칵테일 상세 페이지
+    element: withSuspense(CocktailDetail),
   },
   {
-    path: '/Ingredient',
-    element: <IngredientPage />             //재료리스트
+    path: '/ingredient',
+    element: withSuspense(IngredientPage),
   },
   {
     path: '/history',
-    element: <HistoryPage />                //역사 페이지
+    element: withSuspense(HistoryPage),
   },
   {
     path: '/craft/:key',
-    element: <CraftPage />                     //기초제조법페이지
+    element: withSuspense(CraftPage),
   },
   {
     path: '/tastestart',
-    element: <TasteStart />             //재료리스트
+    element: withSuspense(TasteStart),
   },
   {
-    path: '/taste', // 기호조사. 필요 페이지와 연결할것.지금은 home.jsx에 버튼. 회원가입 페이지와 연결할 경우 로직 수정할 필요.   
-    element: <TasteAnalysis />, // 회원가입 로직과 연결 할 시 프론트 경로작업&비동기 통신전달값 추가 후 백엔드에 문의
+    path: '/taste',
+    element: withSuspense(TasteAnalysis),
     children: [
       {
-        path: 'complete', // '/taste'의 하위 경로로 'complete'를 정의
-        element: <AnalysisComplete /> // '/taste/complete'에 해당하는 컴포넌트
-      }
-    ]
+        path: 'complete',
+        element: withSuspense(AnalysisComplete),
+      },
+    ],
   },
   {
-    path: '/trendNews',       // 뉴스 경로. 조정 필요. 
-    element: <TrendNews />
+    path: '/trendnews',
+    element: withSuspense(TrendNews),
   },
   {
     path: '/weather',
-    element: <Weather />
+    element: withSuspense(Weather),
   },
   {
     path: '/mapsearch',
-    element: <GisPage />        //Gis페이지 
+    element: withSuspense(GisPage),
   },
   {
-    path: '/recommend',         // 칵테일 추천 페이지
-    element: <RecommendCocktail />
+    path: '/recommend',
+    element: withSuspense(RecommendCocktail),
   },
   {
-    path: '/customcocktail', // 커스텀 칵테일
-    element: <CustomCocktail />
+    path: '/customcocktail',
+    element: withSuspense(CustomCocktail),
   },
   {
-    path: '/mycocktail', // 커스텀 칵테일 게시판
-    element: <MyCocktail />
+    path: '/mycocktail',
+    element: withSuspense(MyCocktail),
   },
   {
     path: '/snack/:id',
-    element: <Snackpage />
-  },
-  {
-    path: '/custom-cocktail',
-    element: <CustomCocktailPage /> // 커스텀 칵테일 페이지
+    element: withSuspense(Snackpage),
   },
   {
     path: '/chart',
-    element: <CocktailSearchChart /> // 커스텀 칵테일 페이지
+    element: withSuspense(CocktailSearchChart),
   },
   {
     path: '/mypage',
-    element: <MyPage /> // 커스텀 칵테일 페이지
-  }
+    element: withSuspense(MyPage),
+  },
 ]);
 
 export default root;

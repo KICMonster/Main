@@ -61,7 +61,7 @@
 
 .text-container {
     margin-left: 100px;
-    max-width: 700px;
+    max-width: 800px;
 }
 
 .crafts img {
@@ -69,7 +69,7 @@
     height: 400px;
     object-fit: cover;
     margin-bottom: 20px;
-    border-radius: 10px;
+    border-radius: 20px;
 }
 
 .crafts h1 {
@@ -95,5 +95,5 @@
     padding: 20px;
     text-align: center;
     max-width: 800px; /* 폭을 늘립니다. */
-    border-radius: 10px;
+    border-radius: 20px;
 }

@@ -49,7 +49,7 @@ public class SecurityConfig {
 		}).authorizeHttpRequests((auth) -> {
 			((AuthorizeHttpRequestsConfigurer.AuthorizedUrl) ((AuthorizeHttpRequestsConfigurer.AuthorizedUrl) ((AuthorizeHttpRequestsConfigurer.AuthorizedUrl) ((AuthorizeHttpRequestsConfigurer.AuthorizedUrl) ((AuthorizeHttpRequestsConfigurer.AuthorizedUrl) ((AuthorizeHttpRequestsConfigurer.AuthorizedUrl) ((AuthorizeHttpRequestsConfigurer.AuthorizedUrl) ((AuthorizeHttpRequestsConfigurer.AuthorizedUrl) auth
 					// 태연 한줄 사용
-					.requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/api/data/**").permitAll()
+					.requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/api/data/**","/api/weather/**","/api/cocktail","/api/gis/get").permitAll()
 					.requestMatchers(HttpMethod.OPTIONS,
 							new String[] { "/api/authenticate", "/join/emails/verification-requests",
 									"/join/emails/verifications", "/join/submit", "/weather/api/today",

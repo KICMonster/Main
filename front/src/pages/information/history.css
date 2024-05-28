@@ -22,7 +22,7 @@
   height: auto;
   object-fit: cover;
   border: 3px ;
-  border-radius: 10px;
+  border-radius: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -39,7 +39,7 @@
   margin-top: 280px; /* 이 값을 조정하여 "칵테일의 역사" 섹션을 더 아래로 이동시킵니다. */
   top: 60px; /* 이 값을 조정하여 "칵테일의 역사" 섹션을 더 아래로 이동시킵니다. */
   left: -740px; /* 왼쪽으로 이동시킵니다. */
-  border-radius: 10px;
+  border-radius: 20px;
 }
 
 .history_name h4 {
@@ -79,6 +79,6 @@
 .contentBox {
   background-color: #f8f8f8;
   padding: 18px;
-  border-radius: 10px;
+  border-radius: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
