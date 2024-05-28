@@ -50,7 +50,7 @@ public class Cocktail {
     @Column(name = "RC_TASTE")
     private String taste;
 
-    @Column(name = "COCKTAIL_INSTRUCTIONS")
+    @Column(name = "COCKTAIL_INSTRUCTIONS", length = 2000)
     private String instructions;
 
     @Column(name = "COCKTAIL_INGREDIENT1")

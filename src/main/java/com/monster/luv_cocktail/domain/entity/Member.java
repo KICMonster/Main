@@ -15,11 +15,11 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Table(name = "MEMBER")
-@SequenceGenerator(name = "member_seq", sequenceName = "member_seq", allocationSize = 1)
 public class Member {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "member_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동으로 ID를 생성하게 설정
+    @Column(name = "MEMBER_ID", nullable = false)
     private Long id;
 
     @Column(name = "MEMBER_NM", nullable = false, length = 20)
@@ -57,7 +57,7 @@ public class Member {
     @Column(name = "SURVEY_RES", nullable = true, length = 255)
     private String recordRes;
 
-    @Column(name = "WITHDRAWAL_DATE", nullable = false)
+    @Column(name = "WITHDRAWAL_DATE" , nullable = true)
     private Date withdrawalDate;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -69,8 +69,8 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ChoiceVoter> choiceVoters;
 
-//    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<ViewLog> viewLogs;
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BoardViewLog> boardViewLogs;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CustomCocktail> customCocktails;

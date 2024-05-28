@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "warm-castle-424206-e8",
+  "private_key_id": "37e4d1f6ebb577164d65da3d2018f37ce26e8d9f",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCv+V445TI6g+yH\nSvAxL3RlNKP+N7bcQZu0UR9k+ldwHcM7ejr5WmJLeN3W7+fEbkzLqrhes3b4ZtjA\n5FtSl7nLWgxJJmjOd/8svoDgHQbJDK+0u0Q+UoeKT5eKSka2zcn0f06GYXnbQXvQ\n91m6WiAI1Em3237JKVjeZCsi3LoVjFF/4l70jGRP9XYTKBrIIPc76zbrb0Ti/tXq\nahhgOica2pVqu7AdXbz/bgPZtDW9jmi+3PwvqOvxRin7O2U6dqcY/xH+SajYt02E\n/TUQ3oNQh1yTx8FEuhqXDToUgodr/mNxhWU17Mi1nwVvCJh0ztvIgDDMeNVr2Xrp\n23uoqBl5AgMBAAECggEADdsYdmnji9R15Aw8P98w7sQXko1//jVDRY4qpuiISHlr\ndSwxZw9dFHy6mPEwYljd/p5dYIWIfVQZxoxkfWsZc7/OHldiIrmzk6oXWy4l6eAw\nGI6zN6YHapZMRBUHnt6yw2ffvrh/oAo2rdRAEiqFAbT3bfzgLYYuK2qfM+JF26rc\nckDwTYoPy1u0xfZe+NovDAKl3hFg5IEwV5kIjFlEpnnCrixphLm9jRHGopUVUnC/\n4PXH9mMNjIVcZQTLTD1b94j1m2fN7AaCofXxv/FmKwrpDQUX3QcHsAYb7L6KDFCN\n0f7LqIih5C8NNLvgEqPEhYQOrdqvHEXZX72MOUKaZQKBgQDooqoDZ3fPLB1bY++N\n1kh/yVZiVQgkqRQ6Ionlz9JF2ECO5gvxwOqANkJVy6Li4JIQDkAPeV3bk7BgxPSX\n2s1FFV5Nxzg0jH+D2+P38kbN6uGTr5wDlzPfEFoYlTQXlirJiecedhL1pHSrqS03\n6YSMfEvT/Nbx35I9cquv2uuvRQKBgQDBpd+da/9LtXMRI3mK/IdfJDZ0FdnjX3rF\nNzgckWHdYOSbOkEnRF0yZubcVfEU+TwtvfZpm/yb4Kvtux9u86cj4gVX/DXW4ZjU\nVy0fNdPXwT+iEy582A7MVcguMTwEXMkW7pIArwsgzXm1FAz4zxDBEGurA2HkylR6\nix8UTki6pQKBgQDVSw8GP/+he5kPCfnB2g5u23LQhZYJxtw80R4ODxWD5FqMqm+Z\nIH/hPd5kO2kFC1HgVrB1f5mGkUrN7scz0/EQvh7QwS/PPmJLy3ihBQnWEtzwQ7qP\nsDpm8t8oWuSAG7bvQfkd/LQ1dKtkGKDU+s4E4JHFs7R/37R9kn3Hprkg4QKBgD0n\nvlP/3FMzjZBXDLZpA/N3Az9r+zDEYYhQ5QaYnziDtg6TuinFfE1DlBr3hThjca7c\ndCpsGb28mW9tjgLDLgC2C4v62aHwAwzkLxrRLALSQ99SgXbp4NqFKL/1yodyKgt0\n8mUG4tPMMGiQWXxmIFtobShH3C2d/EnrD7ig9HUFAoGBAIcCBquKkNmiU4S7Odbt\n+sBlJxXM3TPHmBcZbdvp+QMPCNmnTs7svKVIgz9P5vkLO8BsGRZk2SyudJn7RvfL\n/gXVZzpxdManwbUkdAuU3U74j5cBSSjytNeCiWxTxCmuEYdrOx5gXUb1V+t21Syb\nZw1dAYJ+UdtFtX1EPuBn2NZ2\n-----END PRIVATE KEY-----\n",
+  "client_email": "translateapi@warm-castle-424206-e8.iam.gserviceaccount.com",
+  "client_id": "118079383137494292718",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/translateapi%40warm-castle-424206-e8.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

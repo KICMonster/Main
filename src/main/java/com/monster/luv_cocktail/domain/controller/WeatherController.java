@@ -30,9 +30,9 @@ public class WeatherController {
     }
 
     @GetMapping({"/api/today"})
-    public ResponseEntity<Map<String, Object>> getRecommendCocktailsByWeather(@RequestParam double lat, @RequestParam double lon) {
+    public ResponseEntity<Map<String, Object>> getRecommendCocktailsByWeather(@RequestParam("lat") double lat, @RequestParam("lon") double lon) {
         System.out.println("lat: " + lat + ", lon: " + lon);
-        WeatherDTO weatherInfo = (WeatherDTO)this.weatherService.getWeather(lat, lon).block();
+        WeatherDTO weatherInfo = this.weatherService.getWeather(lat, lon).block();
         String weatherCode = this.weatherService.getWeatherCode(weatherInfo);
         List<Cocktail> recommendedCocktails = this.searchService.findCocktailsByWeatherCode(weatherCode);
         Map<String, Object> response = new HashMap();

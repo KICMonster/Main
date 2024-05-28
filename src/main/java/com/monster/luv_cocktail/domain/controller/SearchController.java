@@ -94,21 +94,21 @@ public class SearchController {
         System.out.println("end: " + end);
         Specification<ViewLog> spec = ViewService.inTimeRange(start, end);
         List<ViewLog> views = this.viewRepository.findAll(spec);
-        Map<Integer, List<ViewLog>> viewsByHour = (Map)views.stream().collect(Collectors.groupingBy((view) -> {
+        Map<Integer, List<ViewLog>> viewsByHour = views.stream().collect(Collectors.groupingBy((view) -> {
             return view.getViewDate().getHour();
         }));
-        List<TimeSlotDTO> timeSlotDTOs = (List)viewsByHour.entrySet().stream().map((entry) -> {
-            int hour = (Integer)entry.getKey();
-            List<ViewLog> hourViews = (List)entry.getValue();
-            List<ViewDTO> viewDTOs = (List)hourViews.stream().map((view) -> {
+        List<TimeSlotDTO> timeSlotDTOs = viewsByHour.entrySet().stream().map((entry) -> {
+            int hour = entry.getKey();
+            List<ViewLog> hourViews = entry.getValue();
+            List<ViewDTO> viewDTOs = hourViews.stream().map((view) -> {
                 ViewDTO dto = new ViewDTO();
-                dto.setViewCd(view.getViewCd());
+                dto.setViewCd(view.getViewId());
                 dto.setViewDate(view.getViewDate());
                 dto.setName(view.getCocktail().getName());
                 dto.setId(view.getCocktail().getId());
                 return dto;
             }).collect(Collectors.toList());
-            return new TimeSlotDTO(hour, (long)hourViews.size(), viewDTOs);
+            return new TimeSlotDTO(hour,hourViews.size(), viewDTOs);
         }).collect(Collectors.toList());
         System.out.println("조회된 조회수: " + views.size());
         return ResponseEntity.ok(timeSlotDTOs);

@@ -11,6 +11,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -34,8 +35,17 @@ public class WeatherService {
         int nx = grid.get("nx");
         int ny = grid.get("ny");
 
-        String baseDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-        String baseTime = "0630";
+        // 현재 날짜와 시간 가져오기
+        LocalDateTime now = LocalDateTime.now();
+        String baseDate;
+        String baseTime = "0630"; // 기준 시간 6:30
+
+        // 만약 현재 시간이 6:30 이전이라면 전일 데이터 사용
+        if (now.getHour() < 6 || (now.getHour() == 6 && now.getMinute() < 30)) {
+            baseDate = now.minusDays(1).format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        } else {
+            baseDate = now.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        }
 
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder
@@ -63,6 +73,7 @@ public class WeatherService {
 
         String weather = "Unknown";
         String temperature = "Unknown";
+        String weatherStatus = "Unknown";
         StringBuilder statusBuilder = new StringBuilder();
         StringBuilder categoryBuilder = new StringBuilder(); // 카테고리를 저장할 StringBuilder 추가
 
@@ -74,9 +85,9 @@ public class WeatherService {
                 statusBuilder.append("SKY: ").append(fcstValue).append("; ");
                 categoryBuilder.append("SKY").append("; "); // 카테고리 추가
                 weather = switch (fcstValue) {
-                    case "1" -> "맑은 상태로";
-                    case "2" -> "비가 오는 상태로";
-                    case "3" -> "구름이 많은 상태로";
+                    case "1" -> "맑음";
+                    case "2" -> "비";
+                    case "3" -> "구름많음";
                     case "4" -> "흐림";
                     default -> weather;
                 };
@@ -85,6 +96,16 @@ public class WeatherService {
             if ("T3H".equals(category) || "T1H".equals(category)) {
                 statusBuilder.append(category).append(": ").append(fcstValue).append("; ");
                 categoryBuilder.append(category).append("; "); // 카테고리 추가
+                int temperatureValue = Integer.parseInt(fcstValue); // 온도 값을 정수로 변환
+
+                // 주어진 온도 값에 따라 올바른 WEATHER_STATUS를 결정
+                if (temperatureValue < 0) {
+                    weatherStatus = "7"; // 영하일 때
+                } else if (temperatureValue >= 0 && temperatureValue <= 20) {
+                    weatherStatus = "6"; // 0에서 20도 사이일 때
+                } else {
+                    weatherStatus = "5"; // 20에서 40도 사이일 때
+                }
                 temperature = fcstValue + "℃";
             }
         }
@@ -93,6 +114,7 @@ public class WeatherService {
         weatherDTO.setWeather(weather);
         weatherDTO.setTemperature(temperature);
         weatherDTO.setCategory(categoryBuilder.toString()); // 카테고리 설정
+        weatherDTO.setWeatherStatus(weatherStatus); // 날씨 상태 설정
 
         return weatherDTO;
     }

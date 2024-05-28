@@ -9,12 +9,11 @@ import java.util.Date;
 @Data
 @Entity
 @NoArgsConstructor
-@SequenceGenerator(name = "token_seq", sequenceName = "token_seq", allocationSize = 1)
 @Table(name = "JWT_TOKEN")
 public class JwtToken {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "token_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동으로 ID를 생성하게 설정
     @Column(name = "TOKEN_ID", nullable = false)
     private Long tokenId;
 
