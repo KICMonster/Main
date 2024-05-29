@@ -1,5 +1,6 @@
 package com.monster.luv_cocktail.domain.entity;
 
+import com.monster.luv_cocktail.domain.dto.UserInfo;
 import com.monster.luv_cocktail.domain.enumeration.LoginType;
 import com.monster.luv_cocktail.domain.enumeration.Role;
 import jakarta.persistence.*;
@@ -78,4 +79,17 @@ public class Member {
     @ManyToOne
     @JoinColumn(name = "SURVEY_RES", insertable = false, updatable = false)
     private Record record;
+
+    public static Member fromUserInfo(UserInfo userInfo) {
+        Member member = new Member();
+        member.setEmail(userInfo.getEmail());
+        member.setName(userInfo.getName());
+        if (userInfo.getRoles() != null && !userInfo.getRoles().isEmpty()) {
+            member.setRole(userInfo.getRoles().get(0));
+        }
+        if (userInfo.getLoginTypes() != null && !userInfo.getLoginTypes().isEmpty()) {
+            member.setLoginType(userInfo.getLoginTypes().get(0));
+        }
+        return member;
+    }
 }

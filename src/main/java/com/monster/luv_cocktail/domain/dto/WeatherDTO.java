@@ -6,6 +6,7 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 
 
 import lombok.Data;
+
 @XmlRootElement(name = "response")
 @Data
 public class WeatherDTO {

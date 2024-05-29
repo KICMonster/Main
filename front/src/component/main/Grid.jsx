@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import '../main/styles/Grid.css';
 import { Link } from 'react-router-dom';
 import Loading from '../../pages/Loading';
 
 function Grid({ cocktails }) {
   // 칵테일 데이터가 존재하지 않는 경우 대비
-  if (!cocktails || cocktails.length === 0) {
-    return <Loading />
+  if (!cocktails || !Array.isArray(cocktails) || cocktails.length === 0) {
+    return <Loading />;
   }
 
   // 칵테일 배열을 두 배로 연장하여 슬라이더에 연속된 느낌을 줄 수 있도록 설정
@@ -23,9 +23,9 @@ function Grid({ cocktails }) {
       </div>
       <div className="slider-container">
         <div className="slider-track">
-          {doubledCocktails.slice(0, 15).map((cocktail, index) => (
+          {doubledCocktails.map((cocktail, index) => (
             <Link key={`${cocktail.id}-${index}`} to={`/cocktail/${cocktail.id}`} className="cocktail-link">
-              <div className="cocktail-item">
+              <div className="slider-items">
                 <div className="image-box">
                   <img src={cocktail.imageUrl || 'default-image-url.jpg'} alt={cocktail.name} className="cocktailImage" />
                 </div>

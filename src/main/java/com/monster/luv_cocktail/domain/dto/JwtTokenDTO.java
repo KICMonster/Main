@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.Optional;
 
 @Builder
 @Data
@@ -14,4 +15,6 @@ public class JwtTokenDTO {
     private String jwtAccessToken;
     private String refreshToken;
     private Date expireIn;
+
+
 }

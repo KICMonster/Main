@@ -49,12 +49,12 @@ function RecommendCocktail() {
         <div style={styles.imageContainer}>
           <img src={cocktail?.recommend} alt={cocktail?.name} style={styles.cocktailImage} />
         </div>
-        <div style={styles.buttonContainer}>
-          <Link to={`/cocktail/${cocktailId}`} style={styles.button}>상세정보 페이지</Link>
-        </div>
         <div style={styles.cocktailNameContainer}>
           <p style={styles.cocktailName}>{cocktail?.name}</p>
         </div>
+        <div style={styles.buttonContainer}>
+          <Link to={`/cocktail/${cocktailId}`} style={styles.button}>상세정보 페이지</Link>
+        </div> 
       </div>
     </BasicLayout>
   );
@@ -65,14 +65,14 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    padding: "20px",
+    padding: "60px",
   },
   textContainer: {
     textAlign: "center",
     marginBottom: "20px",
   },
   cocktailDescription: {
-    fontSize: "16px",
+    fontSize: "30px",
     margin: 0,
   },
   imageContainer: {

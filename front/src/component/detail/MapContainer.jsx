@@ -62,7 +62,7 @@ function MapContainer({ onMarkerClick }) {
   };
 
   return (
-    <div id="map" ref={mapRef} style={{ width: '1553px', height: '796.5px' }}></div>
+    <div id="map" ref={mapRef} style={{ width: '1553px', height: '95%' }}></div>
   );
 }
 

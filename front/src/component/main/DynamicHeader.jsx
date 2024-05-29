@@ -29,7 +29,7 @@ DynamicHeader() {
           <Link to={'/'}><div className="logo"></div></Link>
         </div>
         <div className="right-section">
-          <div style={{display: 'flex'}}>
+          <div style={{display: 'flex',paddingRight:" 23px"}} >
           <SearchBar />
           <LoginButton />
           </div>

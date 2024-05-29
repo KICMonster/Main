@@ -2,7 +2,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh; /* 화면 전체 높이를 사용하여 중앙 정렬 */
+    height: 83vh; /* 화면 전체 높이를 사용하여 중앙 정렬 */
     background-color: transparent; /* 원하는 배경색 사용 */
   }
   

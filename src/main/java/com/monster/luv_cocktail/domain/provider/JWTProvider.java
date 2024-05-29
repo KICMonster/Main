@@ -33,8 +33,10 @@ public class JWTProvider {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
+
+
     public JwtTokenDTO generateToken(Authentication authentication) {
-        String authorities = (String)authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining(","));
+        String authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining(","));
         long now = System.currentTimeMillis();
         Date accessTokenExpiresIn = new Date(now + 86400000L);
         String jwtAccessToken = Jwts.builder().setSubject(authentication.getName()).claim("auth", authorities).setExpiration(accessTokenExpiresIn).signWith(this.key, SignatureAlgorithm.HS256).compact();
@@ -42,6 +44,7 @@ public class JWTProvider {
         String refreshToken = Jwts.builder().setSubject(authentication.getName()).claim("auth", authorities).setExpiration(refreshTokenExpiresIn).signWith(this.key, SignatureAlgorithm.HS256).compact();
         return JwtTokenDTO.builder().grantType("Bearer").jwtAccessToken(jwtAccessToken).refreshToken(refreshToken).expireIn(refreshTokenExpiresIn).build();
     }
+
 
     public boolean validateRefreshToken(String refreshToken) {
         try {
@@ -61,7 +64,7 @@ public class JWTProvider {
     }
 
     public Authentication getAuthentication(UserInfo userInfo) {
-        List<GrantedAuthority> authorities = (List)userInfo.getRoles().stream().map((role) -> {
+        List<GrantedAuthority> authorities = userInfo.getRoles().stream().map((role) -> {
             return new SimpleGrantedAuthority("ROLE_" + role);
         }).collect(Collectors.toList());
         UserDetails userDetails = new User(userInfo.getEmail(), "", authorities);
@@ -81,7 +84,7 @@ public class JWTProvider {
 
     public Claims parseClaims(String jwtAccessToken) {
         try {
-            return (Claims)Jwts.parser().setSigningKey(this.key).parseClaimsJws(jwtAccessToken).getBody();
+            return Jwts.parser().setSigningKey(this.key).parseClaimsJws(jwtAccessToken).getBody();
         } catch (JwtException var3) {
             JwtException e = var3;
             log.error("JWT parsing error", e);

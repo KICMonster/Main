@@ -30,4 +30,7 @@ public class Snack {
 
     @Column(name = "CREATED_AT", nullable = false)
     private Date createdAt;
+    
+    @Column(name = "SNACK_TYPE")
+    private Long type;
 }

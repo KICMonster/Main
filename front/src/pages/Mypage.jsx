@@ -19,7 +19,28 @@ function MyPage() {
   const handleImageDelete = () => {
     setProfileImage(null);
   };
+  
+  const handleApply = async () => {
+    if (file) {
+      const formData = new FormData();
+      formData.append('profileImage', file);
 
+      try {
+        const response = await fetch('/api/myPage/profileImage', {
+          method: 'PUT',
+          body: formData,
+        });
+
+        if (response.ok) {
+          alert('프로필 사진이 성공적으로 업데이트 되었습니다.');
+        } else {
+          throw new Error('서버 에러');
+        }
+      } catch (error) {
+        alert('사진 업로드 중 에러 발생: ' + error.message);
+      }
+    }
+  };
   return (
     <BasicLayout>
       <div className="myPage">
@@ -40,7 +61,7 @@ function MyPage() {
           </div>
         </div>
         <div className="buttons">
-          <button>적용</button>
+        <button onClick={handleApply}>적용</button>
           <button>취소</button>
         </div>
       </div>

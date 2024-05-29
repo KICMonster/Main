@@ -1,10 +1,12 @@
 package com.monster.luv_cocktail.domain.dto;
 
+import com.monster.luv_cocktail.domain.entity.Member;
 import com.monster.luv_cocktail.domain.enumeration.LoginType;
 import com.monster.luv_cocktail.domain.enumeration.Role;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Collections;
 import java.util.List;
 
 @Getter
@@ -17,6 +19,17 @@ public class UserInfo {
     private List<LoginType> loginTypes; // 사용자 로그인 타입 정보를 저장하는 필드 추가
 
     // 기본 생성자, Getter 및 Setter 생략
+
+    public static UserInfo fromMember(Member member) {
+        UserInfo userInfo = new UserInfo();
+        userInfo.setEmail(member.getEmail());
+        userInfo.setName(member.getName());
+        userInfo.setId(member.getId());
+        userInfo.setRoles(Collections.singletonList(member.getRole()));
+        userInfo.setLoginTypes(Collections.singletonList(member.getLoginType()));
+        return userInfo;
+    }
+
 
     public static UserInfo mapKakaoUserInfoToUserInfo(KakaoUserInfo kakaoUserInfo) {
         UserInfo userInfo = new UserInfo();

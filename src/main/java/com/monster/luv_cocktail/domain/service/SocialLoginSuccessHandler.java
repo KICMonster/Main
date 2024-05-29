@@ -23,31 +23,48 @@ public class SocialLoginSuccessHandler {
     }
 
     public void handleSuccess(UserInfo userInfo, JwtTokenDTO jwtToken) {
-        Optional<Member> existingMemberOptional = this.memberRepository.findByEmail(userInfo.getEmail());
-        Member newMember = null;
+        String userEmail = userInfo.getEmail();
+        Optional<Member> existingMemberOptional = this.memberRepository.findByEmail(userEmail);
+        Member existingMember;
         if (existingMemberOptional.isPresent()) {
-            Member existingMember = existingMemberOptional.get();
+            existingMember = existingMemberOptional.get();
             existingMember.setName(userInfo.getName());
             existingMember.setRole(userInfo.getRoles().get(0));
             existingMember.setLoginType(userInfo.getLoginTypes().get(0));
-            this.memberRepository.save(existingMember);
         } else {
-            newMember = new Member();
-            newMember.setEmail(userInfo.getEmail());
-            newMember.setName(userInfo.getName());
-            newMember.setRole(userInfo.getRoles().get(0));
-            newMember.setLoginType(userInfo.getLoginTypes().get(0));
-            this.memberRepository.save(newMember);
+            // 새로운 회원 생성
+            existingMember = new Member();
+            existingMember.setEmail(userEmail);
+            existingMember.setName(userInfo.getName());
+            existingMember.setRole(userInfo.getRoles().get(0));
+            existingMember.setLoginType(userInfo.getLoginTypes().get(0));
         }
 
-        JwtToken tokenEntity = new JwtToken();
-        tokenEntity.setAccessToken(jwtToken.getJwtAccessToken());
-        tokenEntity.setRefreshToken(jwtToken.getRefreshToken());
-        tokenEntity.setGrantType(jwtToken.getGrantType());
-        tokenEntity.setExpireIn(jwtToken.getExpireIn());
-        tokenEntity.setMember(existingMemberOptional.orElse(newMember));
-        this.tokenRepository.save(tokenEntity);
+        // 회원 저장
+        existingMember = this.memberRepository.save(existingMember);
+
+        // 회원의 이메일을 기반으로 기존 토큰 조회
+        Optional<JwtToken> existingTokenOptional = this.tokenRepository.findByMemberEmail(userEmail);
+        if (existingTokenOptional.isPresent()) {
+            // 이미 토큰이 존재하면 해당 토큰 업데이트
+            JwtToken existingToken = existingTokenOptional.get();
+            existingToken.setAccessToken(jwtToken.getJwtAccessToken());
+            existingToken.setRefreshToken(jwtToken.getRefreshToken());
+            existingToken.setExpireIn(jwtToken.getExpireIn());
+            existingToken.setGrantType(jwtToken.getGrantType());
+            existingToken.setMember(existingMember);
+            this.tokenRepository.save(existingToken);
+        } else {
+            // 토큰이 존재하지 않으면 새로 생성
+            JwtToken newToken = new JwtToken();
+            newToken.setAccessToken(jwtToken.getJwtAccessToken());
+            newToken.setRefreshToken(jwtToken.getRefreshToken());
+            newToken.setExpireIn(jwtToken.getExpireIn());
+            newToken.setGrantType(jwtToken.getGrantType());
+            newToken.setMember(existingMember);
+            this.tokenRepository.save(newToken);
+        }
+
         System.out.println("사용자 정보와 JWT 토큰이 데이터베이스에 저장되었습니다.");
     }
 }
-

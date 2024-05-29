@@ -1,20 +1,22 @@
 import React, { useState, useEffect } from "react";
 import BasicLayout from "../../layouts/BasicLayout";
 import { Link } from "react-router-dom";
-import "../../pages/contents/CustomCocktail.css"; // CSS 파일을 import
-
+import "../../pages/cocktail/ViewPage.css"; // CSS 파일을 import
+import "../../component/main/styles/CustomCocktail.css"
 function CustomCocktail() {
   const [cocktails, setCocktails] = useState([]);
   const [baseFilter, setBaseFilter] = useState('');
   const [alcoholFilter, setAlcoholFilter] = useState('');
   const [uniqueIngredients, setUniqueIngredients] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageGroup, setPageGroup] = useState(0); // 페이지 그룹 상태 추가
+  const itemsPerPage = 10;
 
   const fetchAllCocktails = async () => {
     try {
       const endpoint = 'https://localhost:9092/api/cocktail';
       const response = await fetch(endpoint);
       const data = await response.json();
-      // 데이터를 셔플
       const shuffledData = shuffleArray(data);
       setCocktails(shuffledData);
 
@@ -46,20 +48,51 @@ function CustomCocktail() {
     return baseMatch && alcoholMatch;
   });
 
+  // 현재 페이지에 해당하는 칵테일 목록 계산
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredCocktails.slice(indexOfFirstItem, indexOfLastItem);
+
+  // 페이지 수 계산
+  const totalPages = Math.ceil(filteredCocktails.length / itemsPerPage);
+  const pagesPerGroup = 5; // 한 페이지 그룹당 페이지 수
+
+  // 페이지 이동 함수
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  // 페이지 그룹 이동 함수
+  const handlePageGroupChange = (direction) => {
+    if (direction === 'next' && (pageGroup + 1) * pagesPerGroup < totalPages) {
+      setPageGroup(pageGroup + 1);
+      setCurrentPage((pageGroup + 1) * pagesPerGroup + 1);
+    } else if (direction === 'prev' && pageGroup > 0) {
+      setPageGroup(pageGroup - 1);
+      setCurrentPage(pageGroup * pagesPerGroup + 1);
+    }
+  };
+
   // 베이스주 필터 설정 함수
   const handleBaseFilterChange = (event) => {
     setBaseFilter(event.target.value);
+    setCurrentPage(1); // 필터 변경 시 페이지를 첫 페이지로 설정
+    setPageGroup(0); // 필터 변경 시 페이지 그룹을 첫 그룹으로 설정
   };
 
   // 알콜/논알콜 필터 설정 함수
   const handleAlcoholFilterChange = (event) => {
     setAlcoholFilter(event.target.value);
+    setCurrentPage(1); // 필터 변경 시 페이지를 첫 페이지로 설정
+    setPageGroup(0); // 필터 변경 시 페이지 그룹을 첫 그룹으로 설정
   };
 
   // 필터 초기화 함수
   const handleResetFilter = () => {
     setBaseFilter('');
     setAlcoholFilter('');
+    setCurrentPage(1); // 필터 초기화 시 페이지를 첫 페이지로 설정
+    setPageGroup(0); // 필터 초기화 시 페이지 그룹을 첫 그룹으로 설정
   };
 
   return (
@@ -76,13 +109,13 @@ function CustomCocktail() {
           <option value="Yes">알코올</option>
           <option value="No">논알코올</option>
         </select>
-        <button onClick={handleResetFilter}>Reset Filter</button>
+        <button onClick={handleResetFilter} className="btn-hover" style={{margin:"2px", marginLeft:"20px", padding:"0px 20px 0px", height: "39px"}}>Reset</button>
         <div className="my-cocktail-link">
           <Link to="/mycocktail">My Cocktail</Link>
         </div>
       </div>
-      <div className="cocktail-list">
-        {filteredCocktails.map(cocktail => (
+      <div className="container" style={{ gridTemplateColumns: 'repeat(5, 1fr)' }}>
+        {currentItems.map(cocktail => (
           <Link key={cocktail.id} to={`/cocktail/${cocktail.id}`} className="cocktail-link">
             <div className="cocktail-item">
               <div className="image-box">
@@ -92,6 +125,32 @@ function CustomCocktail() {
             </div>
           </Link>
         ))}
+      </div>
+      <div className="pagination">
+        <button 
+          onClick={() => handlePageGroupChange('prev')}
+          disabled={pageGroup === 0}
+        >
+          {'<'}
+        </button>
+        {Array.from({ length: Math.min(pagesPerGroup, totalPages - pageGroup * pagesPerGroup) }, (_, index) => {
+          const pageNumber = pageGroup * pagesPerGroup + index + 1;
+          return (
+            <button
+              key={pageNumber}
+              onClick={() => handlePageChange(pageNumber)}
+              className={currentPage === pageNumber ? 'active' : ''}
+            >
+              {pageNumber}
+            </button>
+          );
+        })}
+        <button 
+          onClick={() => handlePageGroupChange('next')}
+          disabled={(pageGroup + 1) * pagesPerGroup >= totalPages}
+        >
+          {'>'}
+        </button>
       </div>
     </BasicLayout>
   );

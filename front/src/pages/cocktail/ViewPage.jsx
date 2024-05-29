@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import BasicLayout from "../../layouts/BasicLayout";
 import { Link } from "react-router-dom";
 import "../../pages/cocktail/ViewPage.css"; // CSS 파일을 import
-
+import "../../component/main/styles/CustomCocktail.css"
 function ViewPage() {
   const [cocktails, setCocktails] = useState([]);
   const [baseFilter, setBaseFilter] = useState('');
@@ -99,7 +99,7 @@ function ViewPage() {
           <option value="Yes">알코올</option>
           <option value="No">논알코올</option>
         </select>
-        <button onClick={handleResetFilter}>Reset Filter</button>
+       <button onClick={handleResetFilter} className="btn-hover" style={{margin:"2px", marginLeft:"20px", padding:"0px 20px 0px", height: "39px"}}>Reset</button>
       </div>
       <div className="container" style={{ gridTemplateColumns: 'repeat(5, 1fr)' }}>
         {currentItems.map(cocktail => (
