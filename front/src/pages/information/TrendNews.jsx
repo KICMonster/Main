@@ -80,23 +80,21 @@ function TrendNews() {
         <BasicLayout>
             <div className="main-container">
                 <div className="content">
-                    <div className='linkmain' onMouseEnter={stopSliderInterval} onMouseLeave={startSliderInterval}>
-                        <button style={{ marginRight: '30px' }} onClick={handlePrevPage} disabled={currentPage === 1}>Previous</button>
-                        <div>
-                            <h1>Cocktail News</h1>
-                            {articles.map((article, index) => (
-                                <div className="article-container" key={index}>
-                                    {article.image && <img src={article.image} alt={article.title} />}
-                                    <div className="article-content">
-                                        <h2>{article.title}</h2>
-                                        <p>{article.snippet}</p>
-                                        <a href={article.link} target="_blank" rel="noopener noreferrer">Read more</a>
-                                    </div>
-                                </div>
-                            ))}
+                    <h1>Cocktail News</h1>
+                    {articles.map((article, index) => (
+                        <div className="article-container" key={index}>
+                            {article.image && <img src={article.image} alt={article.title} />}
+                            <div className="article-content">
+                                <h2>{article.title}</h2>
+                                <p>{article.snippet}</p>
+                                <a href={article.link} target="_blank" rel="noopener noreferrer">Read more</a>
+                            </div>
                         </div>
-                        <button style={{ marginLeft: '30px' }} onClick={handleNextPage} disabled={currentPage === Math.ceil(totalResults / numPerPage)}>Next</button>
-                    </div>
+                    ))}
+                </div>
+                <div className='pagination-buttons' onMouseEnter={stopSliderInterval} onMouseLeave={startSliderInterval}>
+                    <button onClick={handlePrevPage} disabled={currentPage === 1}>Previous</button>
+                    <button onClick={handleNextPage} disabled={currentPage === Math.ceil(totalResults / numPerPage)}>Next</button>
                 </div>
             </div>
         </BasicLayout>

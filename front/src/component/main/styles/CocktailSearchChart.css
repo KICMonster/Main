@@ -27,7 +27,7 @@
   
   .ranking-position {
     font-weight: bold;
-    color: #934ee3; /* 연보라색 */
+    color: #0d0c22de; /* 연보라색 */
   }
   
   .ranking-name {
@@ -41,8 +41,9 @@
 
   .overlay-message {
     position: absolute;
-    top: 50%;
-    left: 50%;
+    width: 20%;
+    top: 45% !important;
+    left: 73% !important;
     transform: translate(-50%, -50%);
     background-color: rgba(255, 255, 255, 0.8); /* 반투명 배경색 */
     color: black; /* 글씨색은 까만색 */
@@ -53,4 +54,20 @@
   
   .overlay-message p {
     margin: 0 0 10px 0;
+  }
+
+  .chart {
+    position: absolute;
+    top: 350px !important;
+    left: 15% ;
+    width: 600px;
+    height: 400px;
+    
+    
+  }
+
+  .time {
+    position: absolute;
+    top: 25%;
+    left: 16%;
   }

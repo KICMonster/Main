@@ -1,17 +1,19 @@
 /* 전반적인 레이아웃 및 타이포그래피 설정 */
 
-
 .main-container {
     display: flex;
+    flex-direction: column; /* 수직 정렬 */
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
     width: 100%; /* 컨테이너가 전체 너비를 사용하도록 설정 */
     max-width: 1280px; /* 전체 컨테이너의 최대 너비 */
     margin: 0 auto; /* 페이지 중앙 정렬 */
 }
 
 .main-container .content {
-    height: 760px;
+    height: 740px;
+    width: 100%;
+    max-width: 1280px;
 }
 
 .ad-sidebar {
@@ -23,15 +25,18 @@
 /* 기사 컨테이너 */
 .article-container {
     height: 210px;
-    width: 816.922px;
+    width: 100%;
+    max-width: 130vh;
     display: flex;
+    justify-content: space-between;
     background: white;
     margin: 20px 0; /* 가운데 정렬에서 좌우 마진 제거 */
     padding: 20px;
-    border-radius: 8px;
+    border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     align-items: flex-start; /* 이미지와 내용을 상단에 정렬 */
     transition: opacity 0.5s ease-in-out; /* 페이드 인/아웃 효과 추가 */
+    position: relative; /* 하위 요소를 절대 위치로 설정하기 위해 필요 */
 }
 
 /* 기사 이미지 스타일 */
@@ -67,7 +72,6 @@
     opacity: 0.9;
 }
 
-
 /* 기사 제목 */
 .main-container h1 {
     margin-top: 0; /* 상단 여백 제거 */
@@ -76,10 +80,13 @@
 
 /* 기사 링크 */
 .main-container a {
-    align-self: flex-end; /* 링크를 우측 하단으로 배치 */
+    position: absolute; /* 링크를 절대 위치로 설정 */
+    bottom: 20px; /* 아래에서 20px 떨어지게 설정 */
+    right: 20px; /* 오른쪽에서 20px 떨어지게 설정 */
     color: #0066cc;
     text-decoration: none;
 }
+
 
 .main-container a:hover {
     text-decoration: underline;
@@ -100,28 +107,37 @@
 }
 
 /* 버튼 스타일 */
-.main-container button {
-    background-color: #0084ff;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    margin: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    height: 710px;
-    width:  140px;
+.pagination-buttons {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 1px;
 }
 
-.main-container button:disabled {
+.pagination-buttons button {
+    z-index: 20;
+    width: 100px;
+    font-size: 16px;
+    font-weight: 600;
+    background-color: #0d0c22de;
+    box-shadow: 0 4px 15px 0 rgba(45, 54, 65, 0.75);
+    color: #F8F7F4;
+    margin: 10px;
+    height: 35px;
+    text-align: center;
+    border: none;
+    background-size: 300% 100%;
+    border-radius: 50px;
+    background-position: 0% 0;
+    transition: all .4s ease-in-out;
+}
+
+.pagination-buttons button:disabled {
     background-color: #ccc;
 }
 
-.main-containerbutton:hover {
-    background-color: #0056b3;
+.pagination-buttons button:hover:not(:disabled) {
+    background-position: 100% 0;
+    background-color: #0d0c228f;
 }
 
-
-
-.linkmain{
-    display: flex;
-}

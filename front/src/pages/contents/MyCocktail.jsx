@@ -3,17 +3,21 @@ import BasicLayout from "../../layouts/BasicLayout";
 import '../../component/main/styles/mycocktail.css';
 
 function MyCocktail() {
+  // 상태 변수들 선언 및 초기화
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const jwtToken = localStorage.getItem("jwt");
+  const [selectedFile, setSelectedFile] = useState(null);
   const [ingredients, setIngredients] = useState([
     { id: 1, name: "", amount: "" },
     { id: 2, name: "", amount: "" },
     { id: 3, name: "", amount: "" },
     { id: 4, name: "", amount: "" },
-    { id: 4, name: "", amount: "" }
+    { id: 5, name: "", amount: "" }
   ]);
   const [error, setError] = useState(null);
 
+  // 입력 필드 값이 변경될 때 실행되는 함수
   const handleInputChange = (id, field, value) => {
     setIngredients(prevIngredients =>
       prevIngredients.map(ingredient =>
@@ -22,13 +26,21 @@ function MyCocktail() {
     );
   };
 
+  // 재료 추가 함수
   const addIngredient = () => {
     if (ingredients.length < 10) {
       const newId = ingredients.length + 1;
-      setIngredients(prevIngredients => [
-        ...prevIngredients,
-        { id: newId, name: "", amount: "" }
-      ]);
+      setIngredients(prevIngredients => {
+        const hasEmptyOrNullValues = prevIngredients.some(ingredient => !ingredient.name || !ingredient.amount);
+        if (hasEmptyOrNullValues) {
+          alert("남은 빈 재료들을 채워주세요! ㅠㅠ.");
+          return prevIngredients;
+        }
+        return [
+          ...prevIngredients,
+          { id: newId, name: "", amount: "" }
+        ];
+      });
     } else {
       alert("최대 10개까지만 추가할 수 있습니다.");
     }
@@ -37,18 +49,36 @@ function MyCocktail() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const isValid = validateForm();
-    if (!isValid) return;
+    // JWT 토큰 확인
+    if (!jwtToken) {
+      alert("로그인한 회원만 등록 버튼을 누를 수 있습니다!");
+      window.location.href = "/login";
+      return;
+    }
 
-    // 모든 입력 필드 값이 없는지 확인
-    if (!title || !description || ingredients.some(ingredient => !ingredient.name || !ingredient.amount)) {
+    // 재료 유효성 검사 및 값 변경 여부 확인
+
+    if (ingredients.every(ingredient => !ingredient.name.trim() || !ingredient.amount.trim())) {
+      alert("모든 재료의 이름과 양을 입력하세요.");
+      return;
+    }
+
+    // 입력 필드 유효성 검사
+    if (!title || !description) {
       alert("입력 필드를 모두 채워주세요.");
       return;
     }
 
+    if (!selectedFile) {
+      alert("이미지는 필수값입니다.");
+      return;
+    }
+
     try {
-      console.log("제목:", title, "내용:", description, "재료:", ingredients, "로 폼을 제출합니다.");
-      // 제출 로직 구현
+      // 빈 값이나 널 값이 포함된 요소를 제거
+      const filteredIngredients = ingredients.filter(ingredient => ingredient.name.trim() !== "" && ingredient.amount.trim() !== "");
+
+      console.log("제목:", title, "내용:", description, "재료:", filteredIngredients, "로 폼을 제출합니다.");
       alert("등록되었습니다.");
     } catch (error) {
       console.error("오류 발생:", error);
@@ -56,19 +86,36 @@ function MyCocktail() {
     }
   };
 
-  const validateForm = () => {
-    // Validation logic here
-    return true;
-  };
-
+  // 파일 선택 시 실행되는 함수
   const handleFileChange = (e) => {
-    // File handling logic here
+    const file = e.target.files[0];
+
+    // 파일이 선택되지 않은 경우 처리
+    if (!file) return;
+
+    // 파일 크기 체크
+    const fileSizeInMB = file.size / (1024 * 1024);
+    if (fileSizeInMB > 5) {
+      alert("파일 크기는 5MB 이하만 업로드 가능합니다.");
+      e.target.value = "";
+      return;
+    }
+
+    // 허용되는 확장자 목록 확인
+    const allowedExtensions = ["jpg", "jpeg", "png", "gif"];
+    // 파일 확장자 확인
+    const fileExtension = file.name.split(".").pop().toLowerCase();
+    // 허용되지 않는 확장자인 경우 처리
+    if (!allowedExtensions.includes(fileExtension)) {
+      alert("jpg, png, gif 확장자만 업로드 가능합니다.");
+      e.target.value = "";
+      return;
+    }
+    // 파일 상태 업데이트
+    setSelectedFile(file);
   };
 
-  // 재료의 양과 제목 란 중 하나라도 작성되어 있으면 등록 버튼 활성화
-  const isFormValid = title !== "" || ingredients.some(ingredient => ingredient.amount !== "");
-
-  // 최대 길이에 도달하면 알림 표시
+  // 입력 최대 길이에 도달 시 알림 표시
   const handleMaxLengthAlert = (length, maxLength) => {
     if (length === maxLength) {
       alert(`최대 ${maxLength}자까지 입력할 수 있습니다.`);
@@ -145,7 +192,7 @@ function MyCocktail() {
                 <input type="file" className="MyFileInput" onChange={handleFileChange} />
               </div>
               <div className="MyButtonGroup">
-                <button type="submit" className="MySubmitButton" disabled={!isFormValid}>
+                <button type="submit" className="MySubmitButton" >
                   등록
                 </button>
                 <button type="button" className="MyCancelButton">
