@@ -53,8 +53,8 @@ public class MyPageService {
 			log.info("이미지 삭제");
 			memberRepository.save(member);
 	    }
-	    member.setIntroduction(request.getDescription());
-		response.setIntroduction(request.getDescription());
+	    member.setIntroduction(request.getIntroduction());
+		response.setIntroduction(request.getIntroduction());
 		return response;
 
 	}
