@@ -29,7 +29,7 @@ public class MyPageController {
 	private final MyPageService myPageService;
 	
 	@PutMapping(value = "/profileImage", consumes = "multipart/form-data")
-	@Secured({"ROLE_USER", "ROLE_ADMIN", "ROLE_CREATOR"})
+//	@Secured({"ROLE_USER", "ROLE_ADMIN", "ROLE_CREATOR"})
 	@Operation(summary = "프로필 이미지 수정", description = "프로필 이미지를 수정합니다")
 	@ApiResponse(responseCode="200", description="성공")
 	@ApiResponse(responseCode="400", description="에러")

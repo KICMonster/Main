@@ -15,6 +15,10 @@ import com.monster.luv_cocktail.domain.service.JwtService;
 import com.monster.luv_cocktail.domain.service.MemberService;
 import com.monster.luv_cocktail.domain.service.SearchService;
 import com.monster.luv_cocktail.domain.service.ViewService;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+
 import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -31,12 +35,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin(
         origins = {"https://localhost:5174"}
 )
 @RequestMapping({"/search"})
-@Controller
+@RestController
 public class SearchController {
     @Autowired
     private MemberService memberService;
@@ -56,6 +61,7 @@ public class SearchController {
 
     @PreAuthorize("hasAuthority('USER')")
     @PostMapping({"/updateTasteAndRecommend"})
+    @Operation(summary = "취향조사 결과 반환", description = "취향조사에 대한 결과를 반환합니다")
     public ResponseEntity<List<Cocktail>> updateTasteAndRecommend(@RequestHeader("Authorization") String jwtToken, @RequestBody TasteStringDTO tasteString) {
         if (jwtToken != null && jwtToken.startsWith("Bearer ")) {
             jwtToken = jwtToken.substring(7);
