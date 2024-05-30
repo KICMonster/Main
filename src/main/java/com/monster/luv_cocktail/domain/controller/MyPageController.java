@@ -6,11 +6,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.monster.luv_cocktail.domain.dto.ImageRequest;
-import com.monster.luv_cocktail.domain.dto.ImageResponse;
+import com.monster.luv_cocktail.domain.dto.PutMyPageRequest;
+import com.monster.luv_cocktail.domain.dto.PutMyPageResponse;
 import com.monster.luv_cocktail.domain.service.MyPageService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,7 +33,7 @@ public class MyPageController {
 	@Operation(summary = "프로필 이미지 수정", description = "프로필 이미지를 수정합니다")
 	@ApiResponse(responseCode="200", description="성공")
 	@ApiResponse(responseCode="400", description="에러")
-	public ResponseEntity<ImageResponse> putProfileImage(@ModelAttribute ImageRequest request, HttpServletRequest requestServlet) throws IOException {
+	public ResponseEntity<PutMyPageResponse> putProfileImage(@ModelAttribute PutMyPageRequest request, HttpServletRequest requestServlet) throws IOException {
 		return ResponseEntity.ok(myPageService.putProfileImage(request, requestServlet));
 	}
 	

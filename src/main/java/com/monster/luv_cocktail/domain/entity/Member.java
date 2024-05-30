@@ -60,6 +60,12 @@ public class Member {
 
     @Column(name = "WITHDRAWAL_DATE" , nullable = true)
     private Date withdrawalDate;
+    
+    @Column(name = "MEMBER_IMG_U", nullable = true)
+    private String profileImageUrl;
+
+    @Column(name = "MEMBER_INTRODUCTION", nullable = true)
+    private String introduction;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<JwtToken> tokens;

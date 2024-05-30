@@ -6,7 +6,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ImageRequest {
+public class PutMyPageRequest {
 
-	private MultipartFile image;
+	private MultipartFile profileImage;
+	private String introduction;
 }

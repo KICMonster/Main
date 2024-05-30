@@ -5,7 +5,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ImageResponse {
+public class PutMyPageResponse {
 
-	private String image;
+	private String profileImageUrl;
+	private String introduction;
 }

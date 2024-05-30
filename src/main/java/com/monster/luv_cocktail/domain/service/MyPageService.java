@@ -1,14 +1,20 @@
 package com.monster.luv_cocktail.domain.service;
 
 import java.io.IOException;
+
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.monster.luv_cocktail.domain.dto.ImageRequest;
-import com.monster.luv_cocktail.domain.dto.ImageResponse;
-
+import com.google.auth.oauth2.JwtProvider;
+import com.monster.luv_cocktail.domain.dto.PutMyPageRequest;
+import com.monster.luv_cocktail.domain.dto.PutMyPageResponse;
+import com.monster.luv_cocktail.domain.dto.UserInfo;
+import com.monster.luv_cocktail.domain.entity.Member;
+import com.monster.luv_cocktail.domain.enumeration.ExceptionCode;
+import com.monster.luv_cocktail.domain.exception.BusinessLogicException;
+import com.monster.luv_cocktail.domain.repository.MemberRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -21,28 +27,43 @@ public class MyPageService {
 	
 	
 	private final FileUploadService fileUploadService;
+	private final JwtService jwtService;
+	private final MemberRepository memberRepository;
 	
 	@Transactional
-	public ImageResponse putProfileImage(ImageRequest request, HttpServletRequest requestServlet)
+	public PutMyPageResponse putProfileImage(PutMyPageRequest request, HttpServletRequest requestServlet)
 			throws IOException {
 		
-//		User user = findUserByHeader(requestServlet);
+		Member member = findUserByHeader(requestServlet);
 		
 		
-		ImageResponse response = new ImageResponse();
+		PutMyPageResponse response = new PutMyPageResponse();
 		String fileUrl;
 		
-	    if (request.getImage() != null && !request.getImage().isEmpty()) {
-	        String filename = UUID.randomUUID().toString() + "_" + request.getImage().getOriginalFilename();
-	        fileUrl = fileUploadService.uploadFile(request.getImage(), filename, "monster/profile");
-	        response.setImage(fileUrl);
+	    if (request.getProfileImage() != null && !request.getProfileImage().isEmpty()) {
+	        String filename = UUID.randomUUID().toString() + "_" + request.getProfileImage().getOriginalFilename();
+	        fileUrl = fileUploadService.uploadFile(request.getProfileImage(), filename, "monster/profile");
+	        member.setProfileImageUrl(fileUrl); // 새 이미지 URL을 유저 엔티티에 저장
+	        response.setProfileImageUrl(fileUrl);
 	        log.info("New image uploaded successfully: {}", fileUrl);
 	    } else {
-	    	response.setImage(null); // 이미지 제거 시 null 설정
-	        log.info("이미지 삭제");
+	    	member.setProfileImageUrl(null);
+			response.setProfileImageUrl(null);
+//			user.setCreator_image(null); // Set the image URL to null
+			log.info("이미지 삭제");
+			memberRepository.save(member);
 	    }
-	    
+	    member.setIntroduction(request.getDescription());
+		response.setIntroduction(request.getDescription());
 		return response;
 
+	}
+	
+	public Member findUserByHeader(HttpServletRequest request) {
+		String bearerToken = request.getHeader("Authorization");
+		String accessToken = bearerToken.substring(7);
+		 String email =  jwtService.extractEmailFromToken(accessToken);
+		 Member member = memberRepository.findByEmail(email).orElseThrow(() -> new BusinessLogicException(ExceptionCode.NON_EXISTENT_MEMBER));
+		 return member;
 	}
 }
