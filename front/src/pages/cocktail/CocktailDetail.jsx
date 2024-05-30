@@ -12,7 +12,7 @@ function CocktailDetail() {
   const fetchCocktailDetail = async () => {
     try {
       const cocktailEndpoint = `https://localhost:9092/api/cocktail/${cocktailId}`;
-      // const appetizersEndpoint = "https://localhost:9092/api/ingredient";
+      // const appetizersEndpoint = "https://localhost:9092/api/snack";
 
       const cocktailResponse = await fetch(cocktailEndpoint);
       const cocktailData = await cocktailResponse.json();

@@ -126,7 +126,7 @@ public class SecurityConfig {
         }).authorizeHttpRequests((auth) -> {
             ((AuthorizeHttpRequestsConfigurer.AuthorizedUrl)((AuthorizeHttpRequestsConfigurer.AuthorizedUrl)((AuthorizeHttpRequestsConfigurer.AuthorizedUrl)((AuthorizeHttpRequestsConfigurer.AuthorizedUrl)((AuthorizeHttpRequestsConfigurer.AuthorizedUrl)((AuthorizeHttpRequestsConfigurer.AuthorizedUrl)((AuthorizeHttpRequestsConfigurer.AuthorizedUrl)((AuthorizeHttpRequestsConfigurer.AuthorizedUrl)auth
 //					// 태연 한줄 사용
-					.requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/api/data/**", "/api/cocktail/**" ,"/weather/**" , "/api/gis/**", "/api/snack/**").permitAll()
+					.requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/api/data/**", "/api/cocktail/**" ,"/weather/**" , "/api/gis/**", "/api/snack/**", "/search/api/**").permitAll()
             		.requestMatchers(HttpMethod.OPTIONS, new String[]{"/api/authenticate", "/join/emails/verification-requests", "/join/emails/verifications", "/join/submit", "/weather/api/today", "/search/api/chart","/weather/recommendDefault","/api/login"})).permitAll()
                     .requestMatchers(HttpMethod.POST, new String[]{"/search/api/chart","/api/login"})).permitAll()
                     .requestMatchers(HttpMethod.PUT, new String[]{"/view/api/cocktails/{id}"})).permitAll()

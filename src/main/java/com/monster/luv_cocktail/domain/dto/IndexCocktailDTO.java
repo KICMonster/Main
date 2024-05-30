@@ -9,6 +9,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class IndexCocktailDTO {
+	
+	private Long id;
     private String name;
     private String ingredient1;
     private String ingredient2;
@@ -16,6 +18,7 @@ public class IndexCocktailDTO {
     private String imageUrl;
 
     public IndexCocktailDTO(Cocktail cocktail) {
+    	this.id = cocktail.getId();
         this.name = cocktail.getName();
         this.ingredient1 = cocktail.getIngredient1();
         this.ingredient2 = cocktail.getIngredient2();

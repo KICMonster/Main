@@ -36,6 +36,7 @@ public interface CocktailsRepository extends JpaRepository<Cocktail, Long> {
     List<Cocktail> findByViewLogBetween(@Param("startDateTime") LocalDateTime startDateTime, @Param("endDateTime") LocalDateTime endDateTime);
 
 
+    List<Cocktail> findByNameContaining(String name);
 }
 
 
