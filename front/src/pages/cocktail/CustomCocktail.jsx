@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import BasicLayout from "../../layouts/BasicLayout";
 import { Link } from "react-router-dom";
 import "../../pages/cocktail/ViewPage.css"; // CSS 파일을 import
-import "../../component/main/styles/CustomCocktail.css"
+import "../../component/main/styles/CustomCocktail.css";
+
 function CustomCocktail() {
   const [cocktails, setCocktails] = useState([]);
   const [baseFilter, setBaseFilter] = useState('');
@@ -14,7 +15,7 @@ function CustomCocktail() {
 
   const fetchAllCocktails = async () => {
     try {
-      const endpoint = 'https://localhost:9092/api/cocktail';
+      const endpoint = 'https://localhost:9092/customCocktails';
       const response = await fetch(endpoint);
       const data = await response.json();
       const shuffledData = shuffleArray(data);
@@ -44,7 +45,7 @@ function CustomCocktail() {
   // 필터링된 칵테일 목록을 계산
   const filteredCocktails = cocktails.filter(cocktail => {
     const baseMatch = baseFilter === '' || cocktail.ingredient1 === baseFilter;
-    const alcoholMatch = alcoholFilter === '' || (alcoholFilter === 'Yes' && cocktail.alcoholic === 'Yes') || (alcoholFilter === 'No' && cocktail.alcoholic === 'No');
+    const alcoholMatch = alcoholFilter === '' || (alcoholFilter === 'Alcoholic' && cocktail.alcoholic === 'Alcoholic') || (alcoholFilter === 'Non alcoholic' && cocktail.alcoholic === 'Non alcoholic');
     return baseMatch && alcoholMatch;
   });
 
@@ -106,8 +107,8 @@ function CustomCocktail() {
         </select>
         <select onChange={handleAlcoholFilterChange} value={alcoholFilter}>
           <option value="">알코올 여부</option>
-          <option value="Yes">알코올</option>
-          <option value="No">논알코올</option>
+          <option value="Alcoholic">알코올</option>
+          <option value="Non alcoholic">논알코올</option>
         </select>
         <button onClick={handleResetFilter} className="btn-hover" style={{margin:"2px", marginLeft:"20px", padding:"0px 20px 0px", height: "39px"}}>Reset</button>
         <div className="my-cocktail-link">
@@ -116,7 +117,7 @@ function CustomCocktail() {
       </div>
       <div className="container" style={{ gridTemplateColumns: 'repeat(5, 1fr)' }}>
         {currentItems.map(cocktail => (
-          <Link key={cocktail.id} to={`/cocktail/${cocktail.id}`} className="cocktail-link">
+          <Link key={cocktail.customNm} to={`/customcocktail/${cocktail.customNm}`} className="cocktail-link">
             <div className="cocktail-item">
               <div className="image-box">
                 <img src={cocktail.imageUrl || 'default-image-url.jpg'} alt={cocktail.name} className="cocktail-image" />

@@ -1,12 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import options from '../../data/questionData.json';
 import "../contents/Taste.css";
+import { useNavigate } from 'react-router-dom';
 
 const Taste = ({ onSelectionComplete }) => {
   const [currentOptions, setCurrentOptions] = useState([]);
   const [selectedOptionIds, setSelectedOptionIds] = useState([]);
   const [question, setQuestion] = useState("오늘은 불금! 술이 땡기는 당신, 어느곳에서 불금을 즐길건가요 ?");
   const [imageUrl, setImageUrl] = useState("https://skybory-bucket.s3.ap-northeast-2.amazonaws.com/monster/enquete/1.png");
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    
+    const jwtToken = localStorage.getItem("jwt");
+    // JWT 토큰 확인
+    if (!jwtToken) {
+      alert("로그인한 회원만 등록 버튼을 누를 수 있습니다!");
+      navigate("/login"); // navigate 사용
+    }
+  }, [navigate]);
 
   useEffect(() => {
     const initialOptions = options.slice(0, 2);

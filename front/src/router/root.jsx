@@ -9,6 +9,7 @@ const LoginPage = lazy(() => import('../pages/LoginPage'));
 const AdditionalForm = lazy(() => import('../component/login/AdditionalForm'));
 const IngredientPage = lazy(() => import('../pages/cocktail/IngredientPage'));
 const CocktailDetail = lazy(() => import('../pages/cocktail/CocktailDetail'));
+const CustomCocktailDetail = lazy(() => import('../pages/cocktail/CustomCocktailDetail'));
 const CraftPage = lazy(() => import('../pages/information/CraftPage'));
 const HistoryPage = lazy(() => import('../pages/information/HistoryPage'));
 const TrendNews = lazy(() => import('../pages/information/TrendNews'));
@@ -17,7 +18,6 @@ const Weather = lazy(() => import('../component/main/Weather'));
 const TasteAnalysis = lazy(() => import('../component/detail/TasteAnalysis'));
 const GisPage = lazy(() => import('../pages/GisPage'));
 const ViewPage = lazy(() => import('../pages/cocktail/ViewPage'));
-const RecommendCocktail = lazy(() => import('../pages/cocktail/RecommendCocktail'));
 const MyCocktail = lazy(() => import('../pages/contents/MyCocktail'));
 const Snackpage = lazy(() => import('../pages/cocktail/Snackpage'));
 const CustomCocktail = lazy(() => import('../pages/cocktail/CustomCocktail'));
@@ -58,8 +58,16 @@ const root = createBrowserRouter([
     element: withSuspense(ViewPage),
   },
   {
-    path: '/cocktail/:cocktailId',
+    path: '/customcocktail',
+    element: withSuspense(CustomCocktail),
+  },
+  {
+    path: '/cocktail/:customNm',  
     element: withSuspense(CocktailDetail),
+  },
+  {
+    path: '/customcocktail/:cocktailId', // 커스텀 칵테일 디테일 페이지 라우팅 설정
+    element: withSuspense(CustomCocktailDetail),
   },
   {
     path: '/ingredient',
@@ -82,9 +90,9 @@ const root = createBrowserRouter([
     element: withSuspense(TasteAnalysis),
     children: [
       {
-        path: 'complete',
+        path: 'complete', // 상대 경로로 수정
         element: withSuspense(AnalysisComplete),
-      },
+      }
     ],
   },
   {
@@ -98,10 +106,6 @@ const root = createBrowserRouter([
   {
     path: '/mapsearch',
     element: withSuspense(GisPage),
-  },
-  {
-    path: '/recommend',
-    element: withSuspense(RecommendCocktail),
   },
   {
     path: '/customcocktail',
@@ -126,7 +130,7 @@ const root = createBrowserRouter([
   {
     path: '/search/:name',
     element: withSuspense(SearchViewPage)
-  }
+  },
  
 ]);
 

@@ -1,21 +1,37 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import BasicLayout from "../../layouts/BasicLayout";
 import '../../component/main/styles/mycocktail.css';
+import { useNavigate } from "react-router-dom";
 
 function MyCocktail() {
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const jwtToken = localStorage.getItem("jwt");
+    // JWT 토큰 확인
+    if (!jwtToken) {
+      alert("로그인한 회원만 등록 버튼을 누를 수 있습니다!");
+      navigate("/login"); // navigate 사용
+    }
+  }, [navigate]);
+
+
   // 상태 변수들 선언 및 초기화
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const jwtToken = localStorage.getItem("jwt");
   const [selectedFile, setSelectedFile] = useState(null);
-  const [ingredients, setIngredients] = useState([
-    { id: 1, name: "", amount: "" },
-    { id: 2, name: "", amount: "" },
-    { id: 3, name: "", amount: "" },
-    { id: 4, name: "", amount: "" },
-    { id: 5, name: "", amount: "" }
+  const [title, setTitle] = useState(""); // 제목 상태
+  const [description, setDescription] = useState(""); // 설명 상태
+  const [ingredients, setIngredients] = useState([ // 재료 상태
+    { id: 1, name: "", amount: "", volume: "" },
+    { id: 2, name: "", amount: "", volume: "" },
+    { id: 3, name: "", amount: "", volume: "" },
+    { id: 4, name: "", amount: "", volume: "" },
+    { id: 5, name: "", amount: "", volume: "" }
   ]);
+
   const [error, setError] = useState(null);
+  const placeholders = ["베이스", "시럽", "가니쉬", "리큐르", "얼음"]; // 재료 플레이스홀더
+
 
   // 입력 필드 값이 변경될 때 실행되는 함수
   const handleInputChange = (id, field, value) => {
@@ -49,13 +65,6 @@ function MyCocktail() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // JWT 토큰 확인
-    if (!jwtToken) {
-      alert("로그인한 회원만 등록 버튼을 누를 수 있습니다!");
-      window.location.href = "/login";
-      return;
-    }
-
     // 재료 유효성 검사 및 값 변경 여부 확인
 
     if (ingredients.every(ingredient => !ingredient.name.trim() || !ingredient.amount.trim())) {
@@ -69,6 +78,7 @@ function MyCocktail() {
       return;
     }
 
+    //이미지 필드 유효성 검사
     if (!selectedFile) {
       alert("이미지는 필수값입니다.");
       return;
@@ -121,6 +131,15 @@ function MyCocktail() {
       alert(`최대 ${maxLength}자까지 입력할 수 있습니다.`);
     }
   };
+  // 볼륨 변경 핸들러
+  const handleVolumeChange = (id, value) => {
+    setIngredients(prevIngredients =>
+      prevIngredients.map(ingredient =>
+        ingredient.id === id ? { ...ingredient, volume: value } : ingredient
+      )
+    );
+  };
+
 
   return (
     <BasicLayout>
@@ -133,16 +152,18 @@ function MyCocktail() {
                 재료 추가하기
               </button>
               <div className="MyIngredientsContainer">
-                {ingredients.map(ingredient => (
+                {ingredients.map((ingredient, index) => (
                   <div key={ingredient.id} className="MyFormGroup">
                     <div className="MyIngredientRow">
                       <input
                         type="text"
-                        placeholder={`재료 ${ingredient.id} 이름`}
+                        placeholder={placeholders[index] ? `${placeholders[index]}` : `재료 ${ingredient.id}`}
                         value={ingredient.name}
                         onChange={(e) =>
                           handleInputChange(ingredient.id, "name", e.target.value)
                         }
+                        onFocus={(e) => e.target.placeholder = ''}
+                        onBlur={(e) => e.target.placeholder = placeholders[index] ? `${placeholders[index]} 이름` : `재료 ${ingredient.id} 이름`}
                         className="MyIngredientInput"
                         maxLength="15"
                         onKeyUp={() => handleMaxLengthAlert(ingredient.name.length, 15)}
@@ -158,6 +179,25 @@ function MyCocktail() {
                         maxLength="15"
                         onKeyUp={() => handleMaxLengthAlert(ingredient.amount.length, 15)}
                       />
+                      <div className="MyVolumeDropdown">
+                        <select
+                          value={ingredient.volume}
+                          onChange={(e) => handleVolumeChange(ingredient.id, e.target.value)}
+                        >
+                          <option value="">양 선택</option>
+                          <option value="드롭">드롭</option>
+                          <option value="대시">대시</option>
+                          <option value="티스푼">티스푼</option>
+                          <option value="온스">온스</option>
+                          <option value="지거">지거</option>
+                          <option value="컵">컵</option>
+                          <option value="파인트">파인트</option>
+                          <option value="병">병</option>
+                          <option value="휩스">휩스</option>
+                          <option value="쿼트">쿼트</option>
+                          <option value="갤런">갤런</option>
+                        </select>
+                      </div>
                     </div>
                   </div>
                 ))}

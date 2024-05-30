@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import BasicLayout from "../../layouts/BasicLayout";
-import '../../component/main/styles/snackpage.css';
+import '../../component/main/styles/CocktailDetail.css';
+import { Link } from "react-router-dom";
 
 function Snackpage() {
     // 스낵 데이터를 저장할 상태를 선언
@@ -19,7 +20,7 @@ function Snackpage() {
             try {
                 // API 엔드포인트 설정
                 const cocktailEndpoint = `https://localhost:9092/api/cocktail`;      // 칵테일 
-                const snackEndpoint = `https://localhost:9092/api/ingredient/${id}`; // 안주
+                const snackEndpoint = `https://localhost:9092/api/snack/${id}`; // 안주
 
                 // 칵테일 데이터 가져오기
                 const cocktailResponse = await fetch(cocktailEndpoint);
@@ -56,22 +57,33 @@ function Snackpage() {
     // 스낵 데이터와 칵테일 데이터를 화면에 렌더링
     return (
         <BasicLayout>
-            <div className="snackBody">
-                <div className="snackImageContainer">
-                    <img src={snack.image} alt={snack.name} />
-                </div>
-                <div className="snackDescription">
-                    <div className="snackTitle">
-                        <h1>{snack.name}</h1>
-                        <p>{snack.description}</p>
+            <div className="container" style={{ paddingRight: '42px', marginTop: '150px' }}>
+                <div className="leftColumn" style={{ gridColumn: '1 / 4' }}>
+                    <div className="imageBox">
+                        <img src={snack.image} alt={snack.name} style={{ height: '600px', width: '600px' }} />
                     </div>
-                    <div className="cocktailList">
-                        {cocktail.map((item, index) => (
-                            <div key={index} >
-                                <img src={item.image || 'default-image-url.jpg'} alt={item.name} />
-                                <div>{item.name}</div>
-                            </div>
-                        ))}
+                </div>
+                <div className="rightColumn" style={{ gridColumn: '4 / span 3' }}>
+                    <div className="contentBox">
+                        <div className="snackTitle">
+                            <h1 className="cocktailName" >{snack.name}</h1>
+                            <hr className="divider" />
+                            <h2 className="sectionTitle">Instructions:</h2>
+                            <p>{snack.description}</p>
+                        </div>
+                        <div className="cocktailList">
+                            <h2 className="sectionTitle">Appetizers:</h2>
+                            {cocktail.map((item, index) => (
+                                <div key={index}>
+                                    <Link className="AppetizersLine" to={`/cocktail/${item.id}`}>
+                                        
+                                            <img src={item.imageUrl} alt={item.name} />
+                                            <h6>{item.name}</h6>
+                                    
+                                    </Link>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>

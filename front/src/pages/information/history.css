@@ -23,7 +23,7 @@
   object-fit: cover;
   border: 3px ;
   border-radius: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .historyContent {
@@ -31,7 +31,7 @@
   z-index: 1;
   background-color: antiquewhite;
   border: 3px ;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   padding: 5px;
   text-align: center;
   max-width: 600px; /* 폭을 늘립니다. */
@@ -80,5 +80,5 @@
   background-color: #f8f8f8;
   padding: 10px; /* 패딩 값을 줄였습니다 */
   border-radius: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }

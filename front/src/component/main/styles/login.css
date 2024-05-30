@@ -86,9 +86,7 @@
     transition-duration: 0.25s;
     font-weight: 300;
   
-    &:hover {
-      background-color: rgba(255, 255, 255, 0.4);
-    }
+    
   
     &:focus {
       background-color: white;
@@ -127,6 +125,8 @@
   .LoginMainBody .email {
     grid-column: 1 /4;
     grid-row: 1;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    background-color: #ffffff;
   }
   .LoginMainBody #username{
     grid-column: 1 /4;
@@ -136,6 +136,8 @@
   .LoginMainBody .pass {
     grid-column: 1 / 4;
     grid-row: 3;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    background-color: #ffffff;
   }
   
   .LoginMainBody #pass2 {
@@ -295,4 +297,65 @@
       }
     }
   }
+  
+  .email-label-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px; /* 적절한 여백을 추가할 수 있습니다 */
+    margin-left: 7%;
+  }
+  
+  .email-label {
+    margin-right: 8px;
+    font-weight: bold;
+  }
+  
+  .email-input {
+    width: 200px;
+    padding: 8px;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    border-radius: 4px;
+    margin-right: 8px;
+    outline: none;
+  }
+  
+  .email-input:focus {
+    outline: none;
+  }
+  
+  .email-at {
+    font-weight: bold;
+    margin-right: 8px;
+  }
+  
+  .email-domain-input {
+    width: 200px;
+    padding: 8px;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    border-radius: 4px;
+    outline: none;
+  }
+  
+  .email-domain-input:focus {
+    outline: none;
+  }
+  
+  .email-domain-select {
+    margin-left: 8px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    background-color: #ffffff;
+    border-radius: 4px;
+    outline: none;
+  }
+  
+  .email-domain-select:focus {
+    outline: none;
+  }
+  
+  
   

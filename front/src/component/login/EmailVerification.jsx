@@ -119,15 +119,18 @@ const isValidEmailFormat = (email) => {
 
   return (
     <div>
-      <label htmlFor="email">이메일</label>
-      <input
-        type="text"
-        id="email"
-        value={email}
-        onChange={handleEmailChange}
-        required
-      />
-      <strong>@</strong>
+      <div className="email-label-container">
+        <label htmlFor="email" className="email-label">이메일</label>
+        <input
+          type="text"
+          id="email"
+          value={email}
+          onChange={handleEmailChange}
+          required
+          className="email-input"
+        />
+      
+      <strong className="email-at">@</strong>
       <input
         type="text"
         id="emailDomain"
@@ -135,15 +138,21 @@ const isValidEmailFormat = (email) => {
         onChange={handleDomainChange}
         disabled={domainOption !== 'direct'}
         required
+        className="email-domain-input"
       />
-      <select onChange={handleDomainOptionChange} value={domainOption}>
+      
+      <select
+        onChange={handleDomainOptionChange}
+        value={domainOption}
+        className="email-domain-select"
+      >
         <option value="">선택하세요</option>
         <option value="direct">직접 입력</option>
         <option value="naver.com">네이버</option>
         <option value="gmail.com">구글</option>
         <option value="daum.net">다음</option>
       </select>
-      
+      </div>
       {isCodeSent && !isVerified ? (
         <AuthCodeForm
           authCode={authCode}
@@ -151,11 +160,12 @@ const isValidEmailFormat = (email) => {
           onVerified={onVerified}
         />
       ) : (
-        <button onClick={handleVerifyEmail} className='origin__btn'>인증 코드 받기</button>
+        <button onClick={handleVerifyEmail} className="origin__btn">인증 코드 받기</button>
       )}
     </div>
-    
   );
+  
+  
 };
 
 export default EmailForm;

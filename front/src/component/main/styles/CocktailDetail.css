@@ -90,3 +90,20 @@
   margin: 20px 0; /* 선 위아래 여백 추가 */
   border-top: 1px solid #ddd; /* 선의 스타일 지정 */
 }
+
+.AppetizersLine{
+  flex-direction: row;
+  flex-direction: column;
+
+  img {
+    height: 150px;
+    width: 150px;
+  }
+}
+
+.cocktailList{
+  div{
+    height: 150px;
+    width: 150px;
+  }
+}

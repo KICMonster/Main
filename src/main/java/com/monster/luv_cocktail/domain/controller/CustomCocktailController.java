@@ -35,8 +35,8 @@ public class CustomCocktailController {
     }
 
     // 칵테일 이름으로 검색
-    @GetMapping("/search")
-    public ResponseEntity<List<CustomCocktailDTO>> searchCustomCocktailsByName(@RequestParam String name) {
+    @GetMapping("/search/")
+    public ResponseEntity<List<CustomCocktailDTO>> searchCustomCocktailsByName(@RequestParam("name") String name) {
         log.info("@@@Searching custom cocktail with name {}", name);
         List<CustomCocktailDTO> cocktails = customCocktailService.findByNameContaining(name);
         return ResponseEntity.ok(cocktails);

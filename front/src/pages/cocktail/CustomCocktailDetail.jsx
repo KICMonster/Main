@@ -1,27 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import BasicLayout from "../../layouts/BasicLayout";
-import '../../component/main/styles/CocktailDetail.css';
 
-function CocktailDetail() {
-  const { cocktailId } = useParams();
+function CustomCocktailDetail() {
+  const { customNm } = useParams();
   const [cocktail, setCocktail] = useState(null);
   const [error, setError] = useState(null);
-  const [appetizers, setAppetizers] = useState([]);
+  const [recommendation, setRecommendation] = useState(0);
+  const [hasRecommended, setHasRecommended] = useState(false); // 사용자가 이미 추천을 눌렀는지 여부
 
   const fetchCocktailDetail = async () => {
     try {
-      const cocktailEndpoint = `https://localhost:9092/api/cocktail/${cocktailId}`;
-      // const appetizersEndpoint = "https://localhost:9092/api/ingredient";
-
+      const cocktailEndpoint = `https://localhost:9092/customCocktails/search/?name=${customNm}`;
       const cocktailResponse = await fetch(cocktailEndpoint);
       const cocktailData = await cocktailResponse.json();
       setCocktail(cocktailData);
-
-      // const appetizersResponse = await fetch(appetizersEndpoint);
-      // const appetizersData = await appetizersResponse.json();
-      // 처음 세 개의 안주만 가져오기
-      // setAppetizers(appetizersData.slice(0, 3));
     } catch (error) {
       console.error('Error fetching cocktail detail:', error);
       setError(error.message);
@@ -30,7 +23,16 @@ function CocktailDetail() {
 
   useEffect(() => {
     fetchCocktailDetail();
-  }, [cocktailId]);
+  }, [customNm]);
+
+  // 추천 기능
+  const handleRecommendation = () => {
+    if (!hasRecommended) {
+      setRecommendation(recommendation + 1);
+      setHasRecommended(true);
+      // 여기에 추천 기능을 위한 API 호출 또는 데이터베이스 업데이트 로직을 추가하세요.
+    }
+  };
 
   if (error) {
     return (
@@ -50,7 +52,7 @@ function CocktailDetail() {
 
   return (
     <BasicLayout>
-      <div className="container"  style={{paddingRight:'42px',marginTop:'150px'} }>
+      <div className="container" style={{ paddingRight:'42px', marginTop:'150px' }}>
         <div className="leftColumn" style={{ gridColumn: '1 / 4' }}>
           <div className="imageBox">
             <img src={cocktail.imageUrl} alt={cocktail.name} className="cocktailImage2" />
@@ -69,14 +71,10 @@ function CocktailDetail() {
             </ul>
             <h2 className="sectionTitle">Instructions:</h2>
             <p className="instructions">{cocktail.instructions}</p>
-            <h2 className="sectionTitle">Appetizers:</h2>
-            <div className="appetizersContainer">
-              {appetizers.map((appetizer, index) => (
-                <div key={index} className="appetizerBox">
-                  <img src={appetizer.description || 'default-image-url.jpg'} alt={appetizer.name} className="appetizerImage" />
-                  <div>{appetizer.name}</div>
-                </div>
-              ))}
+            <h2 className="sectionTitle">추천:</h2>
+            <div>
+              <button onClick={handleRecommendation} disabled={hasRecommended}>Recommend</button>
+              <span>{recommendation}</span>
             </div>
           </div>
         </div>
@@ -85,4 +83,4 @@ function CocktailDetail() {
   );
 }
 
-export default CocktailDetail;
+export default CustomCocktailDetail;

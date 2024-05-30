@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import BasicLayout from "../../layouts/BasicLayout";
+import Loading from "../Loading";
 
 function RecommendCocktail() {
   const { cocktailId } = useParams();
@@ -35,7 +36,7 @@ function RecommendCocktail() {
   if (!cocktail) {
     return (
       <BasicLayout>
-        <div>Loading...</div>
+        <Loading />
       </BasicLayout>
     );
   }
@@ -54,7 +55,7 @@ function RecommendCocktail() {
         </div>
         <div style={styles.buttonContainer}>
           <Link to={`/cocktail/${cocktailId}`} style={styles.button}>상세정보 페이지</Link>
-        </div> 
+        </div>
       </div>
     </BasicLayout>
   );
