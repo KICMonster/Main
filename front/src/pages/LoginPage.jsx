@@ -10,13 +10,6 @@ import kakaoIcon from '../img/kakao_medium.png';
 import naverIcon from '../img/btn_naver.png';
 import googleIcon from '../img/google_btn.png';
 
-const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL, // 환경 변수에서 백엔드 기본 URL을 가져옵니다.
-  headers: {
-    'Content-Type': 'application/json' // 모든 요청에 JSON 형식으로 전송하도록 설정합니다.
-  },
-  withCredentials: true // 모든 요청에 withCredentials 옵션을 적용합니다.
-});
 
 const corsAnywhere = 'https://cors-anywhere.herokuapp.com/';
 
