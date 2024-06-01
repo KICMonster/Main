@@ -91,18 +91,7 @@ public class MemberService {
         member.setPassword(this.passwordEncoder.encode(requestDto.getPassword()));
         System.out.println("암호화된 비밀번호: " + member.getPassword());
         member.setName(requestDto.getName());
-
-        // 생년월일 형식 변경
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-        try {
-            Date birthDate = dateFormat.parse(requestDto.getBirth());
-            member.setBirth(dateFormat.format(birthDate));
-        } catch (Exception e) {
-            // 날짜 형식 변환 중 오류 발생할 경우 예외 처리
-            e.printStackTrace();
-            // 혹은 다른 처리 방법을 선택할 수 있습니다.
-        }
-
+        member.setBirth(requestDto.getBirth());
         member.setPhone(requestDto.getPhone());
         member.setGender(requestDto.getGender());
         if (requestDto.getPassword() != null && !requestDto.getPassword().isEmpty()) {
@@ -131,7 +120,7 @@ public class MemberService {
 
     public Member findMemberByJwtToken(String jwtToken) {
         String email = this.jwtService.extractEmailFromToken(jwtToken);
-        return this.memberRepository.findByEmail(email).orElseThrow(() -> {
+        return (Member)this.memberRepository.findByEmail(email).orElseThrow(() -> {
             return new IllegalArgumentException("Member not found for email: " + email);
         });
     }

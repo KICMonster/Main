@@ -2,16 +2,26 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import BasicLayout from '../layouts/BasicLayout';
-import { FcGoogle } from "react-icons/fc";
 import { SiNaver } from "react-icons/si";
 import { HiMiniChatBubbleOvalLeft } from "react-icons/hi2";
-import '../component/main/styles/login.css'
+import '../component/main/styles/login.css';
 import EmailForm from '../component/login/EmailVerification';
+import kakaoIcon from '../img/kakao_medium.png';
+import naverIcon from '../img/btn_naver.png';
+import googleIcon from '../img/google_btn.png';
+
+const axiosInstance = axios.create({
+  baseURL: import.meta.env.VITE_API_URL, // 환경 변수에서 백엔드 기본 URL을 가져옵니다.
+  headers: {
+    'Content-Type': 'application/json' // 모든 요청에 JSON 형식으로 전송하도록 설정합니다.
+  },
+  withCredentials: true // 모든 요청에 withCredentials 옵션을 적용합니다.
+});
 
 const corsAnywhere = 'https://cors-anywhere.herokuapp.com/';
 
 function LoginPage() {
-
+  const [isEmailVerification, setIsEmailVerification] = useState(false);
   const [accessToken, setAccessToken] = useState(null);
   const navigate = useNavigate(); // useNavigate 훅을 사용하여 페이지 이동을 위한 함수 가져오기
 
@@ -117,7 +127,7 @@ function LoginPage() {
   const sendAccessTokenToBackend = async (accessToken, service) => {
     try {
       const response = await axios.post(
-        'https://localhost:9092/api/authenticate',
+        'https://luvcocktail.site/api/authenticate',
         {
           accessToken: accessToken,
           service: service
@@ -154,95 +164,127 @@ function LoginPage() {
   };
 
 
-  //로그인 페이지 헤더
-  function LoginHeader({ setisChange }) {
+  const handleEmailVerification = () => {
+    setIsEmailVerification(true); // 이메일 확인 상태를 true로 변경
+  };
 
+
+  function LoginHeader({ isChange }) {
     return (
       <div className='LoginHeader'>
-        <nav style={{ marginRight: '0px' }}
-          onClick={() => {
-            setisChange(false);
-          }}
-        >
-          {/* 로그인 */}
-          <button className='no__btn'>로그인</button>
+        <nav className='login-btn' style={{ marginRight: '0px' }}>
+          <button className='no__btn'>{isChange ? 'Verify your email' : 'Login'}</button>
         </nav>
-        <nav style={{ marginLeft: '0px' }}
-          onClick={() => {
-            setisChange(true);
-          }}
-        >
-          {/* 회원가입 */}
-          <button className='no__btn' >회원가입</button>
-        </nav>
-      </div >
+      </div>
     );
   }
-  //로그인 페이지 메인 
-  function LoginMain({ isChange }) {
+  
+  function LoginMain({ isChange, handleEmailVerification }) {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+  
+    const handleLoginSubmit = async (e) => {
+      e.preventDefault();
+    
+      try {
+        const response = await axios.post('https://luvcocktail.site/api/login', {
+          email: email,
+          password: password
+        });
+    
+        if (response.data && response.data.jwtAccessToken) {
+          console.log('로그인 성공:', response.data);
+          localStorage.setItem('jwt', response.data.jwtAccessToken); // JWT 토큰 저장
+          navigate('/');
+        } else {
+          throw new Error('jwtAccessToken이 없습니다.');
+        }
+      } catch (error) {
+        console.error('로그인 요청 중 오류 발생:', error);
+        alert('로그인 실패. 이메일 또는 비밀번호를 확인하세요.');
+      }
+    };
+  
     if (!isChange) {
       return (
-        <main>
-          <form style={{ width: '100%' }}>
+        <main className='wrapper'>
+          <form style={{ width: '100%' }} onSubmit={handleLoginSubmit}>
             <div className="LoginMainBody">
-              <input type="text" id="username" name="username" autoComplete="username" placeholder={"Email"} className='email' />
-              <input type="password" id="password" name="password" autoComplete="current-password" placeholder={"Password"} className='pass' />
+              <input
+                type="text"
+                id="username"
+                name="username"
+                autoComplete="username"
+                placeholder="Email"
+                className='email'
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+              <input type="password" id="password" name="password" autoComplete="current-password" placeholder={"Password"} className='pass'  value={password}
+              onChange={(e) => setPassword(e.target.value)}required/>
             </div>
-            <button type='submit' className='origin__btn' style={{ marginTop: '20px' }}>로그인</button>
+            <div className='find-btn'><p>Forgot password?</p></div>
+            <button type='submit' className='origin__btn' style={{ marginTop: '20px' }}>Login</button>
           </form>
         </main >
       );
     } else {
       return (
-        <>
-          <EmailForm />
-        </>
+        <EmailForm handleEmailVerification={handleEmailVerification} />
       );
     }
   }
-
-
-
-  //로그인 페이지 푸터    소셜로그인 
-  function LoginFooter() {
-    return (
-      <footer>
-        <div className='LoginFooter'>
-          <p>OR</p>
-        </div>
-        {/*  google button */}
-        <button className='google__btn' >
-          <Link to={GOOGLE_AUTH_URL}><FcGoogle /> 구글 로그인</Link>
-        </button>
-
-        {/*  kakao button */}
-        <button className='kakao__btn' >
-          <Link to={KAKAO_AUTH_URL}><HiMiniChatBubbleOvalLeft /> 카카오 로그인</Link>
-        </button>
-
-        {/*  naver button */}
-        <button className='naver__btn' >
-          <Link to={NAVER_AUTH_URL}><SiNaver /> 네이버 로그인</Link>
-        </button>
-
-      </footer>
-    );
+  
+  function LoginFooter({ isChange }) {
+    if (!isChange) {
+      return (
+        <footer>
+          <div className='LoginFooter'>
+            <p>OR Login with</p>
+          </div>
+          <div className='btn-container'>
+            {/*  google button */}
+            <button className='google__btn' >
+              <Link to={GOOGLE_AUTH_URL}><img className='icon' src={googleIcon} alt="googleIcon" /></Link>
+            </button>
+  
+            {/*  kakao button */}
+            <button className='kakao__btn' >
+              <Link to={KAKAO_AUTH_URL}><img className='icon' src={kakaoIcon} alt="kakaoIcon" /></Link>
+            </button>
+  
+            {/*  naver button */}
+            <button className='naver__btn' >
+              <Link to={NAVER_AUTH_URL}><img className='icon' src={naverIcon} alt="naverIcon" /></Link>
+            </button>
+          </div>
+        </footer>
+      );
+    } else {
+      return null; // 이메일 폼으로 넘어갈 때 푸터를 숨깁니다.
+    }
   }
   const [isChange, setisChange] = useState(false);
 
-  return (
+    return (
     <BasicLayout>
       <div className="Login">
         <div className='logingrid'>
-          <LoginHeader setisChange={setisChange} />
-          <LoginMain isChange={isChange} />
-          <LoginFooter isChange={isChange} />
+          {!isEmailVerification && <LoginHeader isChange={isChange} />}
+          <LoginMain isChange={isChange} handleEmailVerification={handleEmailVerification} />
+          {!isEmailVerification && <LoginFooter isChange={isChange} />}
+          {!isEmailVerification && !isChange && ( // 이메일 인증이 필요하고 변경 상태가 아닐 때만 버튼을 보여줍니다.
+            <div className="join-container">
+              <p>You don't have an account yet?</p>
+              <div className='join-btn'>
+                <p onClick={() => setisChange(true)}>SignUp</p>
+              </div>
+            </div>
+          )}
         </div>
-
       </div>
     </ BasicLayout>
-
   );
 }
-
 export default LoginPage;

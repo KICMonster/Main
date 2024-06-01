@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+// axios 인스턴스 생성
+const axiosInstance = axios.create({
+  baseURL: import.meta.env.VITE_API_URL
+});
 
 const Weather = ({ setWeather, setCocktails }) => {
   const [loadingWeather, setLoadingWeather] = useState(false);
@@ -32,7 +36,7 @@ const Weather = ({ setWeather, setCocktails }) => {
   const fetchSeoulWeather = async () => {
     setLoadingWeather(true);
     try {
-      const response = await axios.get('https://localhost:9092/weather/recommendDefault');
+      const response = await axiosInstance.get('/weather/default');
       const defaultCocktails = response.data;
       setCocktails(defaultCocktails);
       console.log(defaultCocktails);
@@ -45,7 +49,7 @@ const Weather = ({ setWeather, setCocktails }) => {
 
   const fetchWeather = async (lat, lon) => {
     try {
-      const response = await axios.get('https://localhost:9092/weather/api/today', { params: { lat, lon } });
+      const response = await axiosInstance.get('/weather/today', { params: { lat, lon } });
       setWeather(response.data.weatherInfo);
       setCocktails(response.data.recommendedCocktails);
     } catch (error) {

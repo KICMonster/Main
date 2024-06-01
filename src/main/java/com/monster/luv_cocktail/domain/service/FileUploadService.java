@@ -31,8 +31,9 @@ public class FileUploadService {
         metadata.setContentLength(file.getSize());
         
         s3client.putObject(new PutObjectRequest(bucketName, filePath, file.getInputStream(), metadata));
+        filePath = "https://skybory-bucket.s3.ap-northeast-2.amazonaws.com/" + folderName + "/" + fileName;
 //        URL s3Url = s3client.getUrl(bucketName, fileName);
         logger.info("File uploaded successfully and accessible at {}", filePath);
-        return "/" + filePath;
+        return "" + filePath;
     }
 }

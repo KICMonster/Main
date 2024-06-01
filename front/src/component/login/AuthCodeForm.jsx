@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import  '../../component/main/styles/authCodeForm.css';
 
 const AuthCodeForm = ({ authCode, setAuthCode, onVerified }) => {
 
     const navigate = useNavigate(); 
+    const [code, setCode] = useState(new Array(6).fill(''));
 
     const calculateRemainingTime = () => {
         const now = new Date().getTime();
@@ -13,7 +15,22 @@ const AuthCodeForm = ({ authCode, setAuthCode, onVerified }) => {
     const [expirationTime, setExpirationTime] = useState(new Date().getTime() + 5 * 60 * 1000); // 현재 시간에서 5분 후로 설정
    const [remainingTime, setRemainingTime] = useState(calculateRemainingTime()); // 남은 시간 상태
 
- 
+      
+   const handleChange = (e, index) => {
+    const value = e.target.value;
+    if (/^[0-9]?$/.test(value)) { // Only accept digits
+      const newCode = [...code];
+      newCode[index] = value;
+      setCode(newCode);
+      setAuthCode(newCode.join(''));
+
+      // Move to the next input field if the current one is filled
+      if (value !== '' && index < 5) {
+        document.getElementById(`code-${index + 1}`).focus();
+      }
+    }
+  };
+   
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -39,20 +56,26 @@ const AuthCodeForm = ({ authCode, setAuthCode, onVerified }) => {
 
     
 
-    const handleAuthCodeChange = (e) => {
-      setAuthCode(e.target.value);
-    };
-  
     return (
-      <div>
-        <input
-          type="text"
-          value={authCode}
-          onChange={handleAuthCodeChange}
-          required
-        />
-        <button onClick={onVerified}>인증 완료</button>
-        <p>만료 시간: {formatTime(remainingTime)}</p>
+      <div className='code-box'>
+        <div className="code-inputs">
+        {code.map((digit, idx) => (
+          <input
+            key={idx}
+            id={`code-${idx}`}
+            type="text"
+            value={digit}
+            onChange={(e) => handleChange(e, idx)}
+            maxLength="1"
+            className="code-input"
+            required
+          />
+        ))}
+      </div>
+
+        <p>인증코드 만료까지: {formatTime(remainingTime)}</p> 
+        <button className='ver-btn' onClick={onVerified}>인증 완료</button>
+         
       </div>
     );
   };

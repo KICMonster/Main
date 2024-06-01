@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
 @RestController
-@CrossOrigin(origins = "https://localhost:5174")
+//@CrossOrigin(origins = "https://localhost:5174")
 @Log4j2
 @RequiredArgsConstructor
 @RequestMapping("/api/cocktail") // 고유한 경로로 수정

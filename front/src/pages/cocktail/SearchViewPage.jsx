@@ -6,6 +6,12 @@ import { Link } from "react-router-dom";
 import "../../component/main/styles/ViewPage.css";
 import "../../component/main/styles/CustomCocktail.css";
 
+
+// axios 인스턴스 생성
+const axiosInstance = axios.create({
+  baseURL: import.meta.env.VITE_API_URL
+});
+
 function SearchViewPage() {
   const { name } = useParams();
   const [cocktails, setCocktails] = useState([]);
@@ -22,9 +28,9 @@ useEffect(() => {
       if (name) {
         const encodedQuery = encodeURIComponent(name); // 검색어 인코딩
         try {
-            const endpoint = `https://localhost:9092/search/api/?name=${encodedQuery}`;
-            const response = await fetch(endpoint);
-            const data = await response.json();
+            const endpoint = `/search/?name=${encodedQuery}`;
+            const response = await axiosInstance.get(endpoint);
+            const data = response.data;
             setCocktails(data);
             const uniqueIngredients = [...new Set(data.map(cocktail => cocktail.ingredient1))];
             setUniqueIngredients(uniqueIngredients);

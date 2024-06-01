@@ -20,6 +20,8 @@ import com.monster.luv_cocktail.domain.service.ViewService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
 import java.time.ZonedDateTime;
@@ -41,29 +43,30 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@CrossOrigin(origins = { "https://localhost:5174" })
-@RequestMapping({ "/search" })
+//@CrossOrigin(origins = { "https://localhost:5174" })
+@RequestMapping({ "/api/search" })
 @Log4j2
 @RestController
+@RequiredArgsConstructor
 public class SearchController {
-	@Autowired
-	private MemberService memberService;
-	@Autowired
-	private JwtService jwtService;
-	@Autowired
-	private MemberRepository memberRepository;
-	@Autowired
-	private SearchService searchService;
-	@Autowired
-	private CocktailsRepository cocktailsRepository;
-	@Autowired
-	private ViewRepository viewRepository;
-
-	public SearchController() {
-	}
+//	@Autowired
+	private final MemberService memberService;
+//	@Autowired
+	private final JwtService jwtService;
+//	@Autowired
+	private final MemberRepository memberRepository;
+//	@Autowired
+	private final SearchService searchService;
+//	@Autowired
+//	private final CocktailsRepository cocktailsRepository;
+//	@Autowired
+	private final ViewRepository viewRepository;
+//
+//	public SearchController() {
+//	}
 
 	@PreAuthorize("hasAuthority('USER')")
-	@PostMapping({ "/updateTasteAndRecommend" })
+	@PostMapping({ "/recommend" })
 	@Operation(summary = "취향조사 결과 반환", description = "취향조사에 대한 결과를 반환합니다")
 	public ResponseEntity<List<Cocktail>> updateTasteAndRecommend(@RequestHeader("Authorization") String jwtToken,
 			@RequestBody TasteStringDTO tasteString) {
@@ -90,13 +93,13 @@ public class SearchController {
 		}
 	}
 
-	@GetMapping({ "/api/cocktails" })
-	public ResponseEntity<List<CocktailDTO>> getAllCocktails() {
-		List<CocktailDTO> cocktails = this.searchService.getAllCocktails();
-		return ResponseEntity.ok(cocktails);
-	}
+//	@GetMapping({ "/api/cocktails" })
+//	public ResponseEntity<List<CocktailDTO>> getAllCocktails() {
+//		List<CocktailDTO> cocktails = this.searchService.getAllCocktails();
+//		return ResponseEntity.ok(cocktails);
+//	}
 
-	@PostMapping({ "/api/chart" })
+	@PostMapping({ "/chart" })
 	public ResponseEntity<List<TimeSlotDTO>> getCocktailsByTimeRange(@RequestBody TimeRangeRequest timeRangeRequest) {
 		ZonedDateTime start = timeRangeRequest.getStart();
 		ZonedDateTime end = timeRangeRequest.getEnd();
@@ -124,7 +127,7 @@ public class SearchController {
 		return ResponseEntity.ok(timeSlotDTOs);
 	}
 
-	@GetMapping("/api/")
+	@GetMapping("/")
 	public ResponseEntity<List<CocktailResponse>> getListByName(@RequestParam("name") String name) {
 		log.info("getListByName 메서드 실행");
 		return ResponseEntity.ok(searchService.getListByName(name));

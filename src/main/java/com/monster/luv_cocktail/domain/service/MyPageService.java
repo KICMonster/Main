@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.auth.oauth2.JwtProvider;
+import com.monster.luv_cocktail.domain.dto.ProfileResponse;
 import com.monster.luv_cocktail.domain.dto.PutMyPageRequest;
 import com.monster.luv_cocktail.domain.dto.PutMyPageResponse;
 import com.monster.luv_cocktail.domain.dto.UserInfo;
@@ -65,5 +66,17 @@ public class MyPageService {
 		 String email =  jwtService.extractEmailFromToken(accessToken);
 		 Member member = memberRepository.findByEmail(email).orElseThrow(() -> new BusinessLogicException(ExceptionCode.NON_EXISTENT_MEMBER));
 		 return member;
+	}
+
+	public ProfileResponse getProfile(HttpServletRequest requestServlet) {
+		Member member = findUserByHeader(requestServlet);
+		ProfileResponse response = new ProfileResponse();
+		response.setGender(member.getGender());
+		response.setImageUrl(member.getProfileImageUrl());
+		response.setName(member.getName());
+		response.setBirth(member.getBirth());
+		response.setEmail(member.getEmail());
+		response.setPhone(member.getPhone());
+		return response;
 	}
 }

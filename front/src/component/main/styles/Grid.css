@@ -101,9 +101,6 @@
   /* 다른 이미지들보다 위에 오도록 설정 */
 }
 
-.container {
-  display: flex;
-}
 
 .container .slider-items {
   transition: filter 0.3s ease-in-out;

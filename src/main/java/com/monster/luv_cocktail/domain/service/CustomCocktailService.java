@@ -1,21 +1,19 @@
 package com.monster.luv_cocktail.domain.service;
 
 import com.monster.luv_cocktail.domain.dto.CustomCocktailDTO;
+import com.monster.luv_cocktail.domain.dto.CustomCocktailListResponse;
 import com.monster.luv_cocktail.domain.dto.PostCustomCocktailRequest;
 import com.monster.luv_cocktail.domain.dto.PostCustomCocktailResponse;
-import com.monster.luv_cocktail.domain.dto.PutMyPageRequest;
-import com.monster.luv_cocktail.domain.dto.PutMyPageResponse;
 import com.monster.luv_cocktail.domain.entity.CustomCocktail;
 import com.monster.luv_cocktail.domain.entity.Member;
 import com.monster.luv_cocktail.domain.enumeration.ExceptionCode;
 import com.monster.luv_cocktail.domain.exception.BusinessLogicException;
+import com.monster.luv_cocktail.domain.repository.CustomCocktailRecommendationRepository;
 import com.monster.luv_cocktail.domain.repository.CustomCocktailRepository;
 import com.monster.luv_cocktail.domain.repository.MemberRepository;
-
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,9 +29,8 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class CustomCocktailService {
 
-    @Autowired
-    private CustomCocktailRepository customCocktailRepository;
-
+	private final CustomCocktailRecommendationRepository recommendationRepository;
+    private final CustomCocktailRepository customCocktailRepository;
 	private final FileUploadService fileUploadService;
 	private final JwtService jwtService;
 	private final MemberRepository memberRepository;
@@ -60,17 +57,28 @@ public class CustomCocktailService {
     
     
     // 모든 칵테일 조회
-    public List<CustomCocktailDTO> findAll() {
-        return customCocktailRepository.findAll().stream()
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
+    public List<CustomCocktailListResponse> findAll() {
+//    	CustomCocktailListResponse customCocktailListResponse = new CustomCocktailListResponse();
+    	List<CustomCocktail> cocktailList = customCocktailRepository.findAll();
+		List<CustomCocktailListResponse> responseList = cocktailList.stream()
+				.map(cocktail -> {
+					CustomCocktailListResponse response = new CustomCocktailListResponse();
+					// 매핑
+					response.setCocktailId(cocktail.getId());
+					response.setImageUrl(cocktail.getImageUrl());
+					response.setName(cocktail.getName());
+					response.setRecommend(recommendationRepository.countByCustomId(cocktail.getId()));
+					response.setView(cocktail.getView());
+					return response;
+				}).collect(Collectors.toList());
+		return responseList;
     }
 
     // 특정 ID로 칵테일 조회
     @Transactional
     public CustomCocktailDTO findById(Long id) {
         CustomCocktail customCocktail = customCocktailRepository.findById(id).orElseThrow(() -> new BusinessLogicException(ExceptionCode.NON_EXISTENT_COCKTAIL));
-        customCocktail.setView(customCocktail.getView() + 1);
+//        customCocktail.setView(customCocktail.getView() + 1);
         customCocktailRepository.save(customCocktail);
         // 저장 하고 변환해야함
         return convertToDto(customCocktail);

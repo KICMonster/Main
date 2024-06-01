@@ -12,6 +12,7 @@ public class CustomCocktailRecommendation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "RECOMMENDATION_ID") 
     private Long recommendationId;
 
     @Column(name = "member_id", nullable = false)

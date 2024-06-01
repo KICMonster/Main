@@ -1,12 +1,52 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import BasicLayout from '../layouts/BasicLayout';
-import '../component/main/styles/Mypage.css';
+import '../component/main/styles/MyPage.css';
 import { Link } from 'react-router-dom';
 
 function MyPage() {
   const [nickname, setNickname] = useState('');  // 초기값을 빈 문자열로 설정 : undefined가 변경되면 에러가 발생하기 때문
   const [profileImage, setProfileImage] = useState(null);  // 프로필 이미지 URL 상태
   const [file, setFile] = useState(null);  // 파일 상태 추가
+  const [gender, setGender] = useState('');
+  const [birth, setBirth] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+ // 사용자 정보 불러오기 추가 - 김태연
+ useEffect(() => {
+  const fetchProfile = async () => {
+    const token = localStorage.getItem('jwt'); // 로컬스토리지에서 토큰 값을 읽기
+    try {
+      const response = await fetch('https://luvcocktail.site/api/myPage', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`, // Authorization 헤더에 토큰 추가
+          'Content-Type': 'application/json'
+        }
+      });
+ 
+      if (response.ok) {
+        const data = await response.json();
+        setNickname(data.name); // 이름(별명) 상태 업데이트
+        setProfileImage(data.imageUrl); // 프로필 이미지 URL 업데이트
+        setGender(data.gender); // 성별 상태 업데이트
+        setBirth(data.birth); // 생년월일 상태 업데이트
+        setEmail(data.email); // 이메일 상태 업데이트
+        setPhone(data.phone); // 전화번호 상태 업데이트
+      } else {
+        throw new Error('프로필 정보를 불러오는 데 실패했습니다.');
+      }
+    } catch (error) {
+      alert('프로필 불러오기 에러: ' + error.message);
+    }
+  };
+
+  fetchProfile();
+}, []);
+
+
+
+
+
 
   const handleNicknameChange = (e) => {
     setNickname(e.target.value);  // 별명 변경 처리
@@ -34,7 +74,7 @@ function MyPage() {
       formData.append('introduction', nickname);
 
       try {
-        const response = await fetch('https://localhost:9092/api/myPage/profileImage', {
+        const response = await fetch('https://luvcocktail.site/api/myPage/profileImage', {
           method: 'PUT',
           body: formData,
           headers: {
@@ -57,31 +97,43 @@ function MyPage() {
 
   return (
     <BasicLayout>
-      <div className="myPage">
-        <h2>프로필 수정</h2>
-        <p>대표 프로필과 별명을 수정하실 수 있습니다.</p>
-        <div className="profile-section">
-          <div className="profile-picture">
-            <img src={profileImage || 'default-profile.png'} alt="Profile" />
-          </div>
-          <div className="nickname-section">
-            <label>별명</label>
-            <input type="text" value={nickname} onChange={handleNicknameChange} />
-            <div className="image-buttons">
-              <input type="file" id="fileInput" style={{ display: 'none' }} onChange={handleImageChange} />
-              <button onClick={() => document.getElementById('fileInput').click()}>사진 변경</button>
-              <button onClick={handleImageDelete}>삭제</button>
-            </div>
-          </div>
+    <div className="myPage">
+      <h2>프로필 수정</h2>
+      <p>대표 프로필과 별명을 수정하실 수 있습니다.</p>
+      <div className="profile-section">
+        <div className="profile-picture">
+          <img src={profileImage || 'default-profile.png'} alt="Profile" />
         </div>
-        <div className="buttons">
-          <Link to="/">
-            <button onClick={handleApply}>적용</button>
-          </Link>
-          <button>취소</button>
+        <div className="nickname-section">
+          <label>별명</label>
+          <input type="text" value={nickname} onChange={(e) => setNickname(e.target.value)} />
+          <label>성별</label>
+          <input type="text" value={gender} onChange={(e) => setGender(e.target.value)} />
+          <label>생일</label>
+          <input type="text" value={birth} onChange={(e) => setBirth(e.target.value)} />
+          <label>이메일</label>
+          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+          <label>전화번호</label>
+          <input type="text" value={phone} onChange={(e) => setPhone(e.target.value)} />
+          <div className="image-buttons">
+            <input type="file" id="fileInput" style={{ display: 'none' }} onChange={(e) => {
+              const selectedFile = e.target.files[0];
+              setFile(selectedFile);
+              setProfileImage(URL.createObjectURL(selectedFile));
+            }} />
+            <button onClick={() => document.getElementById('fileInput').click()}>사진 변경</button>
+            <button onClick={() => { setProfileImage(null); setFile(null); }}>삭제</button>
+          </div>
         </div>
       </div>
-    </BasicLayout>
+      <div className="buttons">
+        <Link to="/">
+          <button onClick={handleApply}>적용</button>
+        </Link>
+        <button>취소</button>
+      </div>
+    </div>
+  </BasicLayout>
   );
 }
 

@@ -1,5 +1,8 @@
 package com.monster.luv_cocktail.domain.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -122,6 +125,9 @@ public class CustomCocktail {
     
     @Column(name = "CUSTOM_VIEW")
     private int view;
+
+    @OneToMany(mappedBy = "customCocktail", cascade = CascadeType.ALL)
+    private List<ViewLog> views = new ArrayList<>();
     
     @Column(name = "CUSTOM_ALCOHOLIC", nullable = false)
     private String alcoholic;

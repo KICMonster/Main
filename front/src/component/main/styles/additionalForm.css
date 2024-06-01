@@ -1,0 +1,82 @@
+.form{
+    padding-top: 45px;
+}
+
+.LoginMainBody input {
+    height: 40px;
+  }
+  
+  .input-with-icon {
+    display: flex;
+    flex-direction: column;
+    
+  }
+  
+  .input-icon-wrapper {
+    display: flex;
+    align-items: center;
+    position: relative;
+    
+  }
+  
+  .input-icon-wrapper input {
+    flex: 1;
+    padding-right: 10px; /* 아이콘 공간 확보 */
+    padding-bottom: 0px;
+  }
+  
+  .input-icon-wrapper .icon {
+    position: absolute;
+    right: 20px;
+    top: 50%; /* 입력창의 수직 중앙에 위치 */
+    transform: translateY(-50%); /* 아이콘을 수직 중앙으로 조정 */
+  }
+  
+  .label-centered {
+    display: block;
+    text-align: center;
+    margin-bottom: 8px; /* 라벨과 인풋 박스 사이의 간격 조절 */
+  }
+  
+  .gender{
+    margin-left: 105px;
+  }
+  .gender input[type="radio"] {
+    transform: scaleX(0.5) scaleY(0.7); /* 라디오 버튼 크기 줄이기 */
+    margin-right: 5px; /* 라디오 버튼 간격 조정 */
+    margin-top: 10px;
+  }
+  
+  .gender label {
+    margin-right: 10px; /* 라벨 간격 조정 */
+  }
+  .gender .label-centered.category{
+    margin-top: 15px;
+  }
+  
+  .submit_btn {
+    color: #F8F7F4;
+    background-color: #0d0c22de;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.5); /* 옅은 그림자 */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* 전환 효과 */
+    display: block;
+    width: 80%;
+    height: 50px;
+    border-radius: 40px;
+    margin-top: 30px;
+    margin-left: 45px;
+    margin-bottom: 40px;
+    border: none;
+  }
+  
+  .submit_btn:hover {
+    box-shadow: none; /* 마우스 호버 시 그림자 없애기 */
+  }
+
+  .error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+    position: absolute;
+    bottom: -20px; /* 에러 메시지 아래에 여유 공간을 만듭니다. 필요에 따라 조절 가능합니다. */
+  }

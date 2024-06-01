@@ -3,22 +3,25 @@ import MapContainer from '../component/detail/MapContainer';
 import BasicLayout from '../layouts/BasicLayout';
 import '../component/main/styles/GisPage.css';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+
+const axiosInstance = axios.create({
+  // baseURL: process.env.REACT_APP_API_URL // 백엔드 주소
+  baseURL: import.meta.env.VITE_API_URL
+});
+
+
 
 function GisPage() {
   const [places, setPlaces] = useState([]);
   const [currentPosition, setCurrentPosition] = useState(null);
-
   const fetchPlaces = async (latitude, longitude) => {
     try {
-      const response = await fetch(`https://localhost:9092/api/gis/get?latitude=${latitude}&longitude=${longitude}`);
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const data = await response.json();
-      setPlaces(data.documents || []);
+      const response = await axiosInstance.get(`/gis?latitude=${latitude}&longitude=${longitude}`);
+      setPlaces(response.data.documents || []);  // 'data'로 직접 접근
     } catch (error) {
       console.error('Failed to fetch places:', error);
-      setPlaces([]);
+      setPlaces([]);  // 오류 발생 시 빈 배열 설정
     }
   };
 

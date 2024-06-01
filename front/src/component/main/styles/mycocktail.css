@@ -36,6 +36,7 @@
 .MyIngredientsContainer {
   margin-bottom: 20px;
   width: 100%;
+  
 }
 
 .MyIngredientRow {
@@ -43,6 +44,7 @@
   align-items: center;
   margin-bottom: 10px;
   width: 100%;
+  
 }
 
 .MyIngredientInput {
@@ -52,6 +54,7 @@
   border-radius: 4px;
   border: 1px solid #ccc;
   background-color: #f9f9f9;
+  outline: none;
 }
 
 .MyAmountInput {
@@ -59,7 +62,9 @@
   margin-left: 10px;
   padding: 8px;
   border-radius: 4px;
+  margin-bottom: 5px;
   border: 1px solid #ccc;
+  outline: none;
 }
 
 .MyForm {
@@ -97,6 +102,7 @@
 .MyFileInput {
   width: 100%;
   padding: 8px;
+  
 }
 
 .MyButtonGroup {
@@ -107,32 +113,54 @@
 
 .MySubmitButton {
   padding: 8px 16px;
-  background-color: #257e39;
-  color: #fff;
+  background-color: #0d0c22de;
+  box-shadow: 0 4px 15px 0 rgba(45, 54, 65, 0.75);
+  font-weight: 600;
+  color: #F8F7F4;
   border: none;
-  border-radius: 4px;
+  border-radius: 50px;
   cursor: pointer;
   margin-right: 10px;
 }
 
+.MySubmitButton:hover {
+  background-position: 100% 0;
+  background-color: #0d0c228f;
+}
+
 .MyCancelButton {
   padding: 8px 16px;
-  background-color: #9a2e38;
-  color: #fff;
+  background-color: #6c757d;
+  box-shadow: 0 4px 15px 0 rgba(45, 54, 65, 0.75);
+  font-weight: 600;
+  color: #F8F7F4;
   border: none;
-  border-radius: 4px;
+  border-radius: 50px;
   cursor: pointer;
+}
+
+.MyCancelButton:hover {
+  background-position: 100% 0;
+  background-color: #2626298f;
 }
 
 .MyAddButton {
   padding: 8px 16px;
   background-color: #0d0c22de;
-  color: #fff;
+  box-shadow: 0 4px 15px 0 rgba(45, 54, 65, 0.75);
+  font-weight: 600;
+  color: #F8F7F4;
   border: none;
-  border-radius: 4px;
+  border-radius: 50px;
   cursor: pointer;
   margin-top: 10px;
 }
+
+.MyAddButton:hover {
+  background-position: 100% 0;
+  background-color: #0d0c228f;
+}
+
 /* mycocktail.css */
 .MyAddButton {
   float: right; /* 버튼을 오른쪽으로 정렬 */
@@ -146,3 +174,28 @@
 }
 
 /* 다른 요소들에 대한 추가 CSS */
+
+.MyVolumeDropdown {
+  margin-left: 8px;
+  margin-bottom: 6px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  background-color: #ffffff;
+  border-radius: 4px;
+  outline: none;
+}
+
+.MyVolumeDropdown:focus {
+  outline: none;
+}
+
+.MySelect {
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-bottom: 15px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  background-color: #ffffff;
+  border-radius: 4px;
+  outline: none;
+}

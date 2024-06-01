@@ -4,12 +4,14 @@ import java.io.IOException;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.monster.luv_cocktail.domain.dto.ProfileResponse;
 import com.monster.luv_cocktail.domain.dto.PutMyPageRequest;
 import com.monster.luv_cocktail.domain.dto.PutMyPageResponse;
 import com.monster.luv_cocktail.domain.service.MyPageService;
@@ -35,6 +37,14 @@ public class MyPageController {
 	@ApiResponse(responseCode="400", description="에러")
 	public ResponseEntity<PutMyPageResponse> putProfileImage(@ModelAttribute PutMyPageRequest request, HttpServletRequest requestServlet) throws IOException {
 		return ResponseEntity.ok(myPageService.putProfileImage(request, requestServlet));
+	}
+	
+	@GetMapping("")
+	@Operation(summary = "내 정보 받아오기", description = "회원 정보를 불러옵니다")
+	@ApiResponse(responseCode="200", description="성공")
+	@ApiResponse(responseCode="400", description="에러")
+	public ResponseEntity<ProfileResponse> getProfile(HttpServletRequest requestServlet) throws IOException {
+		return ResponseEntity.ok(myPageService.getProfile(requestServlet));
 	}
 	
 }

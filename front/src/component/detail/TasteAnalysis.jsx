@@ -1,12 +1,13 @@
 import React, { useState,useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import BasicLayout from '../../layouts/BasicLayout';
 import AnalysisComplete from '../../pages/AnalysisComplete';
 import OptionSelector from '../../pages/contents/Taste';
 
-
-
+// axios 인스턴스 생성
+const axiosInstance = axios.create({
+  baseURL: import.meta.env.VITE_API_URL
+});
 
 const TasteAnalysis = () => {
   const [token, setToken] = useState(localStorage.getItem('jwt') || '');
@@ -20,8 +21,8 @@ const TasteAnalysis = () => {
       try {
         console.log(`Sending tasteString: ${tasteString}`);
         console.log(`Sending with token: ${token}`);
-        const response = await axios.post(
-          'https://localhost:9092/search/updateTasteAndRecommend',
+        const response = await axiosInstance.post(
+          '/search/recommend',
           JSON.stringify({ tasteString: tasteString }),
           {
             headers: {
@@ -54,10 +55,10 @@ const TasteAnalysis = () => {
   };
 
   return (
-    <BasicLayout >
+    <div>
     {!isSelectionComplete && <OptionSelector onSelectionComplete={handleOptionSelectionComplete} />}
     {isSelectionComplete && <AnalysisComplete/>}
-    </ BasicLayout >
+  </div>
   );
 };
 

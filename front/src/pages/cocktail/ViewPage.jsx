@@ -3,6 +3,13 @@ import BasicLayout from "../../layouts/BasicLayout";
 import { Link } from "react-router-dom";
 import "../../component/main/styles/ViewPage.css";
 import "../../component/main/styles/CustomCocktail.css"
+import axios from 'axios';
+
+
+const axiosInstance = axios.create({
+  baseURL: import.meta.env.VITE_API_URL
+});
+
 
 function ViewPage() {
   const [cocktails, setCocktails] = useState([]);
@@ -17,9 +24,9 @@ function ViewPage() {
 
   const fetchAllCocktails = async () => {
     try {
-      const endpoint = 'https://localhost:9092/api/cocktail';                  
-      const response = await fetch(endpoint);
-      const data = await response.json();
+      const endpoint = '/cocktail';                  
+      const response = await axiosInstance.get(endpoint);
+      const data = response.data;
       setCocktails(data);
 
       // 모든 고유한 리큐르 추출

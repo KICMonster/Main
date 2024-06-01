@@ -7,7 +7,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -41,4 +40,11 @@ public class ViewLog {
     )
     @JsonIgnore
     private Cocktail cocktail;
+    
+    @ManyToOne
+    @JoinColumn( name = "CUSTOM_COCKTAIL_ID")
+    private CustomCocktail customCocktail;
+    
+    private String gender;
+    private String birth;
 }

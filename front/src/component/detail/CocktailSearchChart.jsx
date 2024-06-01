@@ -28,7 +28,8 @@ ChartJS.register(
 
 // axios 인스턴스 생성
 const axiosInstance = axios.create({
-  baseURL: 'https://localhost:9092', // 백엔드 주소
+  // baseURL: process.env.REACT_APP_API_URL // 백엔드 주소
+  baseURL: import.meta.env.VITE_API_URL
 });
 
 const CocktailSearchChart = () => {
@@ -62,7 +63,7 @@ const CocktailSearchChart = () => {
       }
 
       // 서버에 시간 범위 데이터 보내기
-      const response = await axiosInstance.post('/search/api/chart', {
+      const response = await axiosInstance.post('/search/chart', {
         start: startDate,
         end: currentDate.toISOString() // 현재 시간을 UTC로 변환하여 전달
       });

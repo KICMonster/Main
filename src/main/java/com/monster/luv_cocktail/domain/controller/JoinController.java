@@ -10,6 +10,8 @@ import com.monster.luv_cocktail.domain.enumeration.ExceptionCode;
 import com.monster.luv_cocktail.domain.exception.BusinessLogicException;
 import com.monster.luv_cocktail.domain.service.MemberService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -20,19 +22,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-@CrossOrigin(
-        origins = {"https://localhost:5174"}
-)
-@RequestMapping({"/join"})
-@Controller
+//@CrossOrigin(
+//        origins = {"https://localhost:5174"}
+//)
+@RequestMapping({"/api/join"})
+@RestController
 public class JoinController {
     private final MemberService memberService;
-
+    
     public JoinController(MemberService memberService) {
         this.memberService = memberService;
     }
-
     @PostMapping({"/emails/verification-requests"})
     public ResponseEntity<Void> sendMessage(@RequestBody @Valid EmailResponseDTO request) {
         String email = request.getEmail();

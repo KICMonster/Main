@@ -1,6 +1,7 @@
 package com.monster.luv_cocktail.domain.controller;
 
 import com.monster.luv_cocktail.domain.dto.CustomCocktailDTO;
+import com.monster.luv_cocktail.domain.dto.CustomCocktailListResponse;
 import com.monster.luv_cocktail.domain.dto.PostCustomCocktailRequest;
 import com.monster.luv_cocktail.domain.dto.PostCustomCocktailResponse;
 import com.monster.luv_cocktail.domain.entity.CustomCocktail;
@@ -27,8 +28,7 @@ public class CustomCocktailController {
 
     private static final Logger log = LoggerFactory.getLogger(CustomCocktailController.class);
 
-    @Autowired
-    private CustomCocktailService customCocktailService;
+    private final CustomCocktailService customCocktailService;
 	
     
     // 칵테일 생성
@@ -50,8 +50,8 @@ public class CustomCocktailController {
     
     // 모든 칵테일 조회
     @GetMapping("")
-    public ResponseEntity<List<CustomCocktailDTO>> getAllCustomCocktails() {
-        List<CustomCocktailDTO> cocktails = customCocktailService.findAll();
+    public ResponseEntity<List<CustomCocktailListResponse>> getAllCustomCocktails() {
+    	List<CustomCocktailListResponse> cocktails = customCocktailService.findAll();
         log.info("Retrieved {} custom cocktails", cocktails.size());
         return ResponseEntity.ok(cocktails);
     }

@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@CrossOrigin(origins = { "https://localhost:5174" })
-@RequestMapping({ "/weather" })
+//@CrossOrigin(origins = { "https://localhost:5174" })
+@RequestMapping({ "/api/weather" })
 @RestController
 @Log4j2
 public class WeatherController {
@@ -36,7 +36,7 @@ public class WeatherController {
 	public WeatherController() {
 	}
 
-	@GetMapping("/api/today")
+	@GetMapping("/today")
     @Operation(summary = "오늘의 칵테일 리스트", description = "날씨 데이터를 기반으로 오늘의 칵테일 리스트 추천")
 	public ResponseEntity<Map<String, Object>> getRecommendCocktailsByWeather(@RequestParam("lat") double lat,
 			@RequestParam("lon") double lon) {
@@ -50,7 +50,7 @@ public class WeatherController {
 		return ResponseEntity.ok(response);
 	}
 
-	@GetMapping("/recommendDefault")
+	@GetMapping("/default")
     @Operation(summary = "기본값 세팅", description = "랜더링 속도를 빠르게 하기 위해 오늘의 칵테일 리스트 기본값을 세팅해둡니다")
 	public ResponseEntity<List<IndexCocktailDTO>> getRecommendedCocktails() {
 		List<IndexCocktailDTO> cachedCocktails = weatherUpdateScheduler.getCachedCocktails();

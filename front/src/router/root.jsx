@@ -7,7 +7,6 @@ import Loading from '../pages/Loading';
 const Home = lazy(() => import('../pages/Home'));
 const LoginPage = lazy(() => import('../pages/LoginPage'));
 const AdditionalForm = lazy(() => import('../component/login/AdditionalForm'));
-const IngredientPage = lazy(() => import('../pages/cocktail/IngredientPage'));
 const CocktailDetail = lazy(() => import('../pages/cocktail/CocktailDetail'));
 const CustomCocktailDetail = lazy(() => import('../pages/cocktail/CustomCocktailDetail'));
 const CraftPage = lazy(() => import('../pages/information/CraftPage'));
@@ -68,10 +67,6 @@ const root = createBrowserRouter([
   {
     path: '/customcocktail/:cocktailId', // 커스텀 칵테일 디테일 페이지 라우팅 설정
     element: withSuspense(CustomCocktailDetail),
-  },
-  {
-    path: '/ingredient',
-    element: withSuspense(IngredientPage),
   },
   {
     path: '/history',

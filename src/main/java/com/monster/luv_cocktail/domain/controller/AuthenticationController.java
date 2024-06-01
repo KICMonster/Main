@@ -14,6 +14,9 @@ import com.monster.luv_cocktail.domain.repository.TokenRepository;
 import com.monster.luv_cocktail.domain.service.LoginSuccessHandler;
 import com.monster.luv_cocktail.domain.service.SocialLoginService;
 import com.monster.luv_cocktail.domain.service.SocialLoginSuccessHandler;
+
+import lombok.extern.log4j.Log4j2;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,10 +27,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin(
-        origins = {"https://localhost:5174"}
-)
-@RequestMapping({"/api"})
+//@CrossOrigin(
+//        origins = {"https://localhost:5174"}
+//)
+@Log4j2
+@RequestMapping("/api")
 public class AuthenticationController {
     private final JWTProvider jwtProvider;
     private final SocialLoginService socialLoginService;
@@ -48,7 +52,7 @@ public class AuthenticationController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @PostMapping({"/authenticate"})
+    @PostMapping("/authenticate")
     public ResponseEntity<JwtTokenDTO> handleSocialLogin(@RequestBody SocialLoginRequest request) {
         String accessToken = request.getAccessToken();
         String service = request.getService();
@@ -74,6 +78,7 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity<JwtTokenDTO> login(@RequestBody BasicLoginRequest request) {
+    	log.info("로그인 메서드 실행");
         String email = request.getEmail();
         String password = request.getPassword();
         try {

@@ -10,6 +10,6 @@ public class CorsConfig implements WebMvcConfigurer {
     }
 
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**").allowedOrigins(new String[]{"https://localhost:5174"}).allowedMethods(new String[]{"GET", "POST", "PUT", "DELETE", "OPTIONS"}).allowedHeaders(new String[]{"*"}).allowCredentials(true).maxAge(3600L);
+        registry.addMapping("/**").allowedOrigins(new String[]{"https://localhost:5174", "https://www.luvcocktail.site", "https://luvcocktail.site"}).allowedMethods(new String[]{"GET", "POST", "PUT", "DELETE", "OPTIONS"}).allowedHeaders(new String[]{"*"}).allowCredentials(true).maxAge(3600L);
     }
 }

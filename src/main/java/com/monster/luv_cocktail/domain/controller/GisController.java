@@ -20,7 +20,7 @@ public class GisController {
 
 	private final GisService gisService;
 
-	@GetMapping("/get")
+	@GetMapping("")
 	public ResponseEntity<SearchResponse> create(@RequestParam("latitude") double latitude, @RequestParam("longitude") double longitude) throws Exception {
 		return gisService.getPlaceInfo(latitude, longitude);
 	}

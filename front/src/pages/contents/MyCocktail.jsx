@@ -3,6 +3,9 @@ import BasicLayout from "../../layouts/BasicLayout";
 import '../../component/main/styles/mycocktail.css';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
+
+
+
 function MyCocktail() {
   const navigate = useNavigate();
 
@@ -153,7 +156,7 @@ function MyCocktail() {
       formData.append('glass', glassType);
  
       try {
-        const response = await axios.post('https://localhost:9092/api/custom', formData, {
+        const response = await axios.post('https://luvcocktail.site/api/custom', formData, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('jwt')}`
           }
