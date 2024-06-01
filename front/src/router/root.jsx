@@ -25,6 +25,7 @@ const TasteStart = lazy(() => import('../pages/contents/TasteStart'));
 const CocktailSearchChart = lazy(() => import('../component/detail/CocktailSearchChart'));
 const MyPage = lazy(() => import('../pages/Mypage'));
 const SearchViewPage = lazy(() => import('../pages/cocktail/SearchViewPage'));
+ 
 
 // Suspense를 적용하여 각 컴포넌트를 래핑하는 함수
 const withSuspense = (Component) => {
@@ -62,7 +63,7 @@ const root = createBrowserRouter([
     element: withSuspense(CustomCocktail),
   },
   {
-    path: '/cocktail/:customNm',  
+    path: '/cocktail/:cocktailId',  
     element: withSuspense(CocktailDetail),
   },
   {
@@ -81,19 +82,33 @@ const root = createBrowserRouter([
     path: '/craft/:key',
     element: withSuspense(CraftPage),
   },
+  // {
+  //   path: '/tastestart',
+  //   element: withSuspense(TasteStart),
+  // },
+  // {
+  //   path: '/taste',
+  //   element: withSuspense(TasteAnalysis),
+  //   children: [
+  //     {
+  //       path: 'complete', // 상대 경로로 수정
+  //       element: withSuspense(TasteEndpage),
+  //     }
+  //   ],
+  // },
   {
     path: '/tastestart',
     element: withSuspense(TasteStart),
   },
   {
-    path: '/taste',
-    element: withSuspense(TasteAnalysis),
+    path : '/taste', // 기호조사. 필요 페이지와 연결할것.지금은 home.jsx에 버튼. 회원가입 페이지와 연결할 경우 로직 수정할 필요.   
+    element : withSuspense(TasteAnalysis), // 회원가입 로직과 연결 할 시 프론트 경로작업&비동기 통신전달값 추가 후 백엔드에 문의
     children: [
       {
-        path: 'complete', // 상대 경로로 수정
-        element: withSuspense(AnalysisComplete),
+        path: 'complete', // '/taste'의 하위 경로로 'complete'를 정의
+        element: withSuspense(AnalysisComplete), // '/taste/complete'에 해당하는 컴포넌트
       }
-    ],
+    ]
   },
   {
     path: '/trendnews',

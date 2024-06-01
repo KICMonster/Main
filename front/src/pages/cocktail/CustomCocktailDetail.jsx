@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import BasicLayout from "../../layouts/BasicLayout";
 
 function CustomCocktailDetail() {
-  const { customNm } = useParams();
+  const { cocktailId } = useParams();
   const [cocktail, setCocktail] = useState(null);
   const [error, setError] = useState(null);
   const [recommendation, setRecommendation] = useState(0);
@@ -11,7 +11,7 @@ function CustomCocktailDetail() {
 
   const fetchCocktailDetail = async () => {
     try {
-      const cocktailEndpoint = `https://localhost:9092/customCocktails/search/?name=${customNm}`;
+      const cocktailEndpoint = `https://localhost:9092/api/custom/${cocktailId}`;
       const cocktailResponse = await fetch(cocktailEndpoint);
       const cocktailData = await cocktailResponse.json();
       setCocktail(cocktailData);
@@ -23,7 +23,7 @@ function CustomCocktailDetail() {
 
   useEffect(() => {
     fetchCocktailDetail();
-  }, [customNm]);
+  }, [cocktailId]);
 
   // 추천 기능
   const handleRecommendation = () => {

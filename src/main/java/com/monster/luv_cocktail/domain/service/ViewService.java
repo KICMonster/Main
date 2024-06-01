@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ViewService {
     @Autowired
     private CocktailsRepository cocktailRepository;
-
+    
     public ViewService() {
     }
 
@@ -32,4 +32,6 @@ public class ViewService {
             return predicate;
         };
     }
+    
+ 
 }

@@ -1,17 +1,13 @@
+ 
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import BasicLayout from '../../layouts/BasicLayout';
-import Loading from '../../pages/Loading';
+import Loading from './../../pages/Loading';
 
-function AnalysisComplete({recommendedCocktails}) {
-  const navigate = useNavigate(); // 소괄호 추가하여 함수 호출
 
-  if (!recommendedCocktails || !Array.isArray(recommendedCocktails) || recommendedCocktails.length === 0) {
-    alert('취향 조사에 참여하지 않았습니다.');
-    navigate('/tastestart'); // 경로 수정
-  }
-
+function AnalysisComplete() {
   const location = useLocation();
+  const { recommendedCocktails } = location.state || { recommendedCocktails: [] };
   const [currentCocktail, setCurrentCocktail] = useState(null);
 
   const selectRandomCocktail = () => {

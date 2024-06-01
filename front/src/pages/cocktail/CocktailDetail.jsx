@@ -12,16 +12,17 @@ function CocktailDetail() {
   const fetchCocktailDetail = async () => {
     try {
       const cocktailEndpoint = `https://localhost:9092/api/cocktail/${cocktailId}`;
-      // const appetizersEndpoint = "https://localhost:9092/api/ingredient";
+      const type = cocktailId % 7 + 1; // 칵테일 ID를 7로 나눈 나머지를 얻습니다.
+      const appetizersEndpoint = `https://localhost:9092/api/snack/?type=${type}`;
 
       const cocktailResponse = await fetch(cocktailEndpoint);
       const cocktailData = await cocktailResponse.json();
       setCocktail(cocktailData);
 
-      // const appetizersResponse = await fetch(appetizersEndpoint);
-      // const appetizersData = await appetizersResponse.json();
+      const appetizersResponse = await fetch(appetizersEndpoint);
+      const appetizersData = await appetizersResponse.json();
       // 처음 세 개의 안주만 가져오기
-      // setAppetizers(appetizersData.slice(0, 3));
+      setAppetizers(appetizersData.slice(0, 3));
     } catch (error) {
       console.error('Error fetching cocktail detail:', error);
       setError(error.message);
@@ -73,9 +74,9 @@ function CocktailDetail() {
             <div className="appetizersContainer">
               {appetizers.map((appetizer, index) => (
                 <div key={index} className="appetizerBox">
-                  <img src={appetizer.description || 'default-image-url.jpg'} alt={appetizer.name} className="appetizerImage" />
+                  <img src={appetizer.image || 'default-image-url.jpg'} alt={appetizer.name} className="appetizerImage" />
                   <div>{appetizer.name}</div>
-                </div>
+                </div>  
               ))}
             </div>
           </div>

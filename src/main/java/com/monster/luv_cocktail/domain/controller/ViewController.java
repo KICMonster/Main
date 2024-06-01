@@ -35,7 +35,7 @@ public class ViewController {
     }
 
     @PutMapping({"/api/cocktails/{id}"})
-    public ResponseEntity<Void> updateCocktailViews(@PathVariable Long id, @RequestBody Map<String, String> request) {
+    public ResponseEntity<Void> updateCocktailViews(@PathVariable("id")Long id, @RequestBody Map<String, String> request) {
         String timestamp = request.get("timestamp");
         Cocktail cocktail = this.cocktailsRepository.findById(id).orElseThrow(() -> {
             return new RuntimeException("Cocktail not found");

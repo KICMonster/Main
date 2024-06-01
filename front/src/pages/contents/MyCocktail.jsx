@@ -2,38 +2,36 @@ import React, { useEffect, useState } from "react";
 import BasicLayout from "../../layouts/BasicLayout";
 import '../../component/main/styles/mycocktail.css';
 import { useNavigate } from "react-router-dom";
-
+import axios from 'axios';
 function MyCocktail() {
-
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const jwtToken = localStorage.getItem("jwt");
-    // JWT 토큰 확인
-    if (!jwtToken) {
-      alert("로그인한 회원만 등록 버튼을 누를 수 있습니다!");
-      navigate("/login"); // navigate 사용
-    }
-  }, [navigate]);
-
+  // useEffect(() => {
+  //   const jwtToken = localStorage.getItem("jwt");
+  //   // JWT 토큰 확인
+  //   if (!jwtToken) {
+  //     alert("로그인 후 사용해주세요");
+  //     navigate("/login"); // navigate 사용
+  //   }
+  // }, [navigate]);
 
   // 상태 변수들 선언 및 초기화
   const [selectedFile, setSelectedFile] = useState(null);
   const [title, setTitle] = useState(""); // 제목 상태
   const [description, setDescription] = useState(""); // 설명 상태
-  const [ingredients, setIngredients] = useState([ // 재료 상태
+  const [isAlcoholic, setIsAlcoholic] = useState(""); // 알콜 여부 상태
+  const [glassType, setGlassType] = useState(""); // 유리잔 타입 상태
+  const [ingredients, setIngredients] = useState([
     { id: 1, name: "", amount: "", volume: "" },
     { id: 2, name: "", amount: "", volume: "" },
     { id: 3, name: "", amount: "", volume: "" },
     { id: 4, name: "", amount: "", volume: "" },
     { id: 5, name: "", amount: "", volume: "" }
   ]);
-
+   
   const [error, setError] = useState(null);
-  const placeholders = ["베이스", "시럽", "가니쉬", "리큐르", "얼음"]; // 재료 플레이스홀더
+  const placeholders = ["베이스", "재료 1", "재료 2", "재료 3", "재료 4"]; // 재료 플레이스홀더
 
-
-  // 입력 필드 값이 변경될 때 실행되는 함수
   const handleInputChange = (id, field, value) => {
     setIngredients(prevIngredients =>
       prevIngredients.map(ingredient =>
@@ -49,7 +47,7 @@ function MyCocktail() {
       setIngredients(prevIngredients => {
         const hasEmptyOrNullValues = prevIngredients.some(ingredient => !ingredient.name || !ingredient.amount);
         if (hasEmptyOrNullValues) {
-          alert("남은 빈 재료들을 채워주세요! ㅠㅠ.");
+          alert("빈 재료들을 채워주세요!");
           return prevIngredients;
         }
         return [
@@ -66,35 +64,70 @@ function MyCocktail() {
     e.preventDefault();
 
     // 재료 유효성 검사 및 값 변경 여부 확인
-
     if (ingredients.every(ingredient => !ingredient.name.trim() || !ingredient.amount.trim())) {
-      alert("모든 재료의 이름과 양을 입력하세요.");
+      alert("최소 4개의 재료의 이름과 양을 입력하세요.");
       return;
     }
 
-    // 입력 필드 유효성 검사
-    if (!title || !description) {
+    // 입력 필드 유효성 검사 : 제목, 설명, 이미지
+    if (!title || !description || !selectedFile) {
       alert("입력 필드를 모두 채워주세요.");
       return;
     }
 
-    //이미지 필드 유효성 검사
-    if (!selectedFile) {
-      alert("이미지는 필수값입니다.");
-      return;
-    }
 
     try {
       // 빈 값이나 널 값이 포함된 요소를 제거
       const filteredIngredients = ingredients.filter(ingredient => ingredient.name.trim() !== "" && ingredient.amount.trim() !== "");
 
-      console.log("제목:", title, "내용:", description, "재료:", filteredIngredients, "로 폼을 제출합니다.");
+      console.log("제목:", title, "내용:", description, "재료:", filteredIngredients, "알콜 여부:", isAlcoholic, "유리잔 타입:", glassType, "로 폼을 제출합니다.");
       alert("등록되었습니다.");
     } catch (error) {
       console.error("오류 발생:", error);
       setError(error.message);
     }
+
+    if (selectedFile) {
+      const filteredIngredients = ingredients.filter(ingredient => ingredient.name.trim() !== "" && ingredient.amount.trim() !== "");
+      const formData = new FormData();
+      formData.append('name', title);
+      formData.append('image', selectedFile);  // 파일 데이터를 formData에 추가
+      formData.append('description', description);
+      filteredIngredients.forEach((ingredient, index) => {
+        formData.append(`ingredient${index + 1}`, ingredient.name);
+        formData.append(`measure${index + 1}`, ingredient.amount);
+      });
+      formData.append('alcoholic', isAlcoholic);
+      formData.append('glass', glassType);
+ 
+      try {
+        const response = await axios.post('https://localhost:9092/api/custom', formData, {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('jwt')}`
+          }
+        });
+
+        if (response.status === 200 && response.data) {
+          alert('칵테일이 성공적으로 등록되었습니다.');
+          // 여기에서 응답으로 받은 cocktailId를 사용하여 페이지 이동
+          navigate(`/customcocktail/${response.data.cocktailId}`);
+        } else {
+          throw new Error('서버 에러');
+        }
+      } catch (error) {
+        alert('사진 업로드 중 에러 발생: ' + error.message);
+      }
+    }
   };
+
+
+
+ /////////////////////////// // 제출이 끝나는 위치/////////////////////////
+
+
+
+
+
 
   // 파일 선택 시 실행되는 함수
   const handleFileChange = (e) => {
@@ -131,6 +164,7 @@ function MyCocktail() {
       alert(`최대 ${maxLength}자까지 입력할 수 있습니다.`);
     }
   };
+
   // 볼륨 변경 핸들러
   const handleVolumeChange = (id, value) => {
     setIngredients(prevIngredients =>
@@ -140,7 +174,7 @@ function MyCocktail() {
     );
   };
 
-
+ 
   return (
     <BasicLayout>
       <div className="MyBoard">
@@ -151,6 +185,30 @@ function MyCocktail() {
               <button type="button" onClick={addIngredient} className="MyAddButton">
                 재료 추가하기
               </button>
+              <div className="MySelectContainer">
+                <select
+                  value={isAlcoholic}
+                  onChange={(e) => setIsAlcoholic(e.target.value)}
+                  className="MySelect"
+                >
+                  <option value="">알콜 여부 선택</option>
+                  <option value="알콜">알콜</option>
+                  <option value="논알콜">논알콜</option>
+                </select>
+                <select
+                  value={glassType}
+                  onChange={(e) => setGlassType(e.target.value)}
+                  className="MySelect"
+                >
+                  <option value="">유리잔 선택</option>
+                  <option value="하이볼">하이볼</option>
+                  <option value="칵테일 글래스">칵테일 글래스</option>
+                  <option value="샷 글래스">샷 글래스</option>
+                  <option value="와인 글래스">와인 글래스</option>
+                  <option value="맥주 글래스">맥주 글래스</option>
+                  <option value="기타">기타</option>
+                </select>
+              </div>
               <div className="MyIngredientsContainer">
                 {ingredients.map((ingredient, index) => (
                   <div key={ingredient.id} className="MyFormGroup">
@@ -163,7 +221,7 @@ function MyCocktail() {
                           handleInputChange(ingredient.id, "name", e.target.value)
                         }
                         onFocus={(e) => e.target.placeholder = ''}
-                        onBlur={(e) => e.target.placeholder = placeholders[index] ? `${placeholders[index]} 이름` : `재료 ${ingredient.id} 이름`}
+                        onBlur={(e) => e.target.placeholder = placeholders[index] ? `${placeholders[index]}` : `재료 ${ingredient.id}`}
                         className="MyIngredientInput"
                         maxLength="15"
                         onKeyUp={() => handleMaxLengthAlert(ingredient.name.length, 15)}
@@ -179,23 +237,32 @@ function MyCocktail() {
                         maxLength="15"
                         onKeyUp={() => handleMaxLengthAlert(ingredient.amount.length, 15)}
                       />
-                      <div className="MyVolumeDropdown">
+                      <div>
                         <select
                           value={ingredient.volume}
                           onChange={(e) => handleVolumeChange(ingredient.id, e.target.value)}
+                          className="MyVolumeDropdown"
                         >
-                          <option value="">양 선택</option>
-                          <option value="드롭">드롭</option>
-                          <option value="대시">대시</option>
-                          <option value="티스푼">티스푼</option>
-                          <option value="온스">온스</option>
-                          <option value="지거">지거</option>
-                          <option value="컵">컵</option>
-                          <option value="파인트">파인트</option>
-                          <option value="병">병</option>
-                          <option value="휩스">휩스</option>
-                          <option value="쿼트">쿼트</option>
-                          <option value="갤런">갤런</option>
+                          <option value="">단위 선택</option>
+                          <option value="ounce">온스</option>
+                          <option value="Dash">대시</option>
+                          <option value="ts">티스푼</option>
+                          <option value="Jigger">지거</option>
+                          <option value="Drop">드롭</option>
+                          <option value="Ts">테이블 스푼</option>
+                          <option value="pony">포니</option>
+                          <option value="finger">핑거</option>
+                          <option value="Gill">길</option>
+                          <option value="Split">스플리트</option>
+                          <option value="Cup">컵</option>
+                          <option value="Pint">핀트</option>
+                          <option value="Fifth">핍스</option>
+                          <option value="Quart">쿼트</option>
+                          <option value="Gallon">겔론</option>
+                          <option value="Magnum">메그넘</option>
+                          <option value="Jeroboam">제로보움</option>
+                          <option value="합">합</option>
+                          <option value="승">승</option>
                         </select>
                       </div>
                     </div>

@@ -1,9 +1,12 @@
 package com.monster.luv_cocktail.domain.controller;
 
 import com.monster.luv_cocktail.domain.dto.CustomCocktailDTO;
+import com.monster.luv_cocktail.domain.dto.PostCustomCocktailRequest;
+import com.monster.luv_cocktail.domain.dto.PostCustomCocktailResponse;
 import com.monster.luv_cocktail.domain.entity.CustomCocktail;
 import com.monster.luv_cocktail.domain.repository.CustomCocktailRepository;
 import com.monster.luv_cocktail.domain.service.CustomCocktailService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,19 +18,37 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @RestController
-@RequestMapping("/customCocktails")
+@RequestMapping("/api/custom")
 public class CustomCocktailController {
 
     private static final Logger log = LoggerFactory.getLogger(CustomCocktailController.class);
 
     @Autowired
     private CustomCocktailService customCocktailService;
-
+	
     @Autowired
     private CustomCocktailRepository customCocktailRepository;  // 추가된 부분
 
+    
+    // 칵테일 생성
+    @PostMapping("")
+    public ResponseEntity<PostCustomCocktailResponse> createCustomCocktail(@ModelAttribute PostCustomCocktailRequest request, HttpServletRequest servletRequest) {
+    	log.info("save 컨트롤러 시작");
+    	PostCustomCocktailResponse savedCocktail = customCocktailService.save(request, servletRequest);
+    	log.info("save 컨트롤러 종료");
+        return ResponseEntity.ok(savedCocktail);
+    }
+    
+    // 칵테일 id값으로 검색
+    @GetMapping("/{cocktailId}")
+    public ResponseEntity<CustomCocktailDTO> getOne(@PathVariable("cocktailId") Long cocktailId) {
+    	log.info("Get CustomCocktail with Id {}", cocktailId);
+    	CustomCocktailDTO cocktail = customCocktailService.findById(cocktailId);
+    	return ResponseEntity.ok(cocktail);
+    }
+    
     // 모든 칵테일 조회
-    @GetMapping
+    @GetMapping("")
     public ResponseEntity<List<CustomCocktailDTO>> getAllCustomCocktails() {
         List<CustomCocktailDTO> cocktails = customCocktailService.findAll();
         log.info("Retrieved {} custom cocktails", cocktails.size());
@@ -35,19 +56,16 @@ public class CustomCocktailController {
     }
 
     // 칵테일 이름으로 검색
-    @GetMapping("/search/")
+    @GetMapping("/name/search/")
     public ResponseEntity<List<CustomCocktailDTO>> searchCustomCocktailsByName(@RequestParam("name") String name) {
         log.info("@@@Searching custom cocktail with name {}", name);
         List<CustomCocktailDTO> cocktails = customCocktailService.findByNameContaining(name);
         return ResponseEntity.ok(cocktails);
     }
 
-    // 칵테일 생성
-    @PostMapping
-    public ResponseEntity<CustomCocktailDTO> createCustomCocktail(@RequestBody CustomCocktail customCocktail) {
-        CustomCocktailDTO savedCocktail = customCocktailService.save(customCocktail);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedCocktail);
-    }
+
+
+
 
     // 기존 칵테일 수정
     @PutMapping("/{id}")

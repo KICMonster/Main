@@ -15,7 +15,7 @@ function CustomCocktail() {
 
   const fetchAllCocktails = async () => {
     try {
-      const endpoint = 'https://localhost:9092/customCocktails';
+      const endpoint = 'https://localhost:9092/api/custom';
       const response = await fetch(endpoint);
       const data = await response.json();
       const shuffledData = shuffleArray(data);
@@ -117,7 +117,7 @@ function CustomCocktail() {
       </div>
       <div className="container" style={{ gridTemplateColumns: 'repeat(5, 1fr)' }}>
         {currentItems.map(cocktail => (
-          <Link key={cocktail.customNm} to={`/customcocktail/${cocktail.customNm}`} className="cocktail-link">
+          <Link key={cocktail.cocktailId} to={`/customcocktail/${cocktail.cocktailId}`} className="cocktail-link">
             <div className="cocktail-item">
               <div className="image-box">
                 <img src={cocktail.imageUrl || 'default-image-url.jpg'} alt={cocktail.name} className="cocktail-image" />

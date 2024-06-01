@@ -1,22 +1,58 @@
 package com.monster.luv_cocktail.domain.service;
 
 import com.monster.luv_cocktail.domain.dto.CustomCocktailDTO;
+import com.monster.luv_cocktail.domain.dto.PostCustomCocktailRequest;
+import com.monster.luv_cocktail.domain.dto.PostCustomCocktailResponse;
+import com.monster.luv_cocktail.domain.dto.PutMyPageRequest;
+import com.monster.luv_cocktail.domain.dto.PutMyPageResponse;
 import com.monster.luv_cocktail.domain.entity.CustomCocktail;
+import com.monster.luv_cocktail.domain.entity.Member;
+import com.monster.luv_cocktail.domain.enumeration.ExceptionCode;
+import com.monster.luv_cocktail.domain.exception.BusinessLogicException;
 import com.monster.luv_cocktail.domain.repository.CustomCocktailRepository;
+import com.monster.luv_cocktail.domain.repository.MemberRepository;
+
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
 @Log4j2
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class CustomCocktailService {
 
     @Autowired
     private CustomCocktailRepository customCocktailRepository;
 
+	private final FileUploadService fileUploadService;
+	private final JwtService jwtService;
+	private final MemberRepository memberRepository;
+    
+    // 칵테일 저장 (생성 및 수정)
+    @Transactional
+    public PostCustomCocktailResponse save(PostCustomCocktailRequest request,  HttpServletRequest servletRequest) {
+    	log.info("save 시작");
+    	// Author 등록
+    	Member member = findUserByHeader(servletRequest);
+    	// 응답 생성
+    	PostCustomCocktailResponse response = new PostCustomCocktailResponse();
+    	// DTO 매핑해서, id값만 반환
+    	response.setCocktailId(mapping(request,member));
+    	log.info("save 성공");
+        return response;	
+    }
+    
+    
     // 모든 칵테일 조회
     public List<CustomCocktailDTO> findAll() {
         return customCocktailRepository.findAll().stream()
@@ -25,8 +61,12 @@ public class CustomCocktailService {
     }
 
     // 특정 ID로 칵테일 조회
+    @Transactional
     public CustomCocktailDTO findById(Long id) {
-        CustomCocktail customCocktail = customCocktailRepository.findById(id).orElse(null);
+        CustomCocktail customCocktail = customCocktailRepository.findById(id).orElseThrow(() -> new BusinessLogicException(ExceptionCode.NON_EXISTENT_COCKTAIL));
+        customCocktail.setView(customCocktail.getView() + 1);
+        customCocktailRepository.save(customCocktail);
+        // 저장 하고 변환해야함
         return convertToDto(customCocktail);
     }
 
@@ -37,13 +77,56 @@ public class CustomCocktailService {
                 .collect(Collectors.toList());
     }
 
-    // 칵테일 저장 (생성 및 수정)
-    public CustomCocktailDTO save(CustomCocktail customCocktail) {
-        CustomCocktail savedCocktail = customCocktailRepository.save(customCocktail);
-        return convertToDto(savedCocktail);
-    }
 
+
+    @Transactional
+    public Long mapping(PostCustomCocktailRequest request, Member member) {
+    	
+    	CustomCocktail cocktail = new CustomCocktail();
+    	Long id = cocktail.getId();
+    	cocktail.setName(request.getName());
+    	cocktail.setMember(member);
+    	cocktail.setAlcoholic(request.getAlcoholic());
+    	cocktail.setGlass(request.getGlass());
+    	cocktail.setRecipe(request.getDescription());
+    	cocktail.setView(0);
+    	cocktail.setIngredient1(request.getIngredient1());
+    	cocktail.setIngredient2(request.getIngredient2());
+    	cocktail.setIngredient3(request.getIngredient3());
+    	cocktail.setIngredient4(request.getIngredient4());
+    	cocktail.setIngredient5(request.getIngredient5());
+    	cocktail.setIngredient6(request.getIngredient6());
+    	cocktail.setIngredient7(request.getIngredient7());
+    	cocktail.setIngredient8(request.getIngredient8());
+    	cocktail.setIngredient9(request.getIngredient9());
+    	cocktail.setIngredient10(request.getIngredient10());
+    	cocktail.setIngredient11(request.getIngredient11());
+    	cocktail.setIngredient12(request.getIngredient12());
+    	cocktail.setIngredient13(request.getIngredient13());
+    	cocktail.setIngredient14(request.getIngredient14());
+    	cocktail.setIngredient15(request.getIngredient15());
+    	cocktail.setMeasure1(request.getMeasure1());
+    	cocktail.setMeasure2(request.getMeasure2());
+    	cocktail.setMeasure3(request.getMeasure3());
+    	cocktail.setMeasure4(request.getMeasure4());
+    	cocktail.setMeasure5(request.getMeasure5());
+    	cocktail.setMeasure6(request.getMeasure6());
+    	cocktail.setMeasure7(request.getMeasure7());
+    	cocktail.setMeasure8(request.getMeasure8());
+    	cocktail.setMeasure9(request.getMeasure9());
+    	cocktail.setMeasure10(request.getMeasure10());
+    	cocktail.setMeasure11(request.getMeasure11());
+    	cocktail.setMeasure12(request.getMeasure12());
+    	cocktail.setMeasure13(request.getMeasure13());
+    	cocktail.setMeasure14(request.getMeasure14());
+    	cocktail.setMeasure15(request.getMeasure15());
+    	customCocktailRepository.save(cocktail);
+    	return id;
+    }
+    
+    
     // 기존 칵테일 수정
+    @Transactional
     public CustomCocktailDTO update(Long id, CustomCocktail customCocktail) {
         CustomCocktail existingCocktail = customCocktailRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Custom Cocktail not found"));
@@ -53,13 +136,16 @@ public class CustomCocktailService {
     }
 
     // 특정 ID로 칵테일 삭제
+    @Transactional
     public void deleteById(Long id) {
         customCocktailRepository.deleteById(id);
     }
 
+    @Transactional
     private CustomCocktailDTO convertToDto(CustomCocktail customCocktail) {
         CustomCocktailDTO dto = new CustomCocktailDTO();
-        dto.setCustomId(customCocktail.getId());
+        
+        dto.setCocktailId(customCocktail.getId());
         dto.setCustomNm(customCocktail.getName());
         dto.setCustomRcp(customCocktail.getRecipe());
         if (customCocktail.getMember() != null) {
@@ -98,6 +184,39 @@ public class CustomCocktailService {
         dto.setCustomMeasure13(customCocktail.getMeasure13());
         dto.setCustomMeasure14(customCocktail.getMeasure14());
         dto.setCustomMeasure15(customCocktail.getMeasure15());
+//        dto.setView(customCocktail.getView());
         return dto;
     }
+    
+	@Transactional
+	public String postImage(MultipartFile image, HttpServletRequest requestServlet, CustomCocktail cocktail)
+			throws IOException {
+		
+		String imageUrl;
+		String fileUrl;
+		
+	    if (image != null && image.isEmpty()) {
+	        String filename = UUID.randomUUID().toString() + "_" + image.getOriginalFilename();
+	        fileUrl = fileUploadService.uploadFile(image, filename, "monster/customCocktail");
+	        cocktail.setImageUrl(fileUrl); // 새 이미지 URL을 유저 엔티티에 저장
+	        imageUrl = fileUrl;
+	        log.info("New image uploaded successfully: {}", fileUrl);
+	    } else {
+	    	cocktail.setImageUrl(null);
+	    	imageUrl = null;
+			log.info("이미지 삭제");
+			customCocktailRepository.save(cocktail);
+	    }
+		return imageUrl;
+
+	}
+	
+	 @Transactional
+	public Member findUserByHeader(HttpServletRequest request) {
+		String bearerToken = request.getHeader("Authorization");
+		String accessToken = bearerToken.substring(7);
+		 String email =  jwtService.extractEmailFromToken(accessToken);
+		 Member member = memberRepository.findByEmail(email).orElseThrow(() -> new BusinessLogicException(ExceptionCode.NON_EXISTENT_MEMBER));
+		 return member;
+	}
 }

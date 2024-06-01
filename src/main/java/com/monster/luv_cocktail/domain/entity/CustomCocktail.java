@@ -119,4 +119,13 @@ public class CustomCocktail {
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID", nullable = false)
     private Member member;
+    
+    @Column(name = "CUSTOM_VIEW")
+    private int view;
+    
+    @Column(name = "CUSTOM_ALCOHOLIC", nullable = false)
+    private String alcoholic;
+    
+    @Column(name = "CUSTOM_GLASS", nullable = false)
+    private String glass;
 }

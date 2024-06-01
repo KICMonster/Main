@@ -40,5 +40,6 @@ public class CustomCocktailDTO {
     private String customMeasure13;
     private String customMeasure14;
     private String customMeasure15;
-    private long customId;
+    private Long cocktailId;
+    private Long view;
 }
