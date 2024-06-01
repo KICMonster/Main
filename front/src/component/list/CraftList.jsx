@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import "../../pages/information/Craft.css"
+import "../main/styles/Craft.css"
 
 const craft = [
     {

@@ -7,11 +7,14 @@ import com.monster.luv_cocktail.domain.entity.CustomCocktail;
 import com.monster.luv_cocktail.domain.repository.CustomCocktailRepository;
 import com.monster.luv_cocktail.domain.service.CustomCocktailService;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -19,6 +22,7 @@ import org.slf4j.LoggerFactory;
 
 @RestController
 @RequestMapping("/api/custom")
+@RequiredArgsConstructor
 public class CustomCocktailController {
 
     private static final Logger log = LoggerFactory.getLogger(CustomCocktailController.class);
@@ -26,13 +30,10 @@ public class CustomCocktailController {
     @Autowired
     private CustomCocktailService customCocktailService;
 	
-    @Autowired
-    private CustomCocktailRepository customCocktailRepository;  // 추가된 부분
-
     
     // 칵테일 생성
     @PostMapping("")
-    public ResponseEntity<PostCustomCocktailResponse> createCustomCocktail(@ModelAttribute PostCustomCocktailRequest request, HttpServletRequest servletRequest) {
+    public ResponseEntity<PostCustomCocktailResponse> createCustomCocktail(@ModelAttribute PostCustomCocktailRequest request, HttpServletRequest servletRequest) throws IOException {
     	log.info("save 컨트롤러 시작");
     	PostCustomCocktailResponse savedCocktail = customCocktailService.save(request, servletRequest);
     	log.info("save 컨트롤러 종료");

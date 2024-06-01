@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import BasicLayout from '../layouts/BasicLayout';
-import "../layouts/BasicLayout.css";
+import "../component/main/styles/BasicLayout.css";
 import Grid from '../component/main/Grid';
 import '../App.css';
 import Weather from '../component/main/Weather';

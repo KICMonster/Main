@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import BasicLayout from "../../layouts/BasicLayout";
 import { Link } from "react-router-dom";
-import "../../pages/cocktail/ViewPage.css";
+import "../../component/main/styles/ViewPage.css";
 import "../../component/main/styles/CustomCocktail.css";
 
 function SearchViewPage() {

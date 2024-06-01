@@ -183,17 +183,23 @@ const CocktailSearchChart = () => {
     timeSlotLogs.forEach(log => {
       log.views.forEach(view => {
         const cocktailName = view.name;
+        const cocktailId = view.id; // 칵테일 id 추출
         if (cocktailCounts[cocktailName]) {
-          cocktailCounts[cocktailName]++;
+          cocktailCounts[cocktailName].count++;
         } else {
-          cocktailCounts[cocktailName] = 1;
+          cocktailCounts[cocktailName] = {
+            count: 1,
+            id: cocktailId // 칵테일 id 저장
+          };
         }
       });
     });
 
-    const sortedCocktails = Object.entries(cocktailCounts).sort((a, b) => b[1] - a[1]);
+    const sortedCocktails = Object.entries(cocktailCounts)
+      .sort((a, b) => b[1].count - a[1].count)
+      .map(([name, { count, id }]) => [name, count, id]); // 이름, 카운트, id 반환
 
-    return sortedCocktails.slice(0, 10); // 최대 10개의 순위만 반환
+    return sortedCocktails.slice(0, 10);
   };
 
   return (
@@ -215,7 +221,7 @@ const CocktailSearchChart = () => {
           <button onClick={() => setTimeRange('thisWeek')}>이번 주</button>
           <button onClick={() => setTimeRange('thisMonth')}>이번 달</button>
         </div>
-        )}
+      )}
       {!isDataEmpty && (
         <div className="ranking-container">
           <h3>검색 순위</h3>
@@ -247,9 +253,9 @@ const CocktailSearchChart = () => {
           )}
         </div>
       )}
-      </BasicLayout>
-    );
-  };
-  
+    </BasicLayout>
+  );
+};
+
 
 export default CocktailSearchChart;

@@ -45,7 +45,7 @@ function BasicLayout({ children }) {
       </div>
       <footer className="footer">
         <div >
-          <a>KYC Company</a>
+          <a>KIC Company</a>
           <a >김태연</a>
           <a >손은영</a>
           <a >임현민</a>

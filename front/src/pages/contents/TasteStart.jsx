@@ -1,13 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import BasicLayout from "../../layouts/BasicLayout";
-import "../contents/TasteStart.css";
-import "../contents/Taste.css";
+import "../../component/main/styles/TasteStart.css";
+import "../../component/main/styles/Taste.css";
 
 function TasteStart() {
   return (
     <BasicLayout>
-      <div className="board">
+      <div className="board" style={{marginRight:"17.5%"}}>
         <div className="survey-container">
           <h1>내 취향의 칵테일 찾기</h1>
           <h2>당신만을 위한 추천 칵테일✨</h2>

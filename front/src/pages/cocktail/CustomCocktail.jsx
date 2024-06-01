@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import BasicLayout from "../../layouts/BasicLayout";
 import { Link } from "react-router-dom";
-import "../../pages/cocktail/ViewPage.css"; // CSS 파일을 import
+import "../../component/main/styles/ViewPage.css"; // CSS 파일을 import
 import "../../component/main/styles/CustomCocktail.css";
 
 function CustomCocktail() {
@@ -117,7 +117,7 @@ function CustomCocktail() {
       </div>
       <div className="container" style={{ gridTemplateColumns: 'repeat(5, 1fr)' }}>
         {currentItems.map(cocktail => (
-          <Link key={cocktail.cocktailId} to={`/customcocktail/${cocktail.cocktailId}`} className="cocktail-link">
+         <Link key={cocktail.cocktailId} to={`/customcocktail/${cocktail.cocktailId}`} className="cocktail-link">
             <div className="cocktail-item">
               <div className="image-box">
                 <img src={cocktail.imageUrl || 'default-image-url.jpg'} alt={cocktail.name} className="cocktail-image" />

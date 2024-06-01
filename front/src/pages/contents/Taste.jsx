@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import options from '../../data/questionData.json';
-import "../contents/Taste.css";
+import "../../component/main/styles/TasteStart.css";
+import "../../component/main/styles/Taste.css";
 import { useNavigate } from 'react-router-dom';
 
 const Taste = ({ onSelectionComplete }) => {

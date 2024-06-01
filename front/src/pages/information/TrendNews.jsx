@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Link } from "react-router-dom";
 import axios from 'axios';
-import './TrendNews.css';
+import '../../component/main/styles/TrendNews.css';
 import BasicLayout from '../../layouts/BasicLayout';
 
 const API_KEY = import.meta.env.VITE_GOOOLE_API_KEY;

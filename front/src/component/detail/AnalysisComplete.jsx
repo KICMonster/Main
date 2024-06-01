@@ -1,9 +1,7 @@
- 
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import BasicLayout from '../../layouts/BasicLayout';
-import Loading from './../../pages/Loading';
-
+import Loading from '../../pages/Loading';
 
 function AnalysisComplete() {
   const location = useLocation();

@@ -8,13 +8,10 @@
     flex-direction: row;
     flex-wrap: nowrap;
     justify-content: center; 
-    margin: 30px;
-    
-
     
 }
-.CraftList  a{
-    margin: 0 30px 0 30px ;
+.CraftList a{
+    margin: 0 30px ;
     text-decoration: none; /* 밑줄 제거 */
     color: black; /* 글자 색상을 검은색으로 설정 */
 }

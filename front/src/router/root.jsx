@@ -25,7 +25,6 @@ const TasteStart = lazy(() => import('../pages/contents/TasteStart'));
 const CocktailSearchChart = lazy(() => import('../component/detail/CocktailSearchChart'));
 const MyPage = lazy(() => import('../pages/Mypage'));
 const SearchViewPage = lazy(() => import('../pages/cocktail/SearchViewPage'));
- 
 
 // Suspense를 적용하여 각 컴포넌트를 래핑하는 함수
 const withSuspense = (Component) => {
@@ -82,20 +81,6 @@ const root = createBrowserRouter([
     path: '/craft/:key',
     element: withSuspense(CraftPage),
   },
-  // {
-  //   path: '/tastestart',
-  //   element: withSuspense(TasteStart),
-  // },
-  // {
-  //   path: '/taste',
-  //   element: withSuspense(TasteAnalysis),
-  //   children: [
-  //     {
-  //       path: 'complete', // 상대 경로로 수정
-  //       element: withSuspense(TasteEndpage),
-  //     }
-  //   ],
-  // },
   {
     path: '/tastestart',
     element: withSuspense(TasteStart),

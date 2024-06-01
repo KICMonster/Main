@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import CraftList from "../../component/list/CraftList";
-import "../../component/list/CraftList.css";
-import "../information/Craft.css";
+import "../../component/main/styles/CraftList.css";
+import "../../component/main/styles/Craft.css";
 import { useParams } from "react-router-dom";
 import BasicLayout from "../../layouts/BasicLayout";
 

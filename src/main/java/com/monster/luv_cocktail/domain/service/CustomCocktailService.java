@@ -40,14 +40,20 @@ public class CustomCocktailService {
     
     // 칵테일 저장 (생성 및 수정)
     @Transactional
-    public PostCustomCocktailResponse save(PostCustomCocktailRequest request,  HttpServletRequest servletRequest) {
+    public PostCustomCocktailResponse save(PostCustomCocktailRequest request,  HttpServletRequest servletRequest) throws IOException {
     	log.info("save 시작");
     	// Author 등록
     	Member member = findUserByHeader(servletRequest);
-    	// 응답 생성
+    	// 칵테일 생성
+    	CustomCocktail cocktail = mapping(request,servletRequest,member);
+
+    	// 이미지 업로드 밑 입력
+    	
+//    	// 응답 생성
     	PostCustomCocktailResponse response = new PostCustomCocktailResponse();
+    	response.setCocktailId(cocktail.getId());
+    	log.info("cocktailId : {}", cocktail.getId());
     	// DTO 매핑해서, id값만 반환
-    	response.setCocktailId(mapping(request,member));
     	log.info("save 성공");
         return response;	
     }
@@ -80,10 +86,9 @@ public class CustomCocktailService {
 
 
     @Transactional
-    public Long mapping(PostCustomCocktailRequest request, Member member) {
+    public CustomCocktail mapping(PostCustomCocktailRequest request, HttpServletRequest servletRequest, Member member) throws IOException {
     	
     	CustomCocktail cocktail = new CustomCocktail();
-    	Long id = cocktail.getId();
     	cocktail.setName(request.getName());
     	cocktail.setMember(member);
     	cocktail.setAlcoholic(request.getAlcoholic());
@@ -120,8 +125,10 @@ public class CustomCocktailService {
     	cocktail.setMeasure13(request.getMeasure13());
     	cocktail.setMeasure14(request.getMeasure14());
     	cocktail.setMeasure15(request.getMeasure15());
+    	
+    	cocktail.setImageUrl(postImage(request.getImage(), servletRequest, cocktail));
     	customCocktailRepository.save(cocktail);
-    	return id;
+    	return cocktail;
     }
     
     
@@ -184,7 +191,7 @@ public class CustomCocktailService {
         dto.setCustomMeasure13(customCocktail.getMeasure13());
         dto.setCustomMeasure14(customCocktail.getMeasure14());
         dto.setCustomMeasure15(customCocktail.getMeasure15());
-//        dto.setView(customCocktail.getView());
+        dto.setView(customCocktail.getView());
         return dto;
     }
     
@@ -195,12 +202,14 @@ public class CustomCocktailService {
 		String imageUrl;
 		String fileUrl;
 		
-	    if (image != null && image.isEmpty()) {
+	    if (image != null && !image.isEmpty()) {
 	        String filename = UUID.randomUUID().toString() + "_" + image.getOriginalFilename();
 	        fileUrl = fileUploadService.uploadFile(image, filename, "monster/customCocktail");
 	        cocktail.setImageUrl(fileUrl); // 새 이미지 URL을 유저 엔티티에 저장
 	        imageUrl = fileUrl;
 	        log.info("New image uploaded successfully: {}", fileUrl);
+			customCocktailRepository.save(cocktail);
+
 	    } else {
 	    	cocktail.setImageUrl(null);
 	    	imageUrl = null;

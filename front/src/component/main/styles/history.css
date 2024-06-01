@@ -1,0 +1,41 @@
+.historyMain {
+  display: flex;
+  flex-direction: row;
+  padding: 20px;
+  max-width: 68%;
+  margin: 8% 15% 0 15%;
+
+  h1 {
+    font-size: 48px;
+    padding: 10px
+  }
+
+  p {
+    padding: 2px
+  }
+}
+
+.historyFlex{
+  background-color: #f8f8f8;
+  padding: 10px;
+  /* 패딩 값을 줄였습니다 */
+  border-radius: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  margin-left: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.historyMain img {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+  height: 500px;
+  border-radius: 20px;
+}
+
+.historyCocktail {
+  font-size: 14px;
+  line-height: 1.6;
+  text-align: justify;
+}
+

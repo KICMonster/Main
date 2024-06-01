@@ -6,14 +6,14 @@ import axios from 'axios';
 function MyCocktail() {
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   const jwtToken = localStorage.getItem("jwt");
-  //   // JWT 토큰 확인
-  //   if (!jwtToken) {
-  //     alert("로그인 후 사용해주세요");
-  //     navigate("/login"); // navigate 사용
-  //   }
-  // }, [navigate]);
+  useEffect(() => {
+    const jwtToken = localStorage.getItem("jwt");
+    // JWT 토큰 확인
+    if (!jwtToken) {
+      alert("로그인 후 사용해주세요");
+      navigate("/login"); // navigate 사용
+    }
+  }, [navigate]);
 
   // 상태 변수들 선언 및 초기화
   const [selectedFile, setSelectedFile] = useState(null);
@@ -59,6 +59,58 @@ function MyCocktail() {
       alert("최대 10개까지만 추가할 수 있습니다.");
     }
   };
+
+  // 파일 선택 시 실행되는 함수
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+
+
+
+    // 파일이 선택되지 않은 경우 처리
+    if (!file) return;
+
+    // 파일 크기 체크
+    const fileSizeInMB = file.size / (1024 * 1024);
+    if (fileSizeInMB > 5) {
+      alert("파일 크기는 5MB 이하만 업로드 가능합니다.");
+      e.target.value = "";
+      return;
+    }
+
+    // 허용되는 확장자 목록 확인
+    const allowedExtensions = ["jpg", "jpeg", "png", "gif"];
+    // 파일 확장자 확인
+    const fileExtension = file.name.split(".").pop().toLowerCase();
+    // 허용되지 않는 확장자인 경우 처리
+    if (!allowedExtensions.includes(fileExtension)) {
+      alert("jpg, png, gif 확장자만 업로드 가능합니다.");
+      e.target.value = "";
+      return;
+    }
+    // 파일 상태 업데이트
+    console.log("파일이바뀌엇습니다ㅓㅎ매ㅑㅓ먛ㅈㄷㄻ러ㅐㅁㅈ댜ㅓㅐㅁㅈㄹ");
+    console.log(file);
+    setSelectedFile(file);
+  };
+
+  // 입력 최대 길이에 도달 시 알림 표시
+  const handleMaxLengthAlert = (length, maxLength) => {
+    if (length === maxLength) {
+      alert(`최대 ${maxLength}자까지 입력할 수 있습니다.`);
+    }
+  };
+
+  // 볼륨 변경 핸들러
+  const handleVolumeChange = (id, value) => {
+    setIngredients(prevIngredients =>
+      prevIngredients.map(ingredient =>
+        ingredient.id === id ? { ...ingredient, volume: value } : ingredient
+      )
+    );
+  };
+
+
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -129,50 +181,6 @@ function MyCocktail() {
 
 
 
-  // 파일 선택 시 실행되는 함수
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-
-    // 파일이 선택되지 않은 경우 처리
-    if (!file) return;
-
-    // 파일 크기 체크
-    const fileSizeInMB = file.size / (1024 * 1024);
-    if (fileSizeInMB > 5) {
-      alert("파일 크기는 5MB 이하만 업로드 가능합니다.");
-      e.target.value = "";
-      return;
-    }
-
-    // 허용되는 확장자 목록 확인
-    const allowedExtensions = ["jpg", "jpeg", "png", "gif"];
-    // 파일 확장자 확인
-    const fileExtension = file.name.split(".").pop().toLowerCase();
-    // 허용되지 않는 확장자인 경우 처리
-    if (!allowedExtensions.includes(fileExtension)) {
-      alert("jpg, png, gif 확장자만 업로드 가능합니다.");
-      e.target.value = "";
-      return;
-    }
-    // 파일 상태 업데이트
-    setSelectedFile(file);
-  };
-
-  // 입력 최대 길이에 도달 시 알림 표시
-  const handleMaxLengthAlert = (length, maxLength) => {
-    if (length === maxLength) {
-      alert(`최대 ${maxLength}자까지 입력할 수 있습니다.`);
-    }
-  };
-
-  // 볼륨 변경 핸들러
-  const handleVolumeChange = (id, value) => {
-    setIngredients(prevIngredients =>
-      prevIngredients.map(ingredient =>
-        ingredient.id === id ? { ...ingredient, volume: value } : ingredient
-      )
-    );
-  };
 
  
   return (

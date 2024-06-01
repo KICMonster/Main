@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import BasicLayout from '../layouts/BasicLayout';
-import './MyPage.css';
+import '../component/main/styles/Mypage.css';
 import { Link } from 'react-router-dom';
 
 function MyPage() {
