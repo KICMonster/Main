@@ -20,7 +20,7 @@ function CustomCocktailDetail() {
 
   const fetchCocktailDetail = async () => {
     try {
-      const cocktailEndpoint = `/api/custom/${cocktailId}`;
+      const cocktailEndpoint = `/custom/${cocktailId}`;
       const cocktailResponse = await axiosInstance.get(cocktailEndpoint);
       // const cocktailData = await cocktailResponse.json();
       setCocktail(cocktailResponse.data);
@@ -78,6 +78,8 @@ function CustomCocktailDetail() {
         <div className="rightColumn" style={{ gridColumn: '4 / span 3' }}>
           <div className="contentBox">
             <h1 className="cocktailName">{cocktail.customNm}</h1>
+            <p className="cocktailViews">Views: {cocktail.view}</p> {/* 조회수 추가 */}
+            <p className="cocktailRecommend">Recommendations: {cocktail.recommend}</p> {/* 추천수 추가 */}
             <hr className="divider" />
             <p className="cocktailDescription">{cocktail.description}</p>
             <h2 className="sectionTitle">Ingredients:</h2>
@@ -128,8 +130,10 @@ function CustomCocktailDetail() {
                   <li>{cocktail.customIngredient15} : {cocktail.customMeasure15}</li>
                 )}
             </ul>
+            <p className="cocktailRecipe">{cocktail.customRcp}</p> {/* 제조법 추가 */}
             <h2 className="sectionTitle">이 칵테일을 추천합니다</h2>
-            <p className="instructions">{cocktail.instructions}</p>
+
+            {/* <p className="instructions">{cocktail.instructions}</p> instructions 삭제. 이게 제조법임 (변수명 맞춰야함) */}
             <h2 className="sectionTitle"></h2>
             <div>
               <button onClick={handleRecommendation} disabled={hasRecommended}>👍</button>

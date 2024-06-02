@@ -53,76 +53,14 @@ function LoginPage() {
       console.error('Unsupported service or missing authorization code', service);
     }
   }, []);
-  // const getAccessToken = async (authCode, service) => {
-  //   let access_token_uri;
-  //   let body;
-
-  //   switch (service) {
-  //     case 'kakao':
-  //       access_token_uri = 'https://kauth.kakao.com/oauth/token';
-  //       body = new URLSearchParams({
-  //         grant_type: 'authorization_code',
-  //         client_id: socialConfig.kakaoKey,
-  //         redirect_uri: socialConfig.kakaoRedirectURI,
-  //         client_secret: '6bX9xJgRVwbFUApqPU0fi3nEiWjNY4Cd',
-  //         code: authCode
-  //       });
-  //       break;
-  //     case 'google':
-  //       access_token_uri = 'https://oauth2.googleapis.com/token';
-  //       body = new URLSearchParams({
-  //         grant_type: 'authorization_code',
-  //         client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
-  //         client_secret: import.meta.env.VITE_GOOGLE_CLIENT_SECRET,
-  //         redirect_uri: import.meta.env.VITE_GOOGLE_REDIRECT_URI,
-  //         code: authCode
-  //       });
-  //       break;
-  //     case 'naver':
-  //       access_token_uri = 'https://nid.naver.com/oauth2.0/token';
-  //       body = new URLSearchParams({
-  //         grant_type: 'authorization_code',
-  //         client_id: socialConfig.naverKey,
-  //         client_secret: socialConfig.naverSecretkey,
-  //         redirect_uri: socialConfig.naverRedirectURI,
-  //         state: 'STATE_STRING',
-  //         code: authCode
-  //       });
-  //       break;
-  //     default:
-  //       console.error('Unsupported service');
-  //       return;
-  //   }
-
-
-  //   try {
-  //     const response = await axios.post(access_token_uri, body, {
-  //       headers: {
-  //         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
-  //       }
-  //     });
-
-  //     const accessToken = response.data.access_token;
-  //     setAccessToken(accessToken);
-
-
-  //     console.log('발급된 Access Token:', accessToken);
-
-
-
-  //     // 액세스 토큰을 백엔드로 전송
-  //     sendAccessTokenToBackend(accessToken, service);
-  //   } catch (error) {
-  //     console.error('Access Token 요청 중 오류 발생:', error);
-  //   }
-  // };
+ 
   const getAccessToken = async (authCode, service) => {
     let access_token_uri;
     let body;
   
     switch (service) {
       case 'kakao':
-        access_token_uri = 'https://kauth.kakao.com/oauth/token';
+        access_token_uri = 'https://luvcocktail.site/token/kakao';
         body = new URLSearchParams({
           grant_type: 'authorization_code',
           client_id: socialConfig.kakaoKey,

@@ -35,7 +35,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.addFilterBefore(this.jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class).cors((cors) -> {
             CorsConfiguration config = new CorsConfiguration();
-            config.setAllowedOrigins(Arrays.asList("https://luvcocktail.site"));
+            config.setAllowedOrigins(Arrays.asList("https://luvcocktail.site", "https://localhost:5174"));
             config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
             config.setAllowedHeaders(Arrays.asList("*"));
             config.setAllowCredentials(true);
@@ -49,7 +49,7 @@ public class SecurityConfig {
         }).authorizeHttpRequests((auth) -> {
             ((AuthorizeHttpRequestsConfigurer.AuthorizedUrl)((AuthorizeHttpRequestsConfigurer.AuthorizedUrl)((AuthorizeHttpRequestsConfigurer.AuthorizedUrl)((AuthorizeHttpRequestsConfigurer.AuthorizedUrl)((AuthorizeHttpRequestsConfigurer.AuthorizedUrl)((AuthorizeHttpRequestsConfigurer.AuthorizedUrl)((AuthorizeHttpRequestsConfigurer.AuthorizedUrl)((AuthorizeHttpRequestsConfigurer.AuthorizedUrl)auth
 //					// 태연 한줄 사용
-					.requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/api/data/**", "/api/cocktail/**" ,"/api/weather/**" , "/api/gis/**", "/api/snack/**", "/api/search/**", "/api/myPage/**" , "/api/custom/**" , "/api/recommendations/**", "/api/login/**" ).permitAll()
+					.requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/api/data/**", "/api/cocktail/**" ,"/api/weather/**" , "/api/gis/**", "/api/snack/**", "/api/search/**", "/api/myPage/**" , "/api/custom/**" , "/api/recommendations/**", "/api/login/**", "/api/view/**" ).permitAll()
             		.requestMatchers(HttpMethod.OPTIONS, new String[]{"/api/authenticate", "/api/join/emails/verification-requests", "/api/join/emails/verifications", "/api/join/submit", "/api/weather/today", "/api/search/chart","/api/weather/default","/api/login"})).permitAll()
                     .requestMatchers(HttpMethod.POST, new String[]{"/api/search/chart","/api/login", "/api/view/cocktails/{id}"})).permitAll()
                     .requestMatchers(HttpMethod.PUT, new String[]{"/api/view/cocktails/{id}"})).permitAll()

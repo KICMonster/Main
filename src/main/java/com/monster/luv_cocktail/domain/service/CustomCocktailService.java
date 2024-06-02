@@ -78,7 +78,7 @@ public class CustomCocktailService {
     @Transactional
     public CustomCocktailDTO findById(Long id) {
         CustomCocktail customCocktail = customCocktailRepository.findById(id).orElseThrow(() -> new BusinessLogicException(ExceptionCode.NON_EXISTENT_COCKTAIL));
-//        customCocktail.setView(customCocktail.getView() + 1);
+        customCocktail.setView(customCocktail.getView() + 1);
         customCocktailRepository.save(customCocktail);
         // 저장 하고 변환해야함
         return convertToDto(customCocktail);
