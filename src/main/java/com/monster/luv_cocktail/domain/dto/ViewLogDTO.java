@@ -13,6 +13,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ViewLogDTO {
     private long viewId;
+    private Long cocktailId;
     private ZonedDateTime viewDate;
     private String cocktailName;
     private String customCocktailName;

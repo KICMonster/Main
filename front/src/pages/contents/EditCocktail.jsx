@@ -112,14 +112,14 @@ function EditCocktail() {
         const filteredIngredients = ingredients.filter(ingredient => ingredient.name.trim() !== "" && ingredient.amount.trim() !== "");
   
         const formData = new FormData();
-        formData.append('customNm', title);
+        formData.append('name', title);
         if (selectedFile) {
           formData.append('image', selectedFile);
         }
-        formData.append('customRcp', description);
+        formData.append('description', description);
         filteredIngredients.forEach((ingredient, index) => {
-          formData.append(`customIngredient${index + 1}`, ingredient.name);
-          formData.append(`customMeasure${index + 1}`, ingredient.amount);
+          formData.append(`ingredient${index + 1}`, ingredient.name);
+          formData.append(`measure${index + 1}`, ingredient.amount);
         });
         formData.append('alcoholic', isAlcoholic);
         formData.append('glass', glassType);

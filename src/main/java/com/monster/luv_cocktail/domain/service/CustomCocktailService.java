@@ -160,7 +160,7 @@ public class CustomCocktailService {
     public PostCustomCocktailResponse update(Long id, PostCustomCocktailRequest request, HttpServletRequest servletRequest) throws IOException {
     	Member member = jwtService.findUserByHeader(servletRequest);
     	// 칵테일 생성
-    	CustomCocktail cocktail = mapping(request,servletRequest,member);
+    	CustomCocktail cocktail = mappingForPut(id, request,servletRequest,member);
     	// 이미지 업로드 밑 입력
     	PostCustomCocktailResponse response = new PostCustomCocktailResponse();
     	response.setCocktailId(cocktail.getId());
@@ -244,7 +244,50 @@ public class CustomCocktailService {
 		return imageUrl;
 
 	}
-	
+
+    @Transactional
+    public CustomCocktail mappingForPut(Long id, PostCustomCocktailRequest request, HttpServletRequest servletRequest, Member member) throws IOException {
+    	
+    	CustomCocktail cocktail = customCocktailRepository.findById(id).orElseThrow();
+    	cocktail.setName(request.getName());
+    	cocktail.setMember(member);
+    	cocktail.setAlcoholic(request.getAlcoholic());
+    	cocktail.setGlass(request.getGlass());
+    	cocktail.setRecipe(request.getDescription());
+    	cocktail.setIngredient1(request.getIngredient1());
+    	cocktail.setIngredient2(request.getIngredient2());
+    	cocktail.setIngredient3(request.getIngredient3());
+    	cocktail.setIngredient4(request.getIngredient4());
+    	cocktail.setIngredient5(request.getIngredient5());
+    	cocktail.setIngredient6(request.getIngredient6());
+    	cocktail.setIngredient7(request.getIngredient7());
+    	cocktail.setIngredient8(request.getIngredient8());
+    	cocktail.setIngredient9(request.getIngredient9());
+    	cocktail.setIngredient10(request.getIngredient10());
+    	cocktail.setIngredient11(request.getIngredient11());
+    	cocktail.setIngredient12(request.getIngredient12());
+    	cocktail.setIngredient13(request.getIngredient13());
+    	cocktail.setIngredient14(request.getIngredient14());
+    	cocktail.setIngredient15(request.getIngredient15());
+    	cocktail.setMeasure1(request.getMeasure1());
+    	cocktail.setMeasure2(request.getMeasure2());
+    	cocktail.setMeasure3(request.getMeasure3());
+    	cocktail.setMeasure4(request.getMeasure4());
+    	cocktail.setMeasure5(request.getMeasure5());
+    	cocktail.setMeasure6(request.getMeasure6());
+    	cocktail.setMeasure7(request.getMeasure7());
+    	cocktail.setMeasure8(request.getMeasure8());
+    	cocktail.setMeasure9(request.getMeasure9());
+    	cocktail.setMeasure10(request.getMeasure10());
+    	cocktail.setMeasure11(request.getMeasure11());
+    	cocktail.setMeasure12(request.getMeasure12());
+    	cocktail.setMeasure13(request.getMeasure13());
+    	cocktail.setMeasure14(request.getMeasure14());
+    	cocktail.setMeasure15(request.getMeasure15());
+    	cocktail.setImageUrl(postImage(request.getImage(), servletRequest, cocktail));
+    	customCocktailRepository.save(cocktail);
+    	return cocktail;
+    }
 	
 //	 @Transactional
 //	public Member findUserByHeader(HttpServletRequest request) {

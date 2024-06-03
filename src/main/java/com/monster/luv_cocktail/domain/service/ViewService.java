@@ -31,62 +31,7 @@ public class ViewService {
 	private final ViewRepository viewRepository;
 	private final JwtService jwtService;
 
-	
-
-//	public List<CocktailSummaryDTO> getCocktailViewsByTimeRangeAndCategory(ZonedDateTime start, ZonedDateTime end, String category, String gender, Integer birth) {
-//	    if (birth != null && (birth < 0 || birth > 99)) {
-//	        throw new IllegalArgumentException("Birth year must be a two-digit integer.");
-//	    }
-//	    Specification<ViewLog> spec = Specification.where(inTimeRange(start, end))
-//	            .and(getCategorySpecification(category))
-//	            .and(getGenderSpecification(gender))
-//	            .and(getBirthYearSpecification(birth));
-//
-//	    List<ViewLog> logs = viewRepository.findAll(spec);
-//	    return logs.stream()
-//	        .filter(log -> category.equals("cocktail") ? log.getCocktail() != null : log.getCustomCocktail() != null)
-//	        .collect(Collectors.groupingBy(log -> category.equals("cocktail") ? log.getCocktail().getName() : log.getCustomCocktail().getName(),
-//	                Collectors.summingInt(log -> 1)))
-//	        .entrySet().stream()
-//	        .map(entry -> new CocktailSummaryDTO(entry.getKey(), entry.getValue()))
-//	        .collect(Collectors.toList());
-//	}
-//	
-//    private Specification<ViewLog> getCategorySpecification(String category) {
-//        return (root, query, builder) -> {
-//            if (category.equals("cocktail")) {
-//                return builder.isNotNull(root.get("cocktail"));
-//            } else if (category.equals("customCocktail")) {
-//                return builder.isNotNull(root.get("customCocktail"));
-//            }
-//            return null;
-//        };
-//    }
-//	
-//    private Specification<ViewLog> getGenderSpecification(String gender) {
-//        return (root, query, builder) -> {
-//            if (gender != null) {
-//                return builder.equal(root.get("gender"), gender);
-//            }
-//            return null;	// 조건이 null 로 오면, 필터링 무시하기
-//        };
-//    }
-//    private Specification<ViewLog> getBirthYearSpecification(Integer birth) {
-//        return (root, query, builder) -> {
-//            if (birth != null) {
-//                String birthYear = String.format("%02d", birth);
-//                return builder.equal(root.get("birth"), birthYear);
-//            }
-//            return null;	//마찬가지로 조건이 null로 오면 필터링 무시
-//        };
-//    }
-//	public static Specification<ViewLog> inTimeRange(ZonedDateTime start, ZonedDateTime end) {
-//		return (root, query, builder) -> {
-//			Predicate predicate = builder.between(root.get("viewDate"), start, end);
-//			return predicate;
-//		};
-//	}
-//	
+ 
 	
     public List<ViewLogDTO> getViewLogsByTimeRangeAndCategory(ZonedDateTime start, ZonedDateTime end, String category, String gender, Integer birth) {
         if (birth != null && (birth < 0 || birth > 99)) {
@@ -195,8 +140,18 @@ public class ViewService {
 	}
 	
     private ViewLogDTO convertToDTO(ViewLog log) {
+    	
+    	Long cocktailId;
+    	
+    	if(log.getCustomCocktail() == null) {
+    		cocktailId = log.getCocktail().getId();
+    	} else {
+    		cocktailId = log.getCustomCocktail().getId();
+    	}
+    	
         return new ViewLogDTO(
                 log.getViewId(),
+                cocktailId,
                 log.getViewDate(),
                 log.getCocktail() != null ? log.getCocktail().getName() : null,
                 log.getCustomCocktail() != null ? log.getCustomCocktail().getName() : null,
