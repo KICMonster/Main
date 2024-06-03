@@ -33,7 +33,7 @@ function Snackpage() {
                 // 칵테일 데이터 가져오기
                 const cocktailResponse = await axiosInstance.get(cocktailEndpoint);
                 // const cocktailData = await cocktailResponse.json();
-                setCocktail(cocktailResponse.data.slice(0, 3));
+                setCocktail(cocktailResponse.data.slice(0, 4));
                 // setCocktail(cocktailData.slice(0, 3));
 
                 // 스낵 데이터 가져오기
@@ -76,15 +76,17 @@ function Snackpage() {
                     <div className="contentBox">
                         <h1 className="cocktailName" >{snack.name}</h1>
                         <hr className="divider" />
-                        <h2 className="sectionTitle">Instructions:</h2>
+                        <h2 className="sectionTitle">디저트 설명:</h2>
                         <p>{snack.description}</p>
-                        <h2 className="sectionTitle">Appetizers:</h2>
+                        <h2 className="sectionTitle">디저트와 어울리는 칵테일:</h2>
                         <div className="appetizersContainer">
                             {cocktail.map((item, index) => (
                                 <div key={index} className="appetizerBox">
                                     <Link to={`/cocktail/${item.id}`}>
                                         <img src={item.imageUrl} alt={item.name} className="appetizerImage" />
-                                        <h6>{item.name}</h6>
+                                        <h6>
+                                            {item.name.length > 7 ? item.name.slice(0, 7) + '...' : item.name}
+                                        </h6>
                                     </Link>
                                 </div>
                             ))}

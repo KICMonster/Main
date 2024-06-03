@@ -54,9 +54,9 @@
 }
 
 .option-button {
-  width: 400px;
-  height: 100px;
-  margin: 20px;
+  width: 300px;
+  height: 70px;
+  margin: 40px;
   padding: 10px;
   background-color: #f5f5f5;
   border: 2px solid #ddd;
@@ -99,7 +99,7 @@
 }
 
 .survey-image {
-  max-width: 25% !important;
+  max-width: 35% !important;
   max-height: 50vh;
   /* 이미지의 최대 높이를 설정 */
   width: auto;
@@ -109,3 +109,28 @@
   border-radius: 20px;
   /* 이미지 모서리를 둥글게 함 */
 }
+
+.survey-image-gif {
+  max-width: 20% !important;
+  width: 20% !important;
+  border-radius: 20px;
+}
+
+.timer {
+  max-width: 35% !important;
+  max-height: 50vh;
+  width: 15%;
+  height: auto;
+  border-radius: 20px;
+  margin-right: 190px; /* 이미지 간의 간격 추가 */
+}
+
+.ck {
+  max-width: 35% !important;
+  max-height: 50vh;
+  width: 15%;
+  height: auto;
+  border-radius: 20px;
+  margin-left: 190px; /* 이미지 간의 간격 추가 */
+}
+

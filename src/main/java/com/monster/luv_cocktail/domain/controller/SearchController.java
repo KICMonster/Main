@@ -2,11 +2,14 @@ package com.monster.luv_cocktail.domain.controller;
 
 import com.monster.luv_cocktail.domain.dto.CocktailDTO;
 import com.monster.luv_cocktail.domain.dto.CocktailResponse;
+import com.monster.luv_cocktail.domain.dto.CocktailSummaryDTO;
 import com.monster.luv_cocktail.domain.dto.SearchCocktailRequest;
 import com.monster.luv_cocktail.domain.dto.TasteStringDTO;
+import com.monster.luv_cocktail.domain.dto.TimeRangeAndCategoryRequest;
 import com.monster.luv_cocktail.domain.dto.TimeRangeRequest;
 import com.monster.luv_cocktail.domain.dto.TimeSlotDTO;
 import com.monster.luv_cocktail.domain.dto.ViewDTO;
+import com.monster.luv_cocktail.domain.dto.ViewLogDTO;
 import com.monster.luv_cocktail.domain.entity.Cocktail;
 import com.monster.luv_cocktail.domain.entity.Member;
 import com.monster.luv_cocktail.domain.entity.ViewLog;
@@ -25,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -62,6 +66,7 @@ public class SearchController {
 //	@Autowired
 	private final ViewRepository viewRepository;
 //
+	private final ViewService viewService;
 //	public SearchController() {
 //	}
 
@@ -93,43 +98,59 @@ public class SearchController {
 		}
 	}
 
-//	@GetMapping({ "/api/cocktails" })
-//	public ResponseEntity<List<CocktailDTO>> getAllCocktails() {
-//		List<CocktailDTO> cocktails = this.searchService.getAllCocktails();
-//		return ResponseEntity.ok(cocktails);
-//	}
+ 
+//	@PostMapping({ "/chart1" })
+//    public ResponseEntity<List<CocktailSummaryDTO>> getCocktailsByTimeRangeAndCategory(@RequestBody TimeRangeAndCategoryRequest request) {
+//        List<CocktailSummaryDTO> summaries = viewService.getCocktailViewsByTimeRangeAndCategory(
+//            request.getStart(), request.getEnd(), request.getCategory(), request.getGender(), request.getBirth());
+//        return ResponseEntity.ok(summaries);
+//    }
 
-	@PostMapping({ "/chart" })
-	public ResponseEntity<List<TimeSlotDTO>> getCocktailsByTimeRange(@RequestBody TimeRangeRequest timeRangeRequest) {
-		ZonedDateTime start = timeRangeRequest.getStart();
-		ZonedDateTime end = timeRangeRequest.getEnd();
-		System.out.println("start: " + start);
-		System.out.println("end: " + end);
-		Specification<ViewLog> spec = ViewService.inTimeRange(start, end);
-		List<ViewLog> views = this.viewRepository.findAll(spec);
-		Map<Integer, List<ViewLog>> viewsByHour = views.stream().collect(Collectors.groupingBy((view) -> {
-			return view.getViewDate().getHour();
-		}));
-		List<TimeSlotDTO> timeSlotDTOs = viewsByHour.entrySet().stream().map((entry) -> {
-			int hour = entry.getKey();
-			List<ViewLog> hourViews = entry.getValue();
-			List<ViewDTO> viewDTOs = hourViews.stream().map((view) -> {
-				ViewDTO dto = new ViewDTO();
-				dto.setViewCd(view.getViewId());
-				dto.setViewDate(view.getViewDate());
-				dto.setName(view.getCocktail().getName());
-				dto.setId(view.getCocktail().getId());
-				return dto;
-			}).collect(Collectors.toList());
-			return new TimeSlotDTO(hour, hourViews.size(), viewDTOs);
-		}).collect(Collectors.toList());
-		System.out.println("조회된 조회수: " + views.size());
-		return ResponseEntity.ok(timeSlotDTOs);
-	}
+    @PostMapping("/chart")
+    public ResponseEntity<List<ViewLogDTO>> getViewLogsByTimeRangeAndCategory(@RequestBody TimeRangeAndCategoryRequest request) {
+        List<ViewLogDTO> logs = viewService.getViewLogsByTimeRangeAndCategory(
+            request.getStart(), request.getEnd(), request.getCategory(), request.getGender(), request.getBirth());
+        return ResponseEntity.ok(logs);
+    }
 
 	@GetMapping("/")
 	public ResponseEntity<List<CocktailResponse>> getListByName(@RequestParam("name") String name) {
 		log.info("getListByName 메서드 실행");
 		return ResponseEntity.ok(searchService.getListByName(name));
 	}
+	
+//	private List<TimeSlotDTO> convertToTimeSlotDTOs(List<ViewLog> views) {
+//	    // 시간대별로 ViewLog 데이터를 그룹화
+//	    Map<Integer, List<ViewLog>> groupedByHour = views.stream()
+//	        .collect(Collectors.groupingBy(view -> view.getViewDate().getHour()));
+//
+//	    // 각 그룹을 TimeSlotDTO로 변환
+//	    List<TimeSlotDTO> timeSlotDTOs = new ArrayList<>();
+//	    for (Map.Entry<Integer, List<ViewLog>> entry : groupedByHour.entrySet()) {
+//	        int hour = entry.getKey();
+//	        List<ViewLog> hourViews = entry.getValue();
+//	        int viewCount = hourViews.size();  // 해당 시간대의 조회 수
+//	        List<String> cocktailNames = hourViews.stream()
+//	            .map(view -> {
+//	                // 칵테일 이름을 추출, CustomCocktail과 Cocktail 모두 고려
+//	                if (view.getCocktail() != null) {
+//	                    return view.getCocktail().getName();
+//	                } else if (view.getCustomCocktail() != null) {
+//	                    return view.getCustomCocktail().getName();
+//	                }
+//	                return "Unknown Cocktail"; // 이름이 없는 경우 대비
+//	            })
+//	            .distinct()  // 중복 이름 제거
+//	            .collect(Collectors.toList());
+//
+//	        // DTO 생성 및 리스트 추가
+//	        TimeSlotDTO dto = new TimeSlotDTO();
+//	        dto.setHour(hour);
+//	        dto.setViewCount(viewCount);
+//	        dto.setCocktailNames(cocktailNames);
+//	        timeSlotDTOs.add(dto);
+//	    }
+//
+//	    return timeSlotDTOs;
+//	}
 }

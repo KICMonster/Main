@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import BasicLayout from "../../layouts/BasicLayout";
 import { Link } from "react-router-dom";
 import "../../component/main/styles/ViewPage.css";
-import "../../component/main/styles/CustomCocktail.css"
+import '../../component/main/styles/CocktailDetail.css';
 import axios from 'axios';
 
 

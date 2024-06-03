@@ -1,8 +1,9 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import AnalysisComplete from '../../pages/AnalysisComplete';
 import OptionSelector from '../../pages/contents/Taste';
+import BasicLayout from '../../layouts/BasicLayout';
 
 // axios 인스턴스 생성
 const axiosInstance = axios.create({
@@ -34,10 +35,10 @@ const TasteAnalysis = () => {
         if (response.status === 200) {
           // JSON 형식의 응답 데이터를 사용
           const recommendedCocktails = response.data;
-          console.log('Recommended cocktails:', recommendedCocktails);
-           // navigate 함수 호출 시, 두 번째 인자로 상태 전달
+          console.log('recommended cocktails:', recommendedCocktails);
+          // navigate 함수 호출 시, 두 번째 인자로 상태 전달
           navigate("/taste/complete", { state: { recommendedCocktails } });
-          
+
         }
       } catch (error) {
         console.error('Error updating taste and recommendation:', error);
@@ -55,10 +56,10 @@ const TasteAnalysis = () => {
   };
 
   return (
-    <div>
-    {!isSelectionComplete && <OptionSelector onSelectionComplete={handleOptionSelectionComplete} />}
-    {isSelectionComplete && <AnalysisComplete/>}
-  </div>
+    <BasicLayout>
+      {!isSelectionComplete && <OptionSelector onSelectionComplete={handleOptionSelectionComplete} />}
+      {isSelectionComplete && <AnalysisComplete />}
+    </BasicLayout>
   );
 };
 

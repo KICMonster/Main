@@ -3,13 +3,13 @@ import BasicLayout from "../../layouts/BasicLayout";
 import { Link } from "react-router-dom";
 import axios from 'axios';
 import "../../component/main/styles/ViewPage.css"; // CSS 파일을 import
-import "../../component/main/styles/CustomCocktail.css";
+import '../../component/main/styles/CocktailDetail.css';
+import { IoEyeSharp } from "react-icons/io5";
+import { FaThumbsUp } from "react-icons/fa";
 const axiosInstance = axios.create({
   // baseURL: process.env.REACT_APP_API_URL // 백엔드 주소
   baseURL: import.meta.env.VITE_API_URL
 });
-
-
 
 function CustomCocktail() {
   const [cocktails, setCocktails] = useState([]);
@@ -155,7 +155,7 @@ function CustomCocktail() {
           <option value="recommendation">추천수</option>
           <option value="views">조회수</option>
         </select>
-        <button onClick={handleResetFilter} className="btn-hover" style={{margin:"2px", marginLeft:"20px", padding:"0px 20px 0px", height: "39px"}}>Reset</button>
+        <button onClick={handleResetFilter} className="btn-hover" style={{ margin: "2px", marginLeft: "20px", padding: "0px 20px 0px", height: "39px" }}>Reset</button>
         <div className="my-cocktail-link">
           <Link to="/mycocktail">My Cocktail</Link>
         </div>
@@ -165,15 +165,16 @@ function CustomCocktail() {
           <Link key={cocktail.cocktailId} to={`/customcocktail/${cocktail.cocktailId}`} className="cocktail-link">
             <div className="cocktail-item">
               <div className="image-box">
-                <img src={cocktail.imageUrl || 'default-image-url.jpg'} alt={cocktail.name} className="cocktail-image" />
+                <img src={cocktail.imageUrl || 'default-image-url.jpg'} alt={cocktail.name} className="cocktail-image" style={{ height: "208px" }} />
               </div>
-              <h2 className="cocktail-name">{cocktail.customNm}</h2>
+              <h2 className="cocktail-name">{cocktail.name}</h2>
+              <h2 className="cocktail-eye"><IoEyeSharp /> {cocktail.view}👍{cocktail.recommend}</h2>
             </div>
           </Link>
         ))}
       </div>
       <div className="pagination">
-        <button 
+        <button
           onClick={() => handlePageGroupChange('prev')}
           disabled={pageGroup === 0}
         >
@@ -191,7 +192,7 @@ function CustomCocktail() {
             </button>
           );
         })}
-        <button 
+        <button
           onClick={() => handlePageGroupChange('next')}
           disabled={(pageGroup + 1) * pagesPerGroup >= totalPages}
         >

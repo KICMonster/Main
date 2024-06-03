@@ -74,9 +74,3 @@
 .survey-start a:hover {
   background-color: #ebc633;
 }
-
-/* 설문 이미지 스타일 */
-.survey-image {
-  max-width: 100%;
-  margin-top: 20px;
-}

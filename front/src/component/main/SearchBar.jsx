@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { FaSearch } from "react-icons/fa";
-import { useNavigate } from 'react-router-dom'; // useNavigate로 변경
+import { useNavigate } from 'react-router-dom';
 import './styles/SearchBar.css';
 
 function SearchBar() {
     const [searchQuery, setSearchQuery] = useState("");
-    const navigate = useNavigate(); // useNavigate 사용
+    const navigate = useNavigate();
 
     const handleInputChange = (event) => {
         setSearchQuery(event.target.value);
@@ -13,9 +13,11 @@ function SearchBar() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        if (searchQuery.trim()) {
-            navigate(`/search/${searchQuery}`); // 검색어를 URL 파라미터로 포함하여 이동
+        if (searchQuery.trim().length >= 2) {
+            navigate(`/search/${searchQuery}`);
             setSearchQuery("");
+        } else {
+            alert("최소 2글자를 사용해주세요!");
         }
     };
 

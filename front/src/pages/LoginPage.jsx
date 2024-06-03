@@ -10,7 +10,6 @@ import kakaoIcon from '../img/kakao_medium.png';
 import naverIcon from '../img/btn_naver.png';
 import googleIcon from '../img/google_btn.png';
 
-
 const corsAnywhere = 'https://cors-anywhere.herokuapp.com/';
 
 function LoginPage() {

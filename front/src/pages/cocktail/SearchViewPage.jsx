@@ -4,7 +4,7 @@ import axios from 'axios';
 import BasicLayout from "../../layouts/BasicLayout";
 import { Link } from "react-router-dom";
 import "../../component/main/styles/ViewPage.css";
-import "../../component/main/styles/CustomCocktail.css";
+import "../../component/main/styles/CocktailDetail.css";
 
 
 // axios 인스턴스 생성

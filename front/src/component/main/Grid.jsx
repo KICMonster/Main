@@ -17,8 +17,8 @@ function Grid({ cocktails }) {
       <div className="container" style={{ display: 'flex' }}>
         <div className="home-container">
           <h1 className="font">당신을 위한 칵테일</h1>
-          <div>한 잔은 이미 초라해진 나를 위하여 또 한잔은 너와 나의 영원했던 사랑을 위하여</div>
-          <Link to="/tastestart"><button className="btn-hover">Get Started!</button></Link>
+          <div>"지친 하루의 끝, 한 잔의 칵테일과 함께하는 시간. LuvCocktail은 당신의 순간을 특별하게 만듭니다. 오늘의 이야기를 내일의 추억으로."</div>
+          <Link to="/tastestart"><button className="btn-hover">취향 조사</button></Link>
         </div>
       </div>
       <div className="slider-container">
@@ -44,3 +44,4 @@ function Grid({ cocktails }) {
 }
 
 export default Grid;
+

@@ -194,7 +194,7 @@ function AdditionalForm() {
               <label className="label-centered" htmlFor="birth">생년월일</label>
               <input
                 type="date"
-                id="birth"g
+                id="birth"
                 value={birth}
                 onChange={(e) => setBirth(e.target.value)}
                 required

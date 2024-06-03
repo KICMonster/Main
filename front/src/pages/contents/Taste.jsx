@@ -16,7 +16,7 @@ const Taste = ({ onSelectionComplete }) => {
     const jwtToken = localStorage.getItem("jwt");
     // JWT 토큰 확인
     if (!jwtToken) {
-      alert("로그인한 회원만 등록 버튼을 누를 수 있습니다!");
+      alert("로그인 후 사용해 주세요.");
       navigate("/login"); // navigate 사용
     }
   }, [navigate]);

@@ -28,7 +28,7 @@ const SearchViewPage = lazy(() => import('../pages/cocktail/SearchViewPage'));
 // Suspense를 적용하여 각 컴포넌트를 래핑하는 함수
 const withSuspense = (Component) => {
   return (
-    <Suspense fallback={<Loading/>}>
+    <Suspense fallback={<Loading />}>
       <Component />
     </Suspense>
   );
@@ -61,7 +61,7 @@ const root = createBrowserRouter([
     element: withSuspense(CustomCocktail),
   },
   {
-    path: '/cocktail/:cocktailId',  
+    path: '/cocktail/:cocktailId',
     element: withSuspense(CocktailDetail),
   },
   {
@@ -81,8 +81,8 @@ const root = createBrowserRouter([
     element: withSuspense(TasteStart),
   },
   {
-    path : '/taste', // 기호조사. 필요 페이지와 연결할것.지금은 home.jsx에 버튼. 회원가입 페이지와 연결할 경우 로직 수정할 필요.   
-    element : withSuspense(TasteAnalysis), // 회원가입 로직과 연결 할 시 프론트 경로작업&비동기 통신전달값 추가 후 백엔드에 문의
+    path: '/taste', // 기호조사. 필요 페이지와 연결할것.지금은 home.jsx에 버튼. 회원가입 페이지와 연결할 경우 로직 수정할 필요.   
+    element: withSuspense(TasteAnalysis), // 회원가입 로직과 연결 할 시 프론트 경로작업&비동기 통신전달값 추가 후 백엔드에 문의
     children: [
       {
         path: 'complete', // '/taste'의 하위 경로로 'complete'를 정의
@@ -126,7 +126,7 @@ const root = createBrowserRouter([
     path: '/search/:name',
     element: withSuspense(SearchViewPage)
   },
- 
+
 ]);
 
 export default root;

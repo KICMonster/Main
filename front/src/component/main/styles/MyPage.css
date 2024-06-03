@@ -1,6 +1,6 @@
 .myPage {
   width: 600px;
-  margin: 20px auto 0;
+  margin: 100px auto 0;
   padding: 20px;
   border: 1px solid #ddd;
   border-radius: 20px;
@@ -32,8 +32,9 @@
 }
 
 .profile-picture img {
-  width: 100px;
-  height: 100px;
+  border: 1px solid #0000002b;
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
   object-fit: cover;
   margin-bottom: 10px
@@ -96,7 +97,7 @@
 }
 
 .buttons {
-  text-align: right
+  text-align: center;
 }
 
 .buttons button {
@@ -113,19 +114,41 @@
   background-size: 300% 100%;
   border-radius: 50px;
   background-position: 0% 0;
-  transition: all .4s ease-in-out
+  transition: all .4s ease-in-out;
 }
 
 .buttons button:hover {
   background-position: 100% 0;
-  background-color: #0d0c228f
+  background-color: #0d0c228f;
 }
 
 .buttons button:last-child {
-  background-color: #6c757d
+  background-color: #6c757d;
 }
 
 .buttons button:last-child:hover {
   background-position: 100% 0;
-  background-color: #2626298f
+  background-color: #2626298f;
+}
+
+.apply {
+  width: 100px;
+  font-size: 16px;
+  font-weight: 600;
+  background-color: #0d0c22de !important;
+  box-shadow: 0 4px 15px #2d3641bf;
+  color: #f8f7f4;
+  margin: 10px;
+  height: 35px;
+  text-align: center;
+  border: none;
+  background-size: 300% 100%;
+  border-radius: 50px;
+  background-position: 0% 0;
+  transition: all .4s ease-in-out;
+}
+
+.apply:hover {
+  background-position: 100% 0;
+  background-color: #0d0c228f !important;
 }
