@@ -40,7 +40,7 @@ public class CustomCocktailService {
     public PostCustomCocktailResponse save(PostCustomCocktailRequest request,  HttpServletRequest servletRequest) throws IOException {
     	log.info("save 시작");
     	// Author 등록
-    	Member member = findUserByHeader(servletRequest);
+    	Member member = jwtService.findUserByHeader(servletRequest);
     	// 칵테일 생성
     	CustomCocktail cocktail = mapping(request,servletRequest,member);
 
@@ -76,12 +76,29 @@ public class CustomCocktailService {
 
     // 특정 ID로 칵테일 조회
     @Transactional
-    public CustomCocktailDTO findById(Long id) {
+    public CustomCocktailDTO findById(Long id, HttpServletRequest servletRequest) {
+    	
         CustomCocktail customCocktail = customCocktailRepository.findById(id).orElseThrow(() -> new BusinessLogicException(ExceptionCode.NON_EXISTENT_COCKTAIL));
+        
+        Long currentUserId = null;
+        
+    	String authorizationHeader = servletRequest.getHeader("Authorization");
+      if ( authorizationHeader != null && !authorizationHeader.isEmpty()) {
+    	  Member member = jwtService.findUserByHeader(servletRequest);
+    	 currentUserId = member.getId();
+      }
+
         customCocktail.setView(customCocktail.getView() + 1);
         customCocktailRepository.save(customCocktail);
         // 저장 하고 변환해야함
-        return convertToDto(customCocktail);
+        CustomCocktailDTO response = convertToDto(customCocktail);
+        if (customCocktail.getMember().getId() == currentUserId) {
+        	   response.setAuthor(true);
+        } else {
+        	response.setAuthor(false);
+        }
+     
+        return response;
     }
 
     // 칵테일 이름으로 검색
@@ -228,12 +245,12 @@ public class CustomCocktailService {
 
 	}
 	
-	 @Transactional
-	public Member findUserByHeader(HttpServletRequest request) {
-		String bearerToken = request.getHeader("Authorization");
-		String accessToken = bearerToken.substring(7);
-		 String email =  jwtService.extractEmailFromToken(accessToken);
-		 Member member = memberRepository.findByEmail(email).orElseThrow(() -> new BusinessLogicException(ExceptionCode.NON_EXISTENT_MEMBER));
-		 return member;
-	}
+//	 @Transactional
+//	public Member findUserByHeader(HttpServletRequest request) {
+//		String bearerToken = request.getHeader("Authorization");
+//		String accessToken = bearerToken.substring(7);
+//		 String email =  jwtService.extractEmailFromToken(accessToken);
+//		 Member member = memberRepository.findByEmail(email).orElseThrow(() -> new BusinessLogicException(ExceptionCode.NON_EXISTENT_MEMBER));
+//		 return member;
+//	}
 }

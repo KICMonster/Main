@@ -1,5 +1,7 @@
 package com.monster.luv_cocktail.domain.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -43,12 +45,11 @@ public class CustomCocktailDTO {
     private Long cocktailId;
     
     
-    
     private int view;
     private String alcoholic;
     private String glass;
     private int recommend;
-    
-    
+    @JsonProperty(value = "isAuthor")
+    private boolean isAuthor;
     
 }

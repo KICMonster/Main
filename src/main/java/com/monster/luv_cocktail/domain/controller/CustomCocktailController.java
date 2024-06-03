@@ -42,9 +42,9 @@ public class CustomCocktailController {
     
     // 칵테일 id값으로 검색
     @GetMapping("/{cocktailId}")
-    public ResponseEntity<CustomCocktailDTO> getOne(@PathVariable("cocktailId") Long cocktailId) {
+    public ResponseEntity<CustomCocktailDTO> getOne(@PathVariable("cocktailId") Long cocktailId, HttpServletRequest servletRequest) {
     	log.info("Get CustomCocktail with Id {}", cocktailId);
-    	CustomCocktailDTO cocktail = customCocktailService.findById(cocktailId);
+    	CustomCocktailDTO cocktail = customCocktailService.findById(cocktailId, servletRequest);
     	return ResponseEntity.ok(cocktail);
     }
     

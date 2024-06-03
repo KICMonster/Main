@@ -3,6 +3,7 @@ import { Suspense, lazy } from 'react';
 import LoginRouter from './LoginRouter';
 import Loading from '../pages/Loading';
 
+
 // Lazy loading을 위한 컴포넌트들
 const Home = lazy(() => import('../pages/Home'));
 const LoginPage = lazy(() => import('../pages/LoginPage'));
@@ -24,7 +25,7 @@ const TasteStart = lazy(() => import('../pages/contents/TasteStart'));
 const CocktailSearchChart = lazy(() => import('../component/detail/CocktailSearchChart'));
 const MyPage = lazy(() => import('../pages/Mypage'));
 const SearchViewPage = lazy(() => import('../pages/cocktail/SearchViewPage'));
-
+const EditCocktail = lazy(() => import ( '../pages/contents/EditCocktail'));
 // Suspense를 적용하여 각 컴포넌트를 래핑하는 함수
 const withSuspense = (Component) => {
   return (
@@ -65,6 +66,10 @@ const root = createBrowserRouter([
     element: withSuspense(CocktailDetail),
   },
   {
+    path: '/customcocktail/EditCocktail/:cocktailId',
+    element: withSuspense(EditCocktail),
+  },
+  {
     path: '/customcocktail/:cocktailId', // 커스텀 칵테일 디테일 페이지 라우팅 설정
     element: withSuspense(CustomCocktailDetail),
   },
@@ -101,10 +106,6 @@ const root = createBrowserRouter([
   {
     path: '/mapsearch',
     element: withSuspense(GisPage),
-  },
-  {
-    path: '/customcocktail',
-    element: withSuspense(CustomCocktail),
   },
   {
     path: '/mycocktail',
