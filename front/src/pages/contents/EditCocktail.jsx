@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import BasicLayout from "../../layouts/BasicLayout";
 import '../../component/main/styles/mycocktail.css';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";  // 확인해야 할 부분
 import axios from 'axios';
 
 const axiosInstance = axios.create({
@@ -9,6 +9,7 @@ const axiosInstance = axios.create({
 });
 
 function EditCocktail() {
+  const { cocktailId } = useParams();
   const navigate = useNavigate();
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
@@ -27,6 +28,45 @@ function EditCocktail() {
   const [error, setError] = useState(null);
   const placeholders = ["베이스", "재료 1", "재료 2", "재료 3", "재료 4"];
 
+  useEffect(() => {
+    const fetchCocktailDetail = async () => {
+      try {
+        const cocktailEndpoint = `/custom/${cocktailId}`;
+        const token = localStorage.getItem('jwt') || '';
+        const headers = token ? { Authorization: `Bearer ${token}` } : {};
+
+        const cocktailResponse = await axiosInstance.get(cocktailEndpoint, { headers });
+        const data = cocktailResponse.data;
+
+        setTitle(data.customNm);
+        setDescription(data.customRcp);
+        setIsAlcoholic(data.alcoholic);
+        setGlassType(data.glass);
+        setPreviewUrl(data.customImageUrl);
+
+        const ingredientsArray = [];
+        for (let i = 1; i <= 15; i++) {
+          const ingredientName = data[`customIngredient${i}`];
+          const ingredientMeasure = data[`customMeasure${i}`];
+          if (ingredientName && ingredientMeasure) {
+            ingredientsArray.push({
+              id: i,
+              name: ingredientName,
+              amount: ingredientMeasure
+            });
+          }
+        }
+        setIngredients(ingredientsArray);
+
+      } catch (error) {
+        console.error('Error fetching cocktail detail:', error);
+        setError(error.message);
+      }
+    };
+
+    fetchCocktailDetail();
+  }, [cocktailId]);
+
   const handleInputChange = (id, field, value) => {
     setIngredients(prevIngredients =>
       prevIngredients.map(ingredient =>
@@ -34,29 +74,10 @@ function EditCocktail() {
       )
     );
   };
-
-  const fetchCocktailDetail = async () => {
-    try {
-      const cocktailEndpoint = `/custom/${cocktailId}`;
-      const cocktailResponse = await axiosInstance.get(cocktailEndpoint);
-      // const cocktailData = await cocktailResponse.json();
-      setCocktail(cocktailResponse.data);
-
-      // 토큰 가져오기
-      const token = localStorage.getItem('jwt') || '';
-      const headers = token ? { Authorization: `Bearer ${token}` } : {};
-      await axiosInstance.post(`/view/custom/cocktails/${cocktailId}`, {
-        timestamp: new Date().toISOString()
-      }, { headers });
-
-    } catch (error) {
-      console.error('Error fetching cocktail detail:', error);
-      setError(error.message);
-    }
-  };
+ 
 
   const addIngredient = () => {
-    if (ingredients.length < 10) {
+    if (ingredients.length < 15) {
       const newId = ingredients.length + 1;
       setIngredients(prevIngredients => {
         const hasEmptyOrNullValues = prevIngredients.some(ingredient => !ingredient.name || !ingredient.amount);
@@ -66,11 +87,11 @@ function EditCocktail() {
         }
         return [
           ...prevIngredients,
-          { id: newId, name: "", amount: "" }
+          { id: newId, name: "", amount: "", volume: "" }
         ];
       });
     } else {
-      alert("최대 10개까지만 추가할 수 있습니다.");
+      alert("최대 15개까지만 추가할 수 있습니다.");
     }
   };
   
@@ -88,45 +109,37 @@ function EditCocktail() {
     }
 
     try {
-      const filteredIngredients = ingredients.filter(ingredient => ingredient.name.trim() !== "" && ingredient.amount.trim() !== "");
-
-      console.log("제목:", title, "내용:", description, "재료:", filteredIngredients, "알콜 여부:", isAlcoholic, "유리잔 타입:", glassType, "로 폼을 제출합니다.");
-      alert("등록되었습니다.");
-    } catch (error) {
-      console.error("오류 발생:", error);
-      setError(error.message);
-    }
-    if (selectedFile) {
-      const filteredIngredients = ingredients.filter(ingredient => ingredient.name.trim() !== "" && ingredient.amount.trim() !== "");
-      const formData = new FormData();
-      formData.append('name', title);
-      formData.append('image', selectedFile);
-      formData.append('description', description);
-      filteredIngredients.forEach((ingredient, index) => {
-        formData.append(`ingredient${index + 1}`, ingredient.name);
-        formData.append(`measure${index + 1}`, ingredient.amount);
-      });
-      formData.append('alcoholic', isAlcoholic);
-      formData.append('glass', glassType);
- 
-      try {
-        const response = await axios.post('https://luvcocktail.site/api/custom', formData, {
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('jwt')}`
-          }
-        });
-
-        if (response.status === 200 && response.data) {
-          alert('칵테일이 성공적으로 등록되었습니다.');
-          navigate(`/customcocktail/${response.data.cocktailId}`);
-        } else {
-          throw new Error('서버 에러');
+        const filteredIngredients = ingredients.filter(ingredient => ingredient.name.trim() !== "" && ingredient.amount.trim() !== "");
+  
+        const formData = new FormData();
+        formData.append('customNm', title);
+        if (selectedFile) {
+          formData.append('image', selectedFile);
         }
-      } catch (error) {
-        alert('사진 업로드 중 에러 발생: ' + error.message);
-      }
-    }
-  };
+        formData.append('customRcp', description);
+        filteredIngredients.forEach((ingredient, index) => {
+          formData.append(`customIngredient${index + 1}`, ingredient.name);
+          formData.append(`customMeasure${index + 1}`, ingredient.amount);
+        });
+        formData.append('alcoholic', isAlcoholic);
+        formData.append('glass', glassType);
+ 
+        const response = await axiosInstance.put(`/custom/${cocktailId}`, formData, {
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem('jwt')}`
+            }
+          });
+    
+          if (response.status === 200 && response.data) {
+            alert('칵테일이 성공적으로 수정되었습니다.');
+            navigate(`/customcocktail/${cocktailId}`);
+          } else {
+            throw new Error('서버 에러');
+          }
+        } catch (error) {
+          alert('칵테일 수정 중 에러 발생: ' + error.message);
+        }
+      };
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -176,7 +189,7 @@ function EditCocktail() {
     <BasicLayout>
       <div className="MyBoard">
         <div className="MyContainer">
-        <div className="MyRight">
+          <div className="MyRight">
             <form onSubmit={handleSubmit} className="MyForm">
               <div className="MyFormGroup">
                 <h1>수정하기</h1>
@@ -206,10 +219,10 @@ function EditCocktail() {
                 <input type="file" className="MyFileInput" onChange={handleFileChange} />
               </div>
               <div className="MyButtonGroup">
-                <button type="submit" className="MySubmitButton" >
-                  등록
+                <button type="submit" className="MySubmitButton">
+                  수정
                 </button>
-                <button type="button" className="MyCancelButton">
+                <button type="button" className="MyCancelButton" onClick={() => navigate(-1)}>
                   취소
                 </button>
               </div>
@@ -228,7 +241,7 @@ function EditCocktail() {
                   onChange={(e) => setIsAlcoholic(e.target.value)}
                   className="MySelect"
                 >
-                  <option value="" selected disabled>알콜 여부 선택</option>
+                  <option value="" disabled>알콜 여부 선택</option>
                   <option value="알콜">알콜</option>
                   <option value="논알콜">논알콜</option>
                 </select>
@@ -237,7 +250,7 @@ function EditCocktail() {
                   onChange={(e) => setGlassType(e.target.value)}
                   className="MySelect"
                 >
-                  <option value="" selected disabled>유리잔 선택</option>
+                  <option value="" disabled>유리잔 선택</option>
                   <option value="하이볼">하이볼</option>
                   <option value="칵테일 글래스">칵테일 글래스</option>
                   <option value="샷 글래스">샷 글래스</option>
@@ -280,26 +293,20 @@ function EditCocktail() {
                           onChange={(e) => handleVolumeChange(ingredient.id, e.target.value)}
                           className="MyVolumeDropdown"
                         >
-                          <option value="" selected disabled>단위 선택</option>
+                          <option value="" disabled>단위 선택</option>
+                          <option value="L">리터</option>
                           <option value="ounce">온스</option>
                           <option value="Dash">대시</option>
                           <option value="ts">티스푼</option>
-                          <option value="Jigger">지거</option>
                           <option value="Drop">드롭</option>
                           <option value="Ts">테이블 스푼</option>
-                          <option value="pony">포니</option>
-                          <option value="finger">핑거</option>
-                          <option value="Gill">길</option>
-                          <option value="Split">스플리트</option>
+                          <option value="finger">핑거</option>          
                           <option value="Cup">컵</option>
                           <option value="Pint">핀트</option>
-                          <option value="Fifth">핍스</option>
                           <option value="Quart">쿼트</option>
                           <option value="Gallon">겔론</option>
                           <option value="Magnum">메그넘</option>
-                          <option value="Jeroboam">제로보움</option>
-                          <option value="합">합</option>
-                          <option value="승">승</option>
+            
                         </select>
                       </div>
                     </div>

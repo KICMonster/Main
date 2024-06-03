@@ -149,13 +149,15 @@ function CustomCocktailDetail() {
   const fetchCocktailDetail = async () => {
     try {
       const cocktailEndpoint = `/custom/${cocktailId}`;
-      const cocktailResponse = await axiosInstance.get(cocktailEndpoint);
+      const token = localStorage.getItem('jwt') || '';
+      const headers = token ? { Authorization: `Bearer ${token}` } : {};
+
+      // 토큰 포함하여 요청
+      const cocktailResponse = await axiosInstance.get(cocktailEndpoint, { headers });
       setCocktail(cocktailResponse.data);
       setIsAuthor(cocktailResponse.data.isAuthor); // response에서 isAuthor 값을 설정
 
-      // 토큰 가져오기
-      const token = localStorage.getItem('jwt') || '';
-      const headers = token ? { Authorization: `Bearer ${token}` } : {};
+      // 조회수 증가를 위한 요청
       await axiosInstance.post(`/view/custom/cocktails/${cocktailId}`, {
         timestamp: new Date().toISOString()
       }, { headers });

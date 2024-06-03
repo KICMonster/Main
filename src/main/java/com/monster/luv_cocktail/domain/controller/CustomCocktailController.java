@@ -2,6 +2,7 @@ package com.monster.luv_cocktail.domain.controller;
 
 import com.monster.luv_cocktail.domain.dto.CustomCocktailDTO;
 import com.monster.luv_cocktail.domain.dto.CustomCocktailListResponse;
+import com.monster.luv_cocktail.domain.dto.GetCustomCocktailResponse;
 import com.monster.luv_cocktail.domain.dto.PostCustomCocktailRequest;
 import com.monster.luv_cocktail.domain.dto.PostCustomCocktailResponse;
 import com.monster.luv_cocktail.domain.entity.CustomCocktail;
@@ -69,19 +70,11 @@ public class CustomCocktailController {
 
 
     // 기존 칵테일 수정
-    @PutMapping("/{id}")
-    public ResponseEntity<CustomCocktailDTO> updateCustomCocktail(@PathVariable("id") Long id, @RequestBody CustomCocktail customCocktail) {
-        log.info("@@@Updating custom cocktail with ID {}", id);
-        try {
-            CustomCocktailDTO updatedCocktail = customCocktailService.update(id, customCocktail);
-            log.info("@@@Successfully updated custom cocktail with ID {}", id);
-            return ResponseEntity.ok(updatedCocktail);
-        } catch (RuntimeException e) {
-            log.error("@@@Error updating custom cocktail with ID {}: {}", id, e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
+    @PutMapping("/{cocktailId}")
+    public ResponseEntity<PostCustomCocktailResponse> updateCustomCocktail(@PathVariable("cocktailId") Long cocktailId, @ModelAttribute PostCustomCocktailRequest request, HttpServletRequest servletRequest) throws IOException {
+    	PostCustomCocktailResponse response = customCocktailService.update(cocktailId, request, servletRequest);
+    	return ResponseEntity.ok(response);
     }
-
     // 특정 ID로 칵테일 삭제
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCustomCocktail(@PathVariable Long id) {

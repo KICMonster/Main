@@ -6,7 +6,7 @@ import defaultProfile from "../img/default.png"
 
 function MyPage() {
   const [nickname, setNickname] = useState('');  // 초기값을 빈 문자열로 설정 : undefined가 변경되면 에러가 발생하기 때문
-  const [profileImage, setProfileImage] = useState(defaultProfil);  // 프로필 이미지 URL 상태
+  const [profileImage, setProfileImage] = useState(defaultProfile);  // 프로필 이미지 URL 상태
   const [file, setFile] = useState(null);  // 파일 상태 추가
   const [gender, setGender] = useState('');
   const [birth, setBirth] = useState('');

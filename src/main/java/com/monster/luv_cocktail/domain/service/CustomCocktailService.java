@@ -17,7 +17,6 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
@@ -43,7 +42,6 @@ public class CustomCocktailService {
     	Member member = jwtService.findUserByHeader(servletRequest);
     	// 칵테일 생성
     	CustomCocktail cocktail = mapping(request,servletRequest,member);
-
     	// 이미지 업로드 밑 입력
     	
 //    	// 응답 생성
@@ -159,12 +157,14 @@ public class CustomCocktailService {
     
     // 기존 칵테일 수정
     @Transactional
-    public CustomCocktailDTO update(Long id, CustomCocktail customCocktail) {
-        CustomCocktail existingCocktail = customCocktailRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Custom Cocktail not found"));
-        customCocktail.setId(id);
-        CustomCocktail updatedCocktail = customCocktailRepository.save(customCocktail);
-        return convertToDto(updatedCocktail);
+    public PostCustomCocktailResponse update(Long id, PostCustomCocktailRequest request, HttpServletRequest servletRequest) throws IOException {
+    	Member member = jwtService.findUserByHeader(servletRequest);
+    	// 칵테일 생성
+    	CustomCocktail cocktail = mapping(request,servletRequest,member);
+    	// 이미지 업로드 밑 입력
+    	PostCustomCocktailResponse response = new PostCustomCocktailResponse();
+    	response.setCocktailId(cocktail.getId());
+        return response;	
     }
 
     // 특정 ID로 칵테일 삭제
@@ -244,6 +244,7 @@ public class CustomCocktailService {
 		return imageUrl;
 
 	}
+	
 	
 //	 @Transactional
 //	public Member findUserByHeader(HttpServletRequest request) {
