@@ -6,6 +6,8 @@ import '../component/main/styles/AnalysisComplete.css'
 
 function AnalysisComplete() {
   const location = useLocation();
+  console.log('작동하는지확인작동하는지확인');
+  console.log('Location state:', location.state);  // 콘솔에 상태 출력
   const { recommendedCocktails } = location.state || { recommendedCocktails: [] };
   const [currentCocktail, setCurrentCocktail] = useState(null);
 

@@ -62,9 +62,9 @@ function LoginPage() {
         access_token_uri = 'https://luvcocktail.site/token/kakao';
         body = new URLSearchParams({
           grant_type: 'authorization_code',
-          client_id: socialConfig.kakaoKey,
-          redirect_uri: socialConfig.kakaoRedirectURI,
-          client_secret: '6bX9xJgRVwbFUApqPU0fi3nEiWjNY4Cd',
+          client_id: import.meta.env.VITE_KAKAO_CLIENT_ID,
+          redirect_uri: import.meta.env.VITE_KAKAO_REDIRECT_URI,
+          client_secret: import.meta.env.VITE_KAKAO_CLIENT_SECRET,
           code: authCode
         });
         break;

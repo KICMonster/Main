@@ -11,8 +11,9 @@ import {
   Tooltip,
   Legend
 } from 'chart.js';
-import '../../component/main/styles/CocktailSearchChart.css'; // 추가한 CSS 파일을 임포트
+import '../../component/main/styles/CocktailSearchChart.css';
 import BasicLayout from '../../layouts/BasicLayout';
+import { Link } from 'react-router-dom';
 
 // Chart.js에 필요한 스케일과 요소들을 등록
 ChartJS.register(
@@ -131,7 +132,7 @@ const CocktailSearchChart = () => {
         }
       }
     },
-    onClick: function(event, elements) {
+    onClick: function (event, elements) {
       if (elements.length > 0) {
         const clickedHour = chartData.labels[elements[0].index].split(':')[0];
         handleHourClick(parseInt(clickedHour)); // 시간대 클릭 시 해당 시간대 선택
@@ -165,14 +166,15 @@ const CocktailSearchChart = () => {
       .filter(log => log.viewDate.getHours() === hour)
       .forEach(log => {
         const cocktailName = log.cocktailName || log.customCocktailName;
+        const cocktailCategory = log.cocktailName ? 'cocktail' : 'customCocktail';
         if (cocktailCounts[cocktailName]) {
-          cocktailCounts[cocktailName]++;
+          cocktailCounts[cocktailName].count++;
         } else {
-          cocktailCounts[cocktailName] = 1;
+          cocktailCounts[cocktailName] = { count: 1, id: log.cocktailId, category: cocktailCategory };
         }
       });
 
-    const sortedCocktails = Object.entries(cocktailCounts).sort((a, b) => b[1] - a[1]);
+    const sortedCocktails = Object.entries(cocktailCounts).sort((a, b) => b[1].count - a[1].count);
 
     return sortedCocktails.slice(0, 10); // 최대 10개의 순위만 반환
   };
@@ -181,102 +183,93 @@ const CocktailSearchChart = () => {
     const cocktailCounts = {};
 
     viewLogs.forEach(log => {
+      const cocktailId = log.cocktailId;
       const cocktailName = log.cocktailName || log.customCocktailName;
+      const cocktailCategory = log.cocktailName ? 'cocktail' : 'customCocktail';
       if (cocktailCounts[cocktailName]) {
-        cocktailCounts[cocktailName]++;
+        cocktailCounts[cocktailName].count++;
       } else {
-        cocktailCounts[cocktailName] = 1;
+        cocktailCounts[cocktailName] = { count: 1, id: cocktailId, category: cocktailCategory };
       }
     });
 
-    const sortedCocktails = Object.entries(cocktailCounts).sort((a, b) => b[1] - a[1]);
+    const sortedCocktails = Object.entries(cocktailCounts).sort((a, b) => b[1].count - a[1].count);
 
     return sortedCocktails.slice(0, 10); // 최대 10개의 순위만 반환
   };
 
   return (
-    <div>
-      <h2>칵테일을 많이 마시는 시간대</h2>
-      <div>
-        <button onClick={() => setTimeRange('today')}>오늘</button>
-        <button onClick={() => setTimeRange('thisWeek')}>이번 주</button>
-        <button onClick={() => setTimeRange('thisMonth')}>이번 달</button>
+    <BasicLayout>
+      <div className="time">
+        <h2>칵테일을 많이 마시는 시간대</h2>
+        <div className="button-group">
+          <button onClick={() => setTimeRange('today')}>오늘</button>
+          <button onClick={() => setTimeRange('thisWeek')}>이번 주</button>
+          <button onClick={() => setTimeRange('thisMonth')}>이번 달</button>
+        </div>
+        <div className="button-group22">
+          <label>
+            카테고리:
+            <select value={category} onChange={(e) => setCategory(e.target.value)}>
+              <option value="cocktail">칵테일</option>
+              <option value="customCocktail">커스텀 칵테일</option>
+            </select>
+          </label>
+          <label>
+            성별:
+            <select value={gender || ''} onChange={(e) => setGender(e.target.value || null)}>
+              <option value="">모두</option>
+              <option value="M">남성</option>
+              <option value="F">여성</option>
+            </select>
+          </label>
+          <label>
+            출생 연도:
+            <input
+              type="number"
+              value={birth ?? ''}
+              onChange={(e) => setBirth(e.target.value ? parseInt(e.target.value, 10) : null)}
+              min="0"
+              max="99"
+              placeholder="예: 85"
+            />
+          </label>
+        </div>
       </div>
-      <div>
-        <label>
-          카테고리:
-          <select value={category} onChange={(e) => setCategory(e.target.value)}>
-            <option value="cocktail">칵테일</option>
-            <option value="customCocktail">사용자 정의 칵테일</option>
-          </select>
-        </label>
-        <label>
-          성별:
-          <select value={gender} onChange={(e) => setGender(e.target.value)}>
-            <option value={null}>모두</option>
-            <option value="M">남성</option>
-            <option value="F">여성</option>
-          </select>
-        </label>
-        <label>
-          출생 연도:
-          <input
-            type="number"
-            value={birth || ''}
-            onChange={(e) => setBirth(e.target.value ? parseInt(e.target.value) : null)}
-            min="0"
-            max="99"
-            placeholder="예: 85"
-          />
-        </label>
+      <div className="chart">
+        <Line data={chartData} options={options} />
       </div>
-      <div style={{ display: 'flex', position: 'relative' }}>
-        <div style={{ width: '600px', height: '400px' }}>
-          <Line data={chartData} options={options} />
-          {isDataEmpty && (
-            <div className="overlay-message">
-              <p>오늘은 아무도 검색을 하지 않았네요 ㅠㅠ</p>
-              <button onClick={() => setTimeRange('thisWeek')}>이번 주</button>
-              <button onClick={() => setTimeRange('thisMonth')}>이번 달</button>
-            </div>
+      {isDataEmpty && (
+        <div className="overlay-message">
+          <p>오늘은 아무도 검색을 하지 않았네요 ㅠㅠ</p>
+          <button onClick={() => setTimeRange('thisWeek')}>이번 주</button>
+          <button onClick={() => setTimeRange('thisMonth')}>이번 달</button>
+        </div>
+      )}
+      {!isDataEmpty && (
+        <div className="ranking-container">
+          <h3>검색 순위</h3>
+          {selectedHour === null && (
+            <>
+              <div className="ranking-list">
+                {getSelectedRankings().map(([name, details], index) => (
+                  <Link
+                    to={details.category === 'customCocktail' ? `/customcocktail/${details.id}` : `/cocktail/${details.id}`}
+                    className="ranking-item"
+                    key={index}
+                  >
+                    <span className="ranking-position">{index + 1}</span>
+                    <span className="ranking-name">{name}</span>
+                  </Link>
+                ))}
+              </div>
+            </>
           )}
         </div>
-        {!isDataEmpty && (
-          <div className="ranking-container">
-            <h3>검색 순위</h3>
-            {selectedHour !== null && (
-              <>
-                <h4>{selectedHour}시 순위</h4>
-                <div className="ranking-list">
-                  {getSelectedRankings().map(([name, count], index) => (
-                    <div className="ranking-item" key={index}>
-                      <span className="ranking-position">{index + 1}</span>
-                      <span className="ranking-name">{name}</span>
-                    </div>
-                  ))}
-                </div>
-              </>
-            )}
-            {selectedHour === null && (
-              <>
-                <h4>오늘 총 검색 순위</h4>
-                <div className="ranking-list">
-                  {getSelectedRankings().map(([name, count], index) => (
-                    <div className="ranking-item" key={index}>
-                      <span className="ranking-position">{index + 1}</span>
-                      <span className="ranking-name">{name}</span>
-                    </div>
-                  ))}
-                </div>
-              </>
-            )}
-          </div>
-        )}
-      </div>
-    </div>
+      )}
+    </BasicLayout>
   );
 };
 
 export default CocktailSearchChart;
 
- 

@@ -69,12 +69,16 @@ public class CustomCocktailController {
 
 
 
-    // 기존 칵테일 수정
+    // 커스텀 칵테일 수정
     @PutMapping("/{cocktailId}")
-    public ResponseEntity<PostCustomCocktailResponse> updateCustomCocktail(@PathVariable("cocktailId") Long cocktailId, @ModelAttribute PostCustomCocktailRequest request, HttpServletRequest servletRequest) throws IOException {
+    public ResponseEntity<PostCustomCocktailResponse> updateCustomCocktail(
+    		@PathVariable("cocktailId") Long cocktailId, @ModelAttribute PostCustomCocktailRequest request, HttpServletRequest servletRequest
+    		) throws IOException {
     	PostCustomCocktailResponse response = customCocktailService.update(cocktailId, request, servletRequest);
     	return ResponseEntity.ok(response);
     }
+    
+    
     // 특정 ID로 칵테일 삭제
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCustomCocktail(@PathVariable Long id) {

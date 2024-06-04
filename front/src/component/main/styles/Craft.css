@@ -16,9 +16,13 @@
 }
 
 .CraftListArticle {
-    width: 250px;
-    height: 208px;
+    width: 240PX;
+    height: 208PX;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    margin-left: 20px;
+    margin-right: 43px;
+    transition: transform 0.3s ease-in-out;
 }
 
 .CraftListArticle img {
@@ -28,15 +32,22 @@
 }
 
 .CraftListArticle h4 {
+    color: #0d6efd;
     padding: 10px;
     font-size: 18px;
     margin: 0;
 }
 
+.CraftListArticle:hover {
+    transform: scale(1.05);
+}
+
 /* CraftPage 스타일 */
 .crafts-container {
-    height: 100vh; /* 화면 전체 높이 */
-    overflow: hidden; /* 스크롤바 숨기기 */
+    height: 100vh;
+    /* 화면 전체 높이 */
+    overflow: hidden;
+    /* 스크롤바 숨기기 */
 }
 
 .crafts {
@@ -96,6 +107,7 @@
     border: 3px solid #000000;
     padding: 20px;
     text-align: center;
-    max-width: 800px; /* 폭을 늘립니다. */
+    max-width: 800px;
+    /* 폭을 늘립니다. */
     border-radius: 20px;
 }

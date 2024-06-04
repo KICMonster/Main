@@ -15,6 +15,8 @@ import com.monster.luv_cocktail.domain.service.LoginSuccessHandler;
 import com.monster.luv_cocktail.domain.service.SocialLoginService;
 import com.monster.luv_cocktail.domain.service.SocialLoginSuccessHandler;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.extern.log4j.Log4j2;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,7 @@ import java.util.Optional;
 //)
 @Log4j2
 @RequestMapping("/api")
+
 public class AuthenticationController {
     private final JWTProvider jwtProvider;
     private final SocialLoginService socialLoginService;
@@ -53,6 +56,9 @@ public class AuthenticationController {
     }
 
     @PostMapping("/authenticate")
+	@Operation(summary = "사용자 인증", description = "Provider 를 통해 사용자를 인증합니다")
+	@ApiResponse(responseCode="200", description="성공")
+	@ApiResponse(responseCode="400", description="에러")
     public ResponseEntity<JwtTokenDTO> handleSocialLogin(@RequestBody SocialLoginRequest request) {
         String accessToken = request.getAccessToken();
         String service = request.getService();
@@ -77,6 +83,9 @@ public class AuthenticationController {
 
 
     @PostMapping("/login")
+	@Operation(summary = "로그인", description = "로그인을 시행합니다")
+	@ApiResponse(responseCode="200", description="성공")
+	@ApiResponse(responseCode="400", description="에러")
     public ResponseEntity<JwtTokenDTO> login(@RequestBody BasicLoginRequest request) {
     	log.info("로그인 메서드 실행");
         String email = request.getEmail();

@@ -15,6 +15,8 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Getter
 @Setter
 @Entity
@@ -143,6 +145,7 @@ public class Cocktail {
     @Column(name = "COCKTAIL_MEASURE15")
     private String measure15;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "cocktail", cascade = CascadeType.ALL)
     private List<ViewLog> views = new ArrayList<>();
 }
