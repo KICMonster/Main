@@ -16,7 +16,7 @@ function TopNavBar() {
           </Dropdown.Toggle>
           <Dropdown.Menu>
             <Dropdown.Item as={Link} to="/ViewPage">칵테일</Dropdown.Item>
-            <Dropdown.Item as={Link} to="/customcocktail">커스텀</Dropdown.Item>
+            <Dropdown.Item as={Link} to="/customcocktail">나만의 칵테일</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
         <Dropdown>

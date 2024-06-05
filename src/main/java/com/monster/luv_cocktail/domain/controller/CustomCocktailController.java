@@ -80,10 +80,10 @@ public class CustomCocktailController {
     
     
     // 특정 ID로 칵테일 삭제
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCustomCocktail(@PathVariable Long id) {
-        log.info("Delete Cocktail id{}", id);
-        customCocktailService.deleteById(id);
+    @DeleteMapping("/{cocktailId}")
+    public ResponseEntity<Void> deleteCustomCocktail(@PathVariable("cocktailId") Long cocktailId) {
+        log.info("Delete Cocktail id{}", cocktailId);
+        customCocktailService.deleteById(cocktailId);
         return ResponseEntity.noContent().build();
     }
 }

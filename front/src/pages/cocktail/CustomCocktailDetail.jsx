@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import BasicLayout from "../../layouts/BasicLayout";
 import Loading from "../Loading";
 import '../../component/main/styles/CocktailDetail.css'
@@ -11,6 +11,7 @@ const axiosInstance = axios.create({
 });
 
 function CustomCocktailDetail() {
+  const navigate =useNavigate();
   const { cocktailId } = useParams();
   const [cocktail, setCocktail] = useState(null);
   const [error, setError] = useState(null);
@@ -60,6 +61,8 @@ function CustomCocktailDetail() {
       const headers = token ? { Authorization: `Bearer ${token}` } : {};
       await axiosInstance.delete(`/custom/${cocktailId}`, { headers });
       // 삭제 후 리다이렉트 또는 다른 작업을 수행할 수 있음
+      alert('게시물이 삭제되었습니다.');
+      navigate('/customcocktail');
     } catch (error) {
       console.error('Error deleting cocktail:', error);
     }
@@ -96,7 +99,7 @@ function CustomCocktailDetail() {
           <div className="contentBox">
             <h1 className="cocktailName">{cocktail.customNm}</h1>
             <p className="cocktailViews">조회수 : {cocktail.view}</p> {/* 조회수 추가 */}
-            <p className="cocktailRecommend">추천수 : {cocktail.recommend}</p> {/* 추천수 추가 */}
+            <p className="cocktailRecommend">추천수 : {recommendation}</p> {/* 추천수 추가 */}
             <hr className="divider" />
             <p className="cocktailDescription">{cocktail.description}</p>
             <h2 className="sectionTitle">사용된 재료</h2>
@@ -111,7 +114,7 @@ function CustomCocktailDetail() {
                 );
               })}
             </ul>
-            <h2 className="sectionTitle">칵테일 레시피</h2>
+            <h2 className="sectionTitle">설명</h2>
             <p className="cocktailRecipe">{cocktail.customRcp}</p> {/* 제조법 추가 */}
             {/* <p className="instructions">{cocktail.instructions}</p> instructions 삭제. 이게 제조법임 (변수명 맞춰야함) */}
             <h2 className="sectionTitle"></h2>
@@ -119,7 +122,8 @@ function CustomCocktailDetail() {
               <span style={{ float: 'right' }}>
                 {/* 수정 가능한 페이지로 이동하는 링크 추가 */}
                 <Link to={`/customcocktail/EditCocktail/${cocktailId}`} className="edit-button">수정</Link>
-                <button onClick={handleDelete} className="delete-button">삭제</button>
+               
+              <button onClick={handleDelete} className="delete-button">삭제</button>
               </span>
             )}
           </div>

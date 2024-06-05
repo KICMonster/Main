@@ -157,7 +157,7 @@ function CustomCocktail() {
         </select>
         <button onClick={handleResetFilter} className="btn-hover" style={{ margin: "2px", marginLeft: "20px", padding: "0px 20px 0px", height: "39px" }}>Reset</button>
         <div className="my-cocktail-link">
-          <Link to="/mycocktail">My Cocktail</Link>
+          <Link to="/mycocktail">Add Cocktail</Link>
         </div>
       </div>
       <div className="container" style={{ gridTemplateColumns: 'repeat(5, 1fr)' }}>

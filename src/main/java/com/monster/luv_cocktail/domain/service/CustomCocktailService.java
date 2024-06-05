@@ -11,6 +11,8 @@ import com.monster.luv_cocktail.domain.exception.BusinessLogicException;
 import com.monster.luv_cocktail.domain.repository.CustomCocktailRecommendationRepository;
 import com.monster.luv_cocktail.domain.repository.CustomCocktailRepository;
 import com.monster.luv_cocktail.domain.repository.MemberRepository;
+import com.monster.luv_cocktail.domain.repository.ViewRepository;
+
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -32,7 +34,7 @@ public class CustomCocktailService {
     private final CustomCocktailRepository customCocktailRepository;
 	private final FileUploadService fileUploadService;
 	private final JwtService jwtService;
-	private final MemberRepository memberRepository;
+	private final ViewRepository viewRepository;
     
     // 칵테일 저장 (생성 및 수정)
     @Transactional
@@ -170,7 +172,9 @@ public class CustomCocktailService {
     // 특정 ID로 칵테일 삭제
     @Transactional
     public void deleteById(Long id) {
-        customCocktailRepository.deleteById(id);
+    	
+    	viewRepository.deleteByCustomCocktailId(id);
+    	customCocktailRepository.deleteById(id);
     }
 
     @Transactional

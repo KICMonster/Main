@@ -17,5 +17,7 @@ public interface ViewRepository extends JpaRepository<ViewLog, Long>, JpaSpecifi
 	List<ViewLog> findAllByGender(String gender);
 
 	List<ViewLog> findAllByBirth(String birthYear);
+	
+	void deleteByCustomCocktailId(Long customCocktailId);
 }
 
